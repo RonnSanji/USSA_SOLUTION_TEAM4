@@ -12,6 +12,7 @@ import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Member;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.model.StoreKeeper;
 import sg.edu.nus.iss.ssa.model.Transaction;
 import sg.edu.nus.iss.ssa.util.IOService;
 
@@ -37,10 +38,14 @@ public class SouvenirStoreApp {
 			ioManager.readFromFile( FileDataWrapper.categoryMap, new Category());
 			ioManager.readFromFile( FileDataWrapper.memberMap, new Member());
 			ioManager.readFromFile( FileDataWrapper.transactionMap, new Transaction());
-			System.out.println(FileDataWrapper.productMap.keySet());
-			System.out.println(FileDataWrapper.categoryMap.keySet());
-			System.out.println(FileDataWrapper.memberMap.keySet());
-			System.out.println(FileDataWrapper.transactionMap.keySet());
+			ioManager.readFromFile( FileDataWrapper.transactionMap, new Transaction());
+			ioManager.readFromFile( FileDataWrapper.storeKeeperMap, new StoreKeeper());
+			
+			System.out.println("products :" + FileDataWrapper.productMap.keySet());
+			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
+			System.out.println("members : " + FileDataWrapper.memberMap.keySet());
+			System.out.println("transactions : " + FileDataWrapper.transactionMap.keySet());
+			System.out.println("SoreKeeper : " + FileDataWrapper.storeKeeperMap.keySet());
 			
 			
 			//Launch Purchase Window 
