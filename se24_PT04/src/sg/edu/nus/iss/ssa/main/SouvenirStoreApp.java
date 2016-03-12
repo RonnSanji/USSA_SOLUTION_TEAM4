@@ -38,7 +38,6 @@ public class SouvenirStoreApp {
 			ioManager.readFromFile( FileDataWrapper.categoryMap, new Category());
 			ioManager.readFromFile( FileDataWrapper.memberMap, new Member());
 			ioManager.readFromFile( FileDataWrapper.transactionMap, new Transaction());
-			ioManager.readFromFile( FileDataWrapper.transactionMap, new Transaction());
 			ioManager.readFromFile( FileDataWrapper.storeKeeperMap, new StoreKeeper());
 			
 			System.out.println("products :" + FileDataWrapper.productMap.keySet());

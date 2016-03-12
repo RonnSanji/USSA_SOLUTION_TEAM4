@@ -9,21 +9,38 @@ public class Transaction extends Entity{
 	
 	protected String fileName = "transactions.dat";
 	protected String className = "sg.edu.nus.iss.ssa.model.Transaction";
-	protected String[] properties = {"transactionId","memberId"};
+	protected String[] properties = {"transactionId","productId","memberId","quantity","date"};
 	protected String mapKey = "transactionId";
 
 
 	private String transactionId;
-	
+	private String productId;
 	private String memberId;
-	
-	
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Transaction ID: " ).append(transactionId).append(" Member Id : ").append(memberId);
-		return sb.toString();
+	private String quantity;
+	private String date;
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public String getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public String getFileName() {
