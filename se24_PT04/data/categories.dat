@@ -1,10 +1,5 @@
-CLO,Cloth
-GIO,Glass
-MUG,Mugs
+CLO,Clothing
 COMP,Computers
-PHN,Phones
-BG,Bags
-BNK,Banks
-STR,Stationery
-CR,Cars
-BK,Bikes
+WTCH,Wacthes
+STA,Stationery
+DRK,Drinks
