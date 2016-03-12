@@ -1,6 +1,6 @@
 package sg.edu.nus.iss.ssa.model;
 
-public abstract class Discount {
+public abstract class GeneralDiscount {
 	
 	 private String discountCode; 
 	 private String description;

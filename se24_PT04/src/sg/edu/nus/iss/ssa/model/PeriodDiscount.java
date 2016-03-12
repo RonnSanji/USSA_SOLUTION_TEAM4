@@ -2,7 +2,7 @@ package sg.edu.nus.iss.ssa.model;
 
 import java.util.*;
 
-public class PeriodDiscount extends Discount {
+public class PeriodDiscount extends GeneralDiscount {
 	private Calendar startDate;
 	private int duration;
 
@@ -21,6 +21,5 @@ public class PeriodDiscount extends Discount {
 		startDate.add(Calendar.DATE, duration - 1);
 		return startDate;
 	}
-	
 
 }
