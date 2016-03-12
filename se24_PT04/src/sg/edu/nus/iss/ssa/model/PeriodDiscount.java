@@ -22,5 +22,5 @@ public class PeriodDiscount extends Discount {
 		return startDate;
 	}
 	
-	public Calculate
+
 }
