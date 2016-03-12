@@ -9,7 +9,7 @@ public class Member extends User{
 	
 	protected String fileName = "members.dat";
 	protected String className = "sg.edu.nus.iss.ssa.model.Member";
-	protected String[] properties = {"memberId","memberName","loyaltyPoints"};
+	protected String[] properties = {"memberName","memberId","loyaltyPoints"};
 	protected String mapKey = "memberId";
 
 
@@ -24,7 +24,7 @@ public class Member extends User{
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("category ID: " ).append(memberId).append(" category Name : ").append(memberName);
+		sb.append("category ID: " ).append(memberName).append(" category Name : ").append(memberId);
 		return sb.toString();
 	}
 
