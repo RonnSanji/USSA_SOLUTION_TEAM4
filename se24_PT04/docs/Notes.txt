@@ -1,0 +1,2 @@
+1. Assume Category ID is case sensitive
+2. Assume data files are in classes folder

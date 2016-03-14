@@ -6,6 +6,7 @@ import java.util.Map;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.gui.AddCategory;
 import sg.edu.nus.iss.ssa.gui.ProductSelectionWindow;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Order;
@@ -55,6 +56,10 @@ public class SouvenirStoreApp {
 					.println("Error occurred while executing program, please resolve the error and continue again");
 			e.printStackTrace();
 		}
+
+		// Launch Add Category window, for testing
+		AddCategory addCategoryWindow = new AddCategory();
+		addCategoryWindow.setVisible(true);
 
 	}
 

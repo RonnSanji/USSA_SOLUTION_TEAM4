@@ -1,16 +1,25 @@
 package sg.edu.nus.iss.ssa.util;
 
+import java.awt.List;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.exception.FileUnableToWriteException;
 import sg.edu.nus.iss.ssa.model.Entity;
 
 /**
@@ -145,6 +154,87 @@ public class IOService<E> {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void writeToFile(Map entityMap, Entity entityToCreate)
+			throws FileNotFoundException, FileUnableToWriteException, IOException {
+		String fileName = entityToCreate.getFileName();
+		String[] fields = entityToCreate.getProperties();
+		String className = entityToCreate.getClassName();
+		String mapKey = entityToCreate.getMapKey();
+
+		ArrayList<Object> entities = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		for (Object o : entityMap.values()) {
+
+			try {
+				Class<?> clazz = o.getClass();
+				for (String field : fields) {
+					Field f = clazz.getDeclaredField(field);
+					f.setAccessible(true);
+					Object value = f.get(o);
+
+					sb.append(value.toString()).append(StoreConstants.FIELD_DELIMITER);
+
+				}
+				sb.deleteCharAt(sb.length() - 1);
+				sb.append(System.lineSeparator());
+
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		System.out.println(sb);
+
+		// question: write to classes folder or data folder ?
+		PrintWriter pw = new PrintWriter("classes/"+fileName);
+		
+		if (pw == null) {
+			throw new FileNotFoundException(fileName
+					+ " file not found in classpath. Please make sure file is present under \"data\" folder and same is added in classpath. ");
+		}
+		pw.print(sb.toString());
+		pw.close();
+		
+		//FileWriter fw = new FileWriter(file, false);
+
+		//fw.write(sb.toString());
+		//fw.flush();
+		
+/*
+		
+		file.setWritable(true);
+		if (!file.canWrite()) {
+			// throw new FileUnableToWriteException("Unable to write to File: "
+			// + fileName);
+		}
+		FileOutputStream fos = null;
+
+		try {
+			fos = new FileOutputStream(fileName);
+			fos.write(sb.toString().getBytes());
+			fos.flush();
+		} catch (IOException ex) {
+			throw new FileUnableToWriteException("Unable to write to File: " + fileName);
+		} finally {
+			fos.close();
+		}
+		*/
+		// Field field = clazz.getDeclaredField("categoryId");
+
+		// field.setAccessible(true);
+
+		// String value = field.get(entityMap.get("COM")).toString();
+		// System.out.println(value);
+
 	}
 
 }
