@@ -1,40 +1,34 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.html.Option;
-
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.*;
 import sg.edu.nus.iss.ssa.util.IOService;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+
 import javax.swing.text.*;
 import javax.swing.JScrollPane;
 import java.util.*;
-import java.util.Locale.Category;
 
-public class AddCategory extends JFrame
-{
+public class AddCategory extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1420940689801074313L;
 	private JPanel contentPane;
 	private JTextField txtCatogeryID;
 	private JTextArea txtaCategoryName;
@@ -53,8 +47,7 @@ public class AddCategory extends JFrame
 	/**
 	 * Create the frame.
 	 */
-	public AddCategory()
-	{
+	public AddCategory() {
 		setTitle("Add Category Page");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 545, 453);
@@ -72,27 +65,43 @@ public class AddCategory extends JFrame
 		contentPane.add(lblCategoryName);
 
 		JButton btnAdd = new JButton("Add");
-		btnAdd.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent arg0)
-			{
-				if (validateForm())
-				{
-					if (validateData())
-					{
-						addCategory();
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int dialogResult = -1;
+				if (validateForm()) {
+					if (validateData()) {
+						if (addCategory()) {
+							dialogResult = JOptionPane.showConfirmDialog(contentPane,
+									"Category has been added successfully. Would like to add another one ?", "Message",
+									JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+							if (dialogResult == 0) {
+								clearFields();
+							} else if (dialogResult == 1) {
+								dispose();
+							}
+						}
+
+						reloadData();
+					} else {
+						dialogResult = JOptionPane.showConfirmDialog(contentPane,
+								"Category ID: " + categoryID + " already exists. Would you like to add another one ?",
+								"Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+						if (dialogResult == 0) {
+							clearFields();
+						} else if (dialogResult == 1) {
+							dispose();
+						}
 					}
 				}
+
 			}
 		});
 		btnAdd.setBounds(114, 319, 89, 23);
 		contentPane.add(btnAdd);
 
 		JButton btnClose = new JButton("Close");
-		btnClose.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
@@ -100,11 +109,9 @@ public class AddCategory extends JFrame
 		contentPane.add(btnClose);
 
 		txtCatogeryID = new JTextField();
-		txtCatogeryID.setDocument(new PlainDocument()
-		{
+		txtCatogeryID.setDocument(new PlainDocument() {
 			@Override
-			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
-			{
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 				if (getLength() + str.length() <= StoreConstants.CATEGORY_ID_MAX_LENGTH)
 					super.insertString(offs, str, a);
 			}
@@ -124,19 +131,24 @@ public class AddCategory extends JFrame
 
 	}
 
-	private Boolean validateForm()
-	{
+	private Boolean validateForm() {
 		categoryID = txtCatogeryID.getText();
 		categoryName = txtaCategoryName.getText();
 
-		if (categoryID == null || categoryID.isEmpty())
-		{
+		if (categoryID == null || categoryID.isEmpty()) {
 			JOptionPane.showMessageDialog(contentPane, "Please enter category ID", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-
-		if (categoryName == null || categoryName.isEmpty())
-		{
+		categoryID = categoryID.trim();
+		txtCatogeryID.setText(categoryID);
+		if (categoryID.length() != 3) {
+			JOptionPane.showMessageDialog(contentPane, "Category ID must be 3 characters", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		categoryName = categoryName.trim();
+		txtaCategoryName.setText(categoryName);
+		if (categoryName == null || categoryName.isEmpty()) {
 			JOptionPane.showMessageDialog(contentPane, "Please enter category name", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -145,52 +157,70 @@ public class AddCategory extends JFrame
 		return true;
 	}
 
-	private Boolean validateData()
-	{
-		Set<String> tempKeySet = FileDataWrapper.categoryMap.keySet();
-		if (tempKeySet != null && tempKeySet.size() > 0)
-		{
-			for (String key : tempKeySet)
-			{
-				key = key.toUpperCase();
+	private Boolean validateData() {
+		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
+		ArrayList<String> tempKeyList = new ArrayList<>();
+
+		if (keySet != null && keySet.size() > 0) {
+			for (String key : keySet) {
+				tempKeyList.add(key.toUpperCase());
 			}
-			if (tempKeySet.contains(categoryID.toUpperCase()))
-			{
-				JOptionPane.showMessageDialog(contentPane, "Category ID: " + categoryID + " already exists", "Error",
-						JOptionPane.ERROR_MESSAGE);
+			if (tempKeyList.contains(categoryID.toUpperCase())) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private void addCategory()
-	{
-		// TODO: update filedatawrapper and call IOService to update cada file
+	private Boolean addCategory() {
 		sg.edu.nus.iss.ssa.model.Category category = new sg.edu.nus.iss.ssa.model.Category();
 		category.setCategoryId(categoryID);
 		category.setCategoryName(categoryName);
-		try
-		{
+		try {
 			((HashMap) FileDataWrapper.categoryMap).put(categoryID, category);
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(contentPane, "Error occured during creating new category", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			return;
+			return false;
 		}
-		try
-		{
-			IOService<?> ioManager = new IOService<Entity>();
+		IOService<?> ioManager = new IOService<Entity>();
+		try {
 			ioManager.writeToFile(FileDataWrapper.categoryMap, new sg.edu.nus.iss.ssa.model.Category());
-		}
-		catch (Exception ex)
+			ioManager = null;
+		} catch (Exception ex)
 
 		{
 			JOptionPane.showMessageDialog(contentPane, "Error occured during saving new category", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			return;
+
+			ioManager = null;
+			return false;
+		}
+		return true;
+
+	}
+
+	private void reloadData() {
+		IOService<?> ioManager = new IOService<Entity>();
+		FileDataWrapper.categoryMap.clear();
+		try {
+			ioManager.readFromFile(FileDataWrapper.categoryMap, new sg.edu.nus.iss.ssa.model.Category());
+			ioManager = null;
+			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			ioManager = null;
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion e) {
+			// TODO Auto-generated catch block
+			ioManager = null;
+			e.printStackTrace();
 		}
 	}
+
+	private void clearFields() {
+		txtCatogeryID.setText("");
+		txtaCategoryName.setText("");
+	}
+
 }

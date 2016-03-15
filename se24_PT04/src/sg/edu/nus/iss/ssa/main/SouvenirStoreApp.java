@@ -8,6 +8,7 @@ import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.gui.AddCategory;
 import sg.edu.nus.iss.ssa.gui.ProductSelectionWindow;
+import sg.edu.nus.iss.ssa.gui.ReplenishStock;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.model.Entity;
@@ -60,6 +61,10 @@ public class SouvenirStoreApp {
 		// Launch Add Category window, for testing
 		AddCategory addCategoryWindow = new AddCategory();
 		addCategoryWindow.setVisible(true);
+		
+		// Launch Replenish Stock window, for testing
+		ReplenishStock replenishStockWindow = new ReplenishStock();
+		replenishStockWindow.setVisible(true);
 
 	}
 
