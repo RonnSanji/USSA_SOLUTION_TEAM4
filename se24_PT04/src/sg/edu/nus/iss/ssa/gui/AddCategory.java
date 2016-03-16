@@ -124,9 +124,8 @@ public class AddCategory extends JFrame {
 		txtaCategoryName.setBounds(274, 158, 177, 109);
 		contentPane.add(txtaCategoryName);
 
-		JScrollPane scrollPane = new JScrollPane();
+		JScrollPane scrollPane = new JScrollPane(txtaCategoryName);
 		scrollPane.setBounds(274, 158, 177, 109);
-		scrollPane.setViewportView(txtaCategoryName);
 		contentPane.add(scrollPane);
 
 	}
