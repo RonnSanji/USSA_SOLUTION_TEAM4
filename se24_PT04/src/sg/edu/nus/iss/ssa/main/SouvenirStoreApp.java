@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import sg.edu.nus.iss.ssa.bo.AuthenticationManager;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.gui.AddCategory;
@@ -17,6 +18,7 @@ import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.model.StoreKeeper;
 import sg.edu.nus.iss.ssa.model.Transaction;
 import sg.edu.nus.iss.ssa.util.IOService;
+import sg.edu.nus.iss.ssa.gui.LoginWindow;
 
 /**
  * Main Class to launch SouvenirStore Application.
@@ -48,7 +50,6 @@ public class SouvenirStoreApp {
 			System.out.println("transactions : " + FileDataWrapper.transactionMap.keySet());
 			System.out.println("SoreKeeper : " + FileDataWrapper.storeKeeperMap.keySet());
 			
-			
 			//Launch Purchase Window 
 			ProductSelectionWindow productWindow = new ProductSelectionWindow();
 			productWindow.setVisible(true);
@@ -65,7 +66,11 @@ public class SouvenirStoreApp {
 		// Launch Replenish Stock window, for testing
 		ReplenishStock replenishStockWindow = new ReplenishStock();
 		replenishStockWindow.setVisible(true);
-
+		
+		// Launch Login window, for testing
+		LoginWindow loginWindow = new LoginWindow();
+		loginWindow.setVisible(true);
+		
 	}
 
 }
