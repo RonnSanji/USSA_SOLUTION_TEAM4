@@ -19,12 +19,19 @@ public class Member extends User{
 	
 	private long loyaltyPoints;
 	
+	public Member(){}
 	
+	public Member(String memberName, String memberNumber, long loyaltyPoints){
+		super();
+		this.memberName=memberName;
+		this.memberId = memberNumber;
+		this.loyaltyPoints = loyaltyPoints;
+	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("category ID: " ).append(memberName).append(" category Name : ").append(memberId);
+		sb.append("member name: " ).append(memberName).append(" member number  : ").append(memberId).append(" loyaltyPoints : ").append(loyaltyPoints);
 		return sb.toString();
 	}
 
@@ -83,6 +90,20 @@ public class Member extends User{
 		this.loyaltyPoints = loyaltyPoints;
 	}
 	
+	/**
+	 * returns one dimensioanl array to display in table
+	 * @return
+	 */
+    public String[] getMemeberArray() {
+    	String[] memberDetail = new String[3];
+    	memberDetail[0] = memberName;
+    	memberDetail[1] = memberId;
+    	memberDetail[2] = String.valueOf(loyaltyPoints);	
+    	return memberDetail;
+    	
+    }
+   
+
 	
 	
 	
