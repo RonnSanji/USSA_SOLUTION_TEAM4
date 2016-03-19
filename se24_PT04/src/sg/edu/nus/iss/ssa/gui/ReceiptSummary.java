@@ -16,8 +16,10 @@ import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.ssa.bo.DiscountOfferCalculator;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
+import sg.edu.nus.iss.ssa.bo.TotalReceiptCalculator;
 import sg.edu.nus.iss.ssa.model.LineItem;
 import sg.edu.nus.iss.ssa.model.Order;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
 public class ReceiptSummary extends JFrame {
 
@@ -37,6 +39,7 @@ public class ReceiptSummary extends JFrame {
 	private JSeparator separator;
 
 	Order order=  null;
+	TotalReceiptCalculator reciptCalculator;
 
 
 	/**
@@ -44,11 +47,8 @@ public class ReceiptSummary extends JFrame {
 	 */
 	public ReceiptSummary() {
 		order = FileDataWrapper.receipt;
-		
-		//Update Customer Receipt
-		/*FileDataWrapper.receipt.setReturnAmount(FileDataWrapper.receipt.getAmountTendered() - 
-							DiscountOfferCalculator.getDollarEqOfPointsAndCash(renderedCash, redeemedPoints) );
-		*/
+		reciptCalculator = new TotalReceiptCalculator(order);
+		reciptCalculator.processPayment();
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Receipt Summary");
@@ -90,7 +90,7 @@ public class ReceiptSummary extends JFrame {
 		totalPrice.setColumns(10);
 		totalPrice.setText(String.valueOf(FileDataWrapper.receipt.getTotalPrice()));
 		
-		JLabel lblApplicablePoints = new JLabel("AplicableDiscount");
+		JLabel lblApplicablePoints = new JLabel("Applicable Discount");
 		lblApplicablePoints.setBounds(74, 289, 166, 20);
 		contentPane.add(lblApplicablePoints);
 		
@@ -98,7 +98,7 @@ public class ReceiptSummary extends JFrame {
 		applicableDiscount.setEditable(false);
 		applicableDiscount.setColumns(10);
 		applicableDiscount.setBounds(322, 286, 179, 26);
-		applicableDiscount.setText(DiscountOfferCalculator.getDiscountText());
+		applicableDiscount.setText(DisplayUtil.getDiscountText(order));
 		contentPane.add(applicableDiscount);
 		
 		JLabel lblFinalPrice = new JLabel("Final Price:");
@@ -109,7 +109,7 @@ public class ReceiptSummary extends JFrame {
 		finalPrice.setEditable(false);
 		finalPrice.setColumns(10);
 		finalPrice.setBounds(322, 328, 179, 26);
-		finalPrice.setText(String.valueOf(FileDataWrapper.receipt.getFinalPrice()));
+		finalPrice.setText(String.valueOf(order.getFinalPrice()));
 		contentPane.add(finalPrice);
 		
 		JLabel lblRedeemPoints = new JLabel("Points Redeemed");
@@ -120,7 +120,7 @@ public class ReceiptSummary extends JFrame {
 		pointsRedeemed.setEditable(false);
 		pointsRedeemed.setColumns(10);
 		pointsRedeemed.setBounds(322, 370, 179, 26);
-		//pointsRedeemed.setText(DiscountOfferCalculator.getDollarEqOfPointsText());
+		pointsRedeemed.setText(reciptCalculator.getCashEquivalentPointstext(order));
 		contentPane.add(pointsRedeemed);
 		
 		JLabel lblCashRendered = new JLabel("Cash Rendered:");
@@ -131,7 +131,7 @@ public class ReceiptSummary extends JFrame {
 		cashRendered.setEditable(false);
 		cashRendered.setColumns(10);
 		cashRendered.setBounds(322, 418, 179, 26);
-		cashRendered.setText(String.valueOf(FileDataWrapper.receipt.getAmountTendered()));
+		cashRendered.setText(String.valueOf(order.getAmountTendered()));
 		contentPane.add(cashRendered);
 		
 		lblTotalPrice = new JLabel("Total Price:");
@@ -146,7 +146,7 @@ public class ReceiptSummary extends JFrame {
 		returnedAmount.setEditable(false);
 		returnedAmount.setColumns(10);
 		returnedAmount.setBounds(322, 460, 179, 26);
-		cashRendered.setText(String.valueOf(FileDataWrapper.receipt.getReturnAmount()));
+		returnedAmount.setText(String.valueOf(order.getReturnAmount()));
 		contentPane.add(returnedAmount);
 		
 		lblRemainingPoints = new JLabel("Remaining Loyalty Points:");
@@ -157,7 +157,7 @@ public class ReceiptSummary extends JFrame {
 		remainingPoints.setEditable(false);
 		remainingPoints.setColumns(10);
 		remainingPoints.setBounds(322, 496, 179, 26);
-		cashRendered.setText(String.valueOf(FileDataWrapper.receipt.getAvlLoyaltyPoints()));
+		remainingPoints.setText(String.valueOf(order.getMemberInfo() != null ? order.getMemberInfo().getLoyaltyPoints() : 0));
 		contentPane.add(remainingPoints);
 		
 		btnOk = new JButton("OK");

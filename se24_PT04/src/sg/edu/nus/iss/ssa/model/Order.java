@@ -16,18 +16,18 @@ public class Order {
 	private User user;
 	
 	private Long pointsRedeemed = new Long(0);
+
+	private Long pointsEarned = new Long(0);
+
+	private Float applicableDiscountPerc = new Float(1);
 	
-	private long avlLoyaltyPoints;
+	private Double applicableDiscountAmount = new Double(0);
 	
-	private long applicableDiscountPerc = 10l;
+	private Double finalPrice = new Double(0);
 	
-	private double applicableDiscountAmount;
+	private Double amountTendered = new Double(0);
 	
-	private double finalPrice;
-	
-	private double amountTendered;
-	
-	private double returnAmount;
+	private Double returnAmount = new Double(0);
 	
 	public Order() {
 
@@ -52,7 +52,7 @@ public class Order {
 
 
 	public Order(List<LineItem> items, double finalPrice,
-			User user, long applicableDiscountPerc,
+			User user, float applicableDiscountPerc,
 			double applicableDiscountAmount, double amountTendered,
 			double returnAmount) {
 		super();
@@ -65,26 +65,6 @@ public class Order {
 		this.returnAmount = returnAmount;
 	}
 
-	public double getFinalPrice() {
-		return this.totalPrice - this.getApplicableDiscountAmount();
-	}
-	
-	public double getApplicableDiscountAmount() {
-		if(this.getApplicableDiscountPerc()!= 0){
-			return (this.totalPrice*this.getApplicableDiscountPerc()/100);
-		}
-		return 0d;
-	}
-	
-	public long getAvlLoyaltyPoints() {
-	//	return (this.getAvlLoyaltyPoints() - this.getPointsRedeemed());
-		return 0l;
-	}
-	
-	public double getReturnAmount() {
-		return (this.getAmountTendered() - this.getFinalPrice() ) ;
-	}
-	
 	public List<LineItem> getItems() {
 		return items;
 	}
@@ -93,19 +73,12 @@ public class Order {
 		this.items = items;
 	}
 
-	
-	public double getTotalPrice() {
+	public Double getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(double totalPrice) {
+	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
-	}
-
-	
-
-	public void setFinalPrice(double finalPrice) {
-		this.finalPrice = finalPrice;
 	}
 
 	public User getUser() {
@@ -116,46 +89,60 @@ public class Order {
 		this.user = user;
 	}
 
-	public long getPointsRedeemed() {
+	public Long getPointsRedeemed() {
 		return pointsRedeemed;
 	}
 
-	public void setPointsRedeemed(long pointsRedeemed) {
+	public void setPointsRedeemed(Long pointsRedeemed) {
 		this.pointsRedeemed = pointsRedeemed;
 	}
 
-	public long getApplicableDiscountPerc() {
+	public Long getPointsEarned() {
+		return pointsEarned;
+	}
+
+	public void setPointsEarned(Long pointsEarned) {
+		this.pointsEarned = pointsEarned;
+	}
+
+
+	public Float getApplicableDiscountPerc() {
 		return applicableDiscountPerc;
 	}
 
-	public void setApplicableDiscountPerc(long applicableDiscountPerc) {
+	public void setApplicableDiscountPerc(Float applicableDiscountPerc) {
 		this.applicableDiscountPerc = applicableDiscountPerc;
 	}
 
-	
+	public Double getApplicableDiscountAmount() {
+		return applicableDiscountAmount;
+	}
 
-	public void setApplicableDiscountAmount(double applicableDiscountAmount) {
+	public void setApplicableDiscountAmount(Double applicableDiscountAmount) {
 		this.applicableDiscountAmount = applicableDiscountAmount;
 	}
 
-	public double getAmountTendered() {
+	public Double getFinalPrice() {
+		return finalPrice;
+	}
+
+	public void setFinalPrice(Double finalPrice) {
+		this.finalPrice = finalPrice;
+	}
+
+	public Double getAmountTendered() {
 		return amountTendered;
 	}
 
-	public void setAmountTendered(double amountTendered) {
+	public void setAmountTendered(Double amountTendered) {
 		this.amountTendered = amountTendered;
 	}
 
-	
+	public Double getReturnAmount() {
+		return returnAmount;
+	}
 
-	public void setReturnAmount(double returnAmount) {
+	public void setReturnAmount(Double returnAmount) {
 		this.returnAmount = returnAmount;
 	}
-
-
-	public void setAvlLoyaltyPoints(long avlLoyaltyPoints) {
-		this.avlLoyaltyPoints = avlLoyaltyPoints;
-	}
-	
-
 }

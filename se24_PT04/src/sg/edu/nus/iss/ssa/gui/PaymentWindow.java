@@ -101,7 +101,7 @@ public class PaymentWindow extends JFrame {
 		discountAvailed.setEditable(false);
 		discountAvailed.setColumns(10);
 		discountAvailed.setBounds(230, 172, 166, 26);
-		discountAvailed.setText(DiscountOfferCalculator.getDiscountText());
+		discountAvailed.setText(DisplayUtil.getDiscountText(order));
 		contentPane.add(discountAvailed);
 		
 
@@ -158,15 +158,12 @@ public class PaymentWindow extends JFrame {
 						if (message != null) {
 							DisplayUtil.displayValidationError(contentPane, message);
 						} else {
-							order.setAmountTendered(renderedCash);
-							order.setPointsRedeemed(redeemedPoints);
 							message = orderValidator.checkAmountToProcessPayment(redeemedPoints, renderedCash, order);
 							if (message != null) {
 								DisplayUtil.displayValidationError(contentPane, message);
 							} else {
-								/*FileDataWrapper.receipt.setAvlLoyaltyPoints((FileDataWrapper.receipt.getAvlLoyaltyPoints() - redeemedPoints));
-								FileDataWrapper.receipt.setReturnAmount(FileDataWrapper.receipt.getAmountTendered() -
-										DiscountOfferCalculator.getDollarEqOfPointsAndCash(renderedCash, redeemedPoints));*/
+								order.setAmountTendered(renderedCash);
+								order.setPointsRedeemed(redeemedPoints);
 								ReceiptSummary newWindow = new ReceiptSummary();
 								newWindow.setVisible(true);
 								dispose();
@@ -187,6 +184,7 @@ public class PaymentWindow extends JFrame {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 		btnCancel.setBounds(289, 399, 115, 29);

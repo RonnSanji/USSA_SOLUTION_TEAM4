@@ -10,37 +10,46 @@ import sg.edu.nus.iss.ssa.model.Order;
  */
 public class DiscountOfferCalculator {
 
-	Order order = FileDataWrapper.receipt;
-
+	/**
+	 * Calculates cash equivalent for points, adds it to rendered cash and returns the total.
+	 * @param renderedCash
+	 * @param redeemedPoints
+	 * @return
+	 */
 	public double getTotalCashIncludingPoints(double renderedCash, long redeemedPoints) {
 		double dollarEqPoints = getCashValueForPoints(redeemedPoints);
 		return (renderedCash + dollarEqPoints);
 	}
-	
+
+	/**
+	 * Calculates cash equivalent for given points.
+	 * @param redeemedPoints
+	 * @return
+	 */
 	public double getCashValueForPoints(long redeemedPoints) {
 		double cashEqPoints = redeemedPoints/StoreConstants.CASH_EQ_POINTS;
 		return  cashEqPoints;
 	}
-	
-	public  String getDollarEqOfPointsText() {
-		StringBuilder sb = new StringBuilder();
-		long pointsRedeemed = FileDataWrapper.receipt.getPointsRedeemed();
-		sb.append(pointsRedeemed).append(" (" ).append(getCashValueForPoints(pointsRedeemed)).append(")");
-		return sb.toString();
+
+	/**
+	 * Calculates points equivalent for Cash.
+	 * @return
+	 */
+	public Long calculatePointsEqCash(Order order) {
+		long cashEqPoints = (long) (order.getFinalPrice()/StoreConstants.CASH_EQ_POINTS);
+		return  cashEqPoints;
 	}
 
+	public void applyDiscount(Order order){
+		//logic for applicable discount
+		float discountPerc =  10f;
 
-	public static String getDiscountText() {
-		StringBuilder sb = new StringBuilder();
-		long discountPer = FileDataWrapper.receipt.getApplicableDiscountPerc();
-		double discountAmnt = FileDataWrapper.receipt.getApplicableDiscountAmount();
-		sb.append(discountAmnt).append(" (" ).append(discountPer).append(" %)");
-		return sb.toString();
+		Double totalPrice = order.getTotalPrice();
+		double discountAmount = totalPrice*discountPerc/100;
+		double finalPrice = totalPrice - discountAmount;
+		order.setApplicableDiscountPerc(discountPerc);
+		order.setApplicableDiscountAmount(discountAmount);
+		order.setFinalPrice(finalPrice);
 	}
-
-	public static void applyDiscount(Order order){
-
-	}
-
 
 }
