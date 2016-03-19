@@ -73,5 +73,10 @@ public class Category extends Entity{
 		this.categoryName = categoryName;
 	}
 	
-	
+    public String[] getCategoryArray() {
+    	String[] category = new String[2];
+    	category[0] = categoryId;
+    	category[1] = categoryName;
+    	return category;
+    }
 }

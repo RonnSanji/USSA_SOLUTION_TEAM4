@@ -103,10 +103,5 @@ public class Member extends User{
     	memberDetail[2] = String.valueOf(loyaltyPoints);	
     	return memberDetail;
     	
-    }
-   
-
-	
-	
-	
+    }	
 }

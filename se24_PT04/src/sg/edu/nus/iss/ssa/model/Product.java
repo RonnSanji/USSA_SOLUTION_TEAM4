@@ -153,5 +153,18 @@ public class Product extends Entity{
 		this.mapKey = mapKey;
 	}
 	
+	public String[] getProductArray() {
+		String[] product = new String[8];
+		product[0] = productId;
+		product[1] = productName;
+		product[2] = productDesc;
+		product[3] = String.valueOf(quantity);
+		product[4] = String.valueOf(price);
+		product[5] = String.valueOf(barCode);
+		product[6] = String.valueOf(barCode);
+		product[7] = String.valueOf(orderQuantity);
+		return product;
+	}
+	
 	
 }
