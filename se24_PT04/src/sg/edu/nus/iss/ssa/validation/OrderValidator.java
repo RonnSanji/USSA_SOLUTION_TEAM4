@@ -23,7 +23,7 @@ public class OrderValidator {
     public String validateSelectedProduct(final String productBarCode, final  Map<String,Product> productMap){
         String errorMessage = null;
         if(productBarCode != null){
-            Object selectedItem = productMap.get(productBarCode);
+            Product selectedItem = productMap.get(productBarCode);
             if(selectedItem == null) {
                 return StoreConstants.INVALID_PRODUCT;
             }

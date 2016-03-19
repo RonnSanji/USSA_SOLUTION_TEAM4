@@ -63,7 +63,7 @@ public class PaymentWindow extends JFrame {
 		memberNumberField.setBounds(230, 13, 267, 26);
 		contentPane.add(memberNumberField);
 		memberNumberField.setColumns(10);
-		memberNumberField.setText(FileDataWrapper.receipt.getMemberId());
+	//	memberNumberField.setText(FileDataWrapper.receipt.getUser().);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(28, 96, 509, 2);

@@ -120,7 +120,7 @@ public class PurchaseProduct extends JDialog {
 								if(validationMsg != null){
 									DisplayUtil.displayValidationError(buttonPane,validationMsg);
 								}else {
-									Product product = (Product)productMap.get(barCode);
+									Product product = productMap.get(barCode);
 									validationMsg = orderValidator.validateProductOrder(product,productQuantity);
 									if(validationMsg != null){
 										DisplayUtil.displayValidationError(buttonPane,validationMsg);

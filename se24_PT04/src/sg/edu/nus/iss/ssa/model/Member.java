@@ -19,7 +19,9 @@ public class Member extends User{
 	
 	private long loyaltyPoints;
 	
-	public Member(){}
+	public Member(){
+		this.isMember = true;
+	}
 	
 	public Member(String memberName, String memberNumber, long loyaltyPoints){
 		super();

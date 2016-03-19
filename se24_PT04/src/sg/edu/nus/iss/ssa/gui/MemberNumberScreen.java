@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,21 +16,24 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.model.Member;
+import sg.edu.nus.iss.ssa.model.Order;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
 public class MemberNumberScreen extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField memberNumberField;
-
-
+	Map<String,Member> memberMap = null;
+	Order order = null;
 	/**
 	 * Create the dialog.
-	 * @param receipt 
-	 * @param memberMap 
 	 */
 	public MemberNumberScreen(ProductSelectionWindow productWin ) {
-		setTitle("Enter Member Number");
+		memberMap = FileDataWrapper.memberMap;
+		order = FileDataWrapper.receipt;
+		setTitle("Enter Member Number:");
 		setResizable(false);
 		setSize(400,200);
 		setLocationRelativeTo(null);
@@ -53,18 +58,16 @@ public class MemberNumberScreen extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String memberNUmberStr = memberNumberField.getText();
-						if(memberNUmberStr.equals("") ){
-							JOptionPane.showMessageDialog(buttonPane, "Please enter Member Number", "Error", JOptionPane.ERROR_MESSAGE);
-						}else if( !memberNUmberStr.equals("")){
+						String memberNumberStr = memberNumberField.getText();
+						if(memberNumberStr.equals("") ){
+							DisplayUtil.displayValidationError(buttonPane, StoreConstants.BLANK_MEMBER_NUMBER);
+						}else {
 							//logic to save and update parent window
-							Object selectedItem = FileDataWrapper.memberMap.get(memberNUmberStr);
+							Member selectedItem = FileDataWrapper.memberMap.get(memberNumberStr);
 							if(selectedItem == null){
-								JOptionPane.showMessageDialog(buttonPane, "Member Number not valid.", "Error", JOptionPane.ERROR_MESSAGE);
+								DisplayUtil.displayValidationError(buttonPane, StoreConstants.INVALID_MEMBER_NUMBER);
 							}else {
-								Member member = (Member)selectedItem;
-								FileDataWrapper.receipt.setMemberId(member.getMemberId());
-								FileDataWrapper.receipt.setAvlLoyaltyPoints(member.getLoyaltyPoints());
+								order.setUser(selectedItem);
 								productWin.dispose();
 								ProductSelectionWindow newWindow = new ProductSelectionWindow();
 								newWindow.setVisible(true);

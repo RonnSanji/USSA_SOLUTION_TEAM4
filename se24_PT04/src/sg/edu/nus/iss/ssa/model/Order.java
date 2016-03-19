@@ -1,8 +1,5 @@
 package sg.edu.nus.iss.ssa.model;
 
-import sg.edu.nus.iss.ssa.gui.LoginWindow;
-
-import javax.sound.sampled.Line;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +13,7 @@ public class Order {
 	
 	private Double totalPrice = new Double(0);
 	
-	private String memberId;
+	private User user;
 	
 	private Long poinitsRedeemed = new Long(0);
 	
@@ -46,15 +43,22 @@ public class Order {
 		this.totalPrice -= item.getTotalProductPrice();
 	}
 
+	public Member getMemberInfo(){
+		if(user != null && user.isMember()){
+			return (Member)user;
+		}
+		return  null;
+	}
+
 
 	public Order(List<LineItem> items, double finalPrice,
-			String memberNumber, long applicableDiscountPerc,
+			User user, long applicableDiscountPerc,
 			double applicableDiscountAmount, double amountTendered,
 			double returnAmount) {
 		super();
 		this.items = items;
 		this.finalPrice = finalPrice;
-		this.memberId = memberNumber;
+		this.user = user;
 		this.applicableDiscountPerc = applicableDiscountPerc;
 		this.applicableDiscountAmount = applicableDiscountAmount;
 		this.amountTendered = amountTendered;
@@ -104,15 +108,13 @@ public class Order {
 		this.finalPrice = finalPrice;
 	}
 
-	public String getMemberId() {
-		return memberId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setMemberId(String memberNumber) {
-		this.memberId = memberNumber;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	
-	
 
 	public long getPoinitsRedeemed() {
 		return poinitsRedeemed;

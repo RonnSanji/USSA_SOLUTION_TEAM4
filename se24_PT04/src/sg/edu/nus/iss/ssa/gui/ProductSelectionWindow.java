@@ -33,11 +33,13 @@ public class ProductSelectionWindow extends JFrame {
 	private JTextField toalPrice;
 	private JTextField memberNumber;
 	private JTextField textField;
+	private Order order;
 
 	/**
 	 * Create the frame.
 	 */
 	public ProductSelectionWindow() {
+		order = FileDataWrapper.receipt;
 		ProductSelectionWindow productWin = this;
 		setResizable(false);
 		setTitle("Select Product Page");
@@ -77,7 +79,7 @@ public class ProductSelectionWindow extends JFrame {
 		String[] columns = new String[] { "Product Name", "Price", "Quantity",
 				"Total Price" };
 
-		List<LineItem> boughtProducts = FileDataWrapper.receipt.getItems();
+		List<LineItem> boughtProducts = order.getItems();
 		// actual data for the table in a 2d array
 		Object[][] data = new Object[boughtProducts.size()][];
 		for (int i = 0; i < boughtProducts.size(); i++) {
@@ -125,7 +127,18 @@ public class ProductSelectionWindow extends JFrame {
 		memberNumber.setBounds(293, 30, 204, 26);
 		panel.add(memberNumber);
 		memberNumber.setColumns(10);
-		memberNumber.setText(FileDataWrapper.receipt.getMemberId());
+		memberNumber.setText(order.getMemberInfo() != null ? order.getMemberInfo().getMemberId() : "");
+
+		JLabel lblLoyaltyPoints = new JLabel("Loyalty Points:");
+		lblLoyaltyPoints.setBounds(550, 33, 148, 20);
+		panel.add(lblLoyaltyPoints);
+
+		textField = new JTextField();
+		textField.setEditable(false);
+		textField.setColumns(10);
+		textField.setBounds(713, 30, 204, 26);
+		textField.setText(String.valueOf(order.getMemberInfo() != null ? order.getMemberInfo().getLoyaltyPoints() : ""));
+		panel.add(textField);
 		
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBounds(120, 547, 834, 9);
@@ -147,12 +160,12 @@ public class ProductSelectionWindow extends JFrame {
 		btnRemoveProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
-				if(selectedRow != -1){
+				if (selectedRow != -1) {
 					System.out.print(selectedRow);
-				//	table.removeRowSelectionInterval(selectedRow-2, selectedRow);
-					
+					//	table.removeRowSelectionInterval(selectedRow-2, selectedRow);
+
 				}
-				
+
 				// remove same from List based on index
 			}
 		});
@@ -168,25 +181,14 @@ public class ProductSelectionWindow extends JFrame {
 				PaymentWindow payWindow = new PaymentWindow();
 				payWindow.setVisible(true);
 				dispose();
-				
+
 			}
 		});
 		btnCheckout.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCheckout.setFont(new Font("Arial", Font.BOLD, 16));
 		btnCheckout.setBounds(800, 571, 139, 27);
 		panel.add(btnCheckout);
-		
-		JLabel lblLoyaltyPoints = new JLabel("Loyalty Points:");
-		lblLoyaltyPoints.setBounds(550, 33, 148, 20);
-		panel.add(lblLoyaltyPoints);
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(713, 30, 204, 26);
-		textField.setText(String.valueOf(FileDataWrapper.receipt.getAvlLoyaltyPoints()));
-		panel.add(textField);
-		
+
 	}
 
 }

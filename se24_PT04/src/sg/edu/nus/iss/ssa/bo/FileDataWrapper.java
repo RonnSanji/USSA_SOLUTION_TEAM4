@@ -19,7 +19,7 @@ public class FileDataWrapper {
 
 	public static final Map<String, Product> productMap = new HashMap<String, Product>();
 	public static final Map<String, ?> categoryMap = new HashMap<String, Category>();
-	public static final Map<String, ?> memberMap = new HashMap<String, Member>();
+	public static final Map<String, Member> memberMap = new HashMap<String, Member>();
 	public static final Map<String, ?> transactionMap = new HashMap<String, Transaction>();
 	public static final Map<String, ?> storeKeeperMap = new HashMap<String, StoreKeeper>();
 	public static final Order receipt = new Order();
