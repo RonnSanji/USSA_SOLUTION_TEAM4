@@ -21,4 +21,23 @@ public class StoreConstants {
 	public static final String MAX_POINTS_REDEEMED_MSG = "Maximum points can be redeemed is : ";
 
 	public static final String NOT_ENOUGH_CASH = "Not enough amount to process the payment. ";
+
+	// Manage category message
+	public static final String CATEGORY_ADDED_SUCCESSFULLY = "Category has been added successfully. Would like to add another one ?";
+	public static final String CATEGORY_EXISTS = "already exists. Would you like to add another one ?";
+	public static final String BLANK_CATEGORYID = "Please enter category ID";
+	public static final String BLANK_CATEGORYNAME = "Please enter category name";
+	public static final String CATEGORY_3_LETTERS = "Category ID must be 3 letters";
+	public static final String ERROR = "Error occured during";
+	
+	// Manage stock message
+	public static final String SELECT_PRODUCT = "Please select a product";
+	public static final String STOCK_UPDATED_SUCCESSFULLY = "Stock has been updated successfully !";
+	public static final String BLANK_REPLENISH_QUANTITY = "Please enter replenish quantity";
+
+
+
+
+
+
 }

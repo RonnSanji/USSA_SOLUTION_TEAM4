@@ -12,10 +12,18 @@ import java.util.Map;
  */
 public class DisplayUtil {
 
-    public static void displayValidationError(JPanel panel, String message){
-        JOptionPane.showMessageDialog(panel, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
+	public static void displayValidationError(JPanel panel, String message) {
+		JOptionPane.showMessageDialog(panel, message, "Error", JOptionPane.ERROR_MESSAGE);
+	}
 
+	public static int displayConfirmationMessage(JPanel panel, String message) {
+		return JOptionPane.showConfirmDialog(panel, message, "Message", JOptionPane.YES_NO_OPTION,
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public static void displayAcknowledgeMessage(JPanel panel, String message) {
+		JOptionPane.showMessageDialog(panel, message, "Message", JOptionPane.INFORMATION_MESSAGE);
+	}
     /**
      * Returns String representation for points and equivalent cash
      * @return
