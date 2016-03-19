@@ -2,23 +2,15 @@ package sg.edu.nus.iss.ssa.model;
 
 /**
  * @author Amarjeet B Singh
- * @param <T>
  *
  */
 public class LineItem {
 	
+	private Product product;
 
-	private String productId;
-	
-	private String productName;	
-	
 	private long buyQuantity ;
-	
-	private double price;
-	
-	private long barCode;
-	
-	private double totalproductPrice;
+
+	private double totalProductPrice;
 	
 	
 	public LineItem(){
@@ -26,124 +18,73 @@ public class LineItem {
 	}
 	
 		
-	public LineItem(String productId, String productName, long buyQuantity,
-			double price, long barCode) {
+	public LineItem(final Product product, final long buyQuantity ) {
 		super();
-		this.productId = productId;
-		this.productName = productName;
+		this.product = product;
 		this.buyQuantity = buyQuantity;
-		this.price = price;
-		this.barCode = barCode;
-		this.totalproductPrice = price*buyQuantity;
+		this.totalProductPrice = (product.getPrice()*buyQuantity);
 	}
 
 	/**
-	 * returns one dimensioanl array to display in table
+	 * returns one dimensional array to display in table
 	 * @return
 	 */
     public String[] getItemsArray() {
     	String[] items = new String[4];
-    	items[0] = productName;
-    	items[1] = String.valueOf(price);
+    	items[0] = this.product.getProductName();
+    	items[1] = String.valueOf(this.product.getPrice());
     	items[2] = String.valueOf(buyQuantity);
-    	items[3] = String.valueOf(totalproductPrice);
+    	items[3] = String.valueOf(totalProductPrice);
     	return items;
     	
     }
-   
 
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("product ID: " ).append(productId).append(" prduct Name : ").append(productName).
-				append(" product Quantity : ").append(buyQuantity).append(" price : ").append(price).append(" barCode : ").append(barCode).append(" buy Quantity : ").
-				append(buyQuantity).append(" toal Price : " ).append(totalproductPrice);
-		return sb.toString();
+	public Product getProduct() {
+		return product;
 	}
 
-
-
-
-	public String getProductId() {
-		return productId;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
-
-
-
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-
-
-
-
-	public String getProductName() {
-		return productName;
-	}
-
-
-
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-
-
 
 	public long getBuyQuantity() {
 		return buyQuantity;
 	}
 
-
-
-
 	public void setBuyQuantity(long buyQuantity) {
 		this.buyQuantity = buyQuantity;
 	}
 
+	public double getTotalProductPrice() {
+		return totalProductPrice;
+	}
 
+	public void setTotalProductPrice(double totalProductPrice) {
+		this.totalProductPrice = totalProductPrice;
+	}
 
-
-	public double getPrice() {
-		return price;
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null ){
+			return false;
+		}
+		LineItem item = (LineItem)obj;
+		if((this.product.getBarCode() == item.getProduct().getBarCode()) &&(this.product.getProductId().equalsIgnoreCase(item.getProduct().getProductId()))
+				&& (this.buyQuantity == item.getBuyQuantity()) ){
+			return true;
+		}
+		return false;
 	}
 
 
-
-
-	public void setPrice(double price) {
-		this.price = price;
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" Product Name : ").append(this.product.getProductName()).
+				append(" product Quantity : ").append(buyQuantity).append(" price : ").append(this.product.getPrice()).append(" barCode : ").append(this.product.getBarCode()).append(" buy Quantity : ").
+				append(buyQuantity).append(" total Price : " ).append(totalProductPrice);
+		return sb.toString();
 	}
 
-
-
-
-	public long getBarCode() {
-		return barCode;
-	}
-
-
-
-
-	public void setBarCode(long barCode) {
-		this.barCode = barCode;
-	}
-
-
-
-
-	public double getTotalproductPrice() {
-		return totalproductPrice;
-	}
-
-
-
-
-	public void setTotalproductPrice(double totalproductPrice) {
-		this.totalproductPrice = totalproductPrice;
-	}	
-	
 }

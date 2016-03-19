@@ -210,10 +210,8 @@ public class AddCategory extends JFrame {
 			// TODO Auto-generated catch block
 			ioManager = null;
 			e.printStackTrace();
-		} catch (FieldMismatchExcepion e) {
-			// TODO Auto-generated catch block
-			ioManager = null;
-			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
 		}
 	}
 

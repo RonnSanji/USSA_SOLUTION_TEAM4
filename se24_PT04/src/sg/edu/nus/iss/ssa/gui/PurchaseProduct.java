@@ -5,17 +5,13 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -24,28 +20,39 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.model.LineItem;
 import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.validation.OrderValidator;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.geom.QuadCurve2D;
 import java.util.Map;
 
+/**
+ * Create the dialog where user can enter product BarCode and Quantity.
+ *
+ * Created by Amarjeet B Singh on 3/19/2016.
+ */
 public class PurchaseProduct extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField barCodetext;
 	private JTextField productQnty;
 
+	Map<String,Product> productMap = null;
+	Order order = null;
+
+	private OrderValidator orderValidator = new OrderValidator();
+
 	/**
-	 * Create the dialog.
-	 * @param receipt 
-	 * @param memberMap 
-	 * @param productMap 
+	 * Create the dialog where user can enter product BarCode and Quantity.
 	 */
 	public PurchaseProduct(ProductSelectionWindow payWin) {
+		productMap = FileDataWrapper.productMap;
+		order = FileDataWrapper.receipt;
 		setTitle("Purchase Product");
 		setSize(500,350);
 		setLocationRelativeTo(null);
@@ -102,27 +109,32 @@ public class PurchaseProduct extends JDialog {
 						String barCode = barCodetext.getText();
 						String productQuantityStr = productQnty.getText();
 						long productQuantity = 0l;
-						if(barCode.equals("") || productQuantityStr.equals("")){
-							JOptionPane.showMessageDialog(buttonPane, "Please enter BarCode and Quantity to purchase the product", "Error", JOptionPane.ERROR_MESSAGE);
+						String validationMsg = orderValidator.validateProductPurchaseInput(barCode,productQuantityStr);
+						if(validationMsg != null){
+							DisplayUtil.displayValidationError(buttonPane,validationMsg);
 						}else if(!barCode.equals("") && !productQuantityStr.equals("")){
 							try{
 								productQuantity = Long.parseLong(productQuantityStr);
-								//get the selected product 
-								Object selectedItem = FileDataWrapper.productMap.get(barCode);
-								if(selectedItem == null){
-									JOptionPane.showMessageDialog(buttonPane, "Please select a valid product", "Error", JOptionPane.ERROR_MESSAGE);
+								//get the selected product
+								validationMsg = orderValidator.validateSelectedProduct(barCode,productMap);
+								if(validationMsg != null){
+									DisplayUtil.displayValidationError(buttonPane,validationMsg);
 								}else {
-									Product product = (Product)selectedItem;
-									LineItem item = new LineItem(product.getProductId(),product.getProductName(), productQuantity,  product.getPrice(),
-														product.getBarCode());
-									FileDataWrapper.receipt.getItems().add(item);
-									FileDataWrapper.receipt.setTotalPrice(FileDataWrapper.receipt.getTotalPrice()+item.getTotalproductPrice());
-									payWin.dispose();
-									ProductSelectionWindow newWindow = new ProductSelectionWindow();
-									newWindow.setVisible(true);
+									Product product = (Product)productMap.get(barCode);
+									validationMsg = orderValidator.validateProductOrder(product,productQuantity);
+									if(validationMsg != null){
+										DisplayUtil.displayValidationError(buttonPane,validationMsg);
+									}else {
+										LineItem item = new LineItem(product, productQuantity);
+										order.addLineItem(item);
+										payWin.dispose();
+										ProductSelectionWindow newWindow = new ProductSelectionWindow();
+										newWindow.setVisible(true);
+										dispose();
+									}
 								}
 							}catch(Exception ne){
-								JOptionPane.showMessageDialog(buttonPane, "Quantity must be numeric value", "Error", JOptionPane.ERROR_MESSAGE);
+								DisplayUtil.displayValidationError(buttonPane, StoreConstants.PRODUCT_QUANTITY_NON_NUMERIC);
 							}
 						}
 					}

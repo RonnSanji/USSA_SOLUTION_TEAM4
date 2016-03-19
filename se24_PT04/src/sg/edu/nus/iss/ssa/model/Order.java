@@ -1,22 +1,24 @@
 package sg.edu.nus.iss.ssa.model;
 
+import sg.edu.nus.iss.ssa.gui.LoginWindow;
+
+import javax.sound.sampled.Line;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Amarjeet B Singh
- * @param <T>
  *
  */
 public class Order {
 	
 	private List<LineItem> items = new ArrayList<LineItem>();
 	
-	private double totalPrice;
+	private Double totalPrice = new Double(0);
 	
 	private String memberId;
 	
-	private long poinitsRedeemed = 0;
+	private Long poinitsRedeemed = new Long(0);
 	
 	private long avlLoyaltyPoints;
 	
@@ -33,6 +35,17 @@ public class Order {
 	public Order() {
 
 	}
+
+	public void addLineItem(LineItem item){
+		this.items.add(item);
+		this.totalPrice += item.getTotalProductPrice();
+	}
+
+	public void removeLineItem(LineItem item){
+		this.items.remove(item);
+		this.totalPrice -= item.getTotalProductPrice();
+	}
+
 
 	public Order(List<LineItem> items, double finalPrice,
 			String memberNumber, long applicableDiscountPerc,

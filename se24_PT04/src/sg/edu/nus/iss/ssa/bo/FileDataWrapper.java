@@ -17,7 +17,7 @@ import sg.edu.nus.iss.ssa.model.Transaction;
  */
 public class FileDataWrapper {
 
-	public static final Map<String, ?> productMap = new HashMap<String, Product>();
+	public static final Map<String, Product> productMap = new HashMap<String, Product>();
 	public static final Map<String, ?> categoryMap = new HashMap<String, Category>();
 	public static final Map<String, ?> memberMap = new HashMap<String, Member>();
 	public static final Map<String, ?> transactionMap = new HashMap<String, Transaction>();

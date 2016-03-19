@@ -32,9 +32,7 @@ import sg.edu.nus.iss.ssa.model.Entity;
 public class IOService<E> {
 
 	/**
-	 * 
-	 * @param entity
-	 * @param fileName
+	 *
 	 * @throws FileNotFoundException - This exception will generate when file being processed is not present in class path.
 	 * @throws FieldMismatchExcepion - properties specified in model object and commas separated fields present in file must match.
 	 *  

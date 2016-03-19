@@ -19,6 +19,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.model.LineItem;
@@ -34,7 +36,6 @@ public class ProductSelectionWindow extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @param transactionMap 
 	 */
 	public ProductSelectionWindow() {
 		ProductSelectionWindow productWin = this;
@@ -77,16 +78,23 @@ public class ProductSelectionWindow extends JFrame {
 				"Total Price" };
 
 		List<LineItem> boughtProducts = FileDataWrapper.receipt.getItems();
-
 		// actual data for the table in a 2d array
 		Object[][] data = new Object[boughtProducts.size()][];
-
 		for (int i = 0; i < boughtProducts.size(); i++) {
 			data[i] = boughtProducts.get(i).getItemsArray();
 		}
-		
-		table =   new JTable(data, columns);
-        
+		//Create Table Model to override cell editable
+		TableModel model = new DefaultTableModel(data, columns)
+		{
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
+
+		table =   new JTable(model);
+		table.setRowSelectionAllowed(true);
+		table.setCellSelectionEnabled(false);
 		scrollPane.setViewportView(table);
 		
 		JSeparator separator = new JSeparator();
