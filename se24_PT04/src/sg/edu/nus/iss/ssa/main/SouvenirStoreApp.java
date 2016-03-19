@@ -62,13 +62,13 @@ public class SouvenirStoreApp {
 			e.printStackTrace();
 		}
 
-		// Launch Add Category window, for testing
-		AddCategory addCategoryWindow = new AddCategory();
-		addCategoryWindow.setVisible(true);
+		// Launch Manage Category window, for testing
+		//ManageCategory manageCategoryWindow = new ManageCategory();
+		//manageCategoryWindow.setVisible(true);
 		
-		// Launch Replenish Stock window, for testing
-		ReplenishStock replenishStockWindow = new ReplenishStock();
-		replenishStockWindow.setVisible(true);
+		// Launch Manage Stock window, for testing
+		//ManageStock manageStockWindow = new ManageStock();
+		//manageStockWindow.setVisible(true);
 		
 		// Launch Login window, for testing
 		LoginWindow loginWindow = new LoginWindow();
