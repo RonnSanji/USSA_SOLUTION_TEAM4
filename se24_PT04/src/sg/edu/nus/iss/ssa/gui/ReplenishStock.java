@@ -1,335 +1,214 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
-import sg.edu.nus.iss.ssa.model.Product;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
 import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.Position;
+import javax.swing.text.Segment;
+
+import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.model.Entity;
+import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.util.IOService;
+
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+public class ReplenishStock extends JDialog {
+	private static final long serialVersionUID = 4069437661115880594L;
+	private final JPanel contentPanel = new JPanel();
+	public Product selectedProduct;
+	private JButton okButton;
+	private JButton cancelButton;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_3;
+	private JLabel lblProductDescription;
+	private JLabel lblCurrentQuantity;
+	private JTextField txtAddQuantity;
+	private JLabel lblProductName;
+	private JPanel buttonPane;
+	private JLabel lblNewLabel_4;
+	private JLabel lblBarCode;
 
-public class ReplenishStock extends JFrame
-{
+	public ReplenishStock(Product selectedProduct) {
+		if (selectedProduct == null) {
+			DisplayUtil.displayValidationError(contentPanel, StoreConstants.ERROR + " loading product");
+			return;
+		}
+		this.selectedProduct = selectedProduct;
+		setResizable(false);
+		setTitle("Replenish Stock");
+		setBounds(100, 100, 450, 300);
+		contentPanel.setLayout(null);
+		getContentPane().setLayout(null);
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2219926673801562401L;
-	private JPanel contentPane;
-	private JTextField txtSearchText;
-	private JTable TbResult;
-	JComboBox<String> comboBoxSearchBy;
-	JScrollPane scrollPane;
-	JLabel lblNoResult;
-	JButton btnReplenish;
-	JButton btnShowBelowThreshold;
+		buttonPane = new JPanel();
+		buttonPane.setBounds(0, 231, 444, 41);
+		getContentPane().add(buttonPane);
+		buttonPane.setLayout(null);
 
-	private String[] comboBoxSearchByItem = new String[]
-	{ "Name", "Description" };
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(266, 5, 78, 23);
+		cancelButton.addActionListener(new ActionListener() {
 
-	private String searchBy;
-	private String searchText;
-	private Product selectedProduct;
-	private Collection<Product> productList;
-	private List<Product> productListResult;
-
-	String[] columns = new String[]
-	{ "Product Name", "Product Description", "Price", "Current Quantity", "Reorder Threshold", "Reorder Quantity" };
-	String[][] data;
-
-	TableModel model;
-
-	/**
-	 * Create the frame.
-	 */
-	public ReplenishStock()
-	{
-		setTitle("Replenish Stock Page");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 708, 588);
-		contentPane = new JPanel();
-
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("Search by");
-		lblNewLabel.setBounds(20, 30, 80, 14);
-		contentPane.add(lblNewLabel);
-
-		comboBoxSearchBy = new JComboBox();
-		comboBoxSearchBy.setBounds(96, 27, 106, 20);
-		contentPane.add(comboBoxSearchBy);
-		comboBoxSearchBy.setModel(new DefaultComboBoxModel(comboBoxSearchByItem));
-
-		txtSearchText = new JTextField();
-		txtSearchText.setBounds(212, 27, 168, 20);
-		contentPane.add(txtSearchText);
-		txtSearchText.setColumns(10);
-
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(390, 26, 79, 23);
-		contentPane.add(btnSearch);
-		btnSearch.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent arg0)
-			{
-				search();
-			}
-		});
-
-		lblNoResult = new JLabel("");
-		lblNoResult.setBounds(75, 73, 150, 14);
-		contentPane.add(lblNoResult);
-
-		btnReplenish = new JButton("Replenish");
-		btnReplenish.setBounds(170, 487, 100, 23);
-		btnReplenish.setEnabled(false);
-		btnReplenish.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				replenish();
-
-			}
-		});
-		contentPane.add(btnReplenish);
-
-		JButton btnClose = new JButton("Close");
-		btnClose.setBounds(440, 487, 100, 23);
-		contentPane.add(btnClose);
-
-		btnShowBelowThreshold = new JButton("Show all below threshold");
-		btnShowBelowThreshold.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent arg0)
-			{
-				showAllBelowThreshold();
-			}
-		});
-		btnShowBelowThreshold.setBounds(481, 26, 193, 23);
-		contentPane.add(btnShowBelowThreshold);
-		btnClose.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
 
-		TbResult = new JTable(new model());
-		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		TbResult.setFillsViewportHeight(true);
+		cancelButton.setActionCommand("Cancel");
+		buttonPane.add(cancelButton);
 
-		scrollPane = new JScrollPane(TbResult);
-		scrollPane.setBounds(20, 100, 650, 350);
-		contentPane.add(scrollPane);
-		scrollPane.setVisible(true);
-		TbResult.setVisible(false);
-	}
-
-	private void showAllBelowThreshold()
-	{
-		productList = (Collection<Product>) FileDataWrapper.productMap.values();
-		productListResult = new ArrayList<Product>();
-
-		for (Product product : productList)
-		{
-			if (product.getQuantity() < product.getThresholdQuantity())
-			{
-				productListResult.add(product);
-			}
-
-		}
-
-		if (productListResult.size() == 0)
-		{
-			showNoresult();
-			return;
-		}
-
-		data = new String[productListResult.size()][];
-		for (int i = 0; i < productListResult.size(); i++)
-		{
-			String[] values = new String[columns.length];
-			values[0] = productListResult.get(i).getProductName();
-			values[1] = productListResult.get(i).getProductDesc();
-			values[2] = String.valueOf(productListResult.get(i).getPrice());
-			values[3] = String.valueOf(productListResult.get(i).getQuantity());
-			values[4] = String.valueOf(productListResult.get(i).getThresholdQuantity());
-			values[5] = String.valueOf(productListResult.get(i).getOrderQuantity());
-			data[i] = values;
-		}
-
-		txtSearchText.setText("");
-		showResultTable();
-	}
-
-	private void search()
-	{
-		productList = (Collection<Product>) FileDataWrapper.productMap.values();
-		productListResult = new ArrayList<Product>();
-		if (comboBoxSearchBy.getSelectedItem() != null)
-		{
-			searchBy = comboBoxSearchBy.getSelectedItem().toString();
-			for (Product product : productList)
-			{
-				// Name
-				if (searchBy == comboBoxSearchByItem[0])
-				{
-					if (product.getProductName().toUpperCase().contains(txtSearchText.getText().toUpperCase()))
-					{
-						productListResult.add(product);
-					}
-				}
-				// Description
-				else if (searchBy == comboBoxSearchByItem[1])
-				{
-					if (product.getProductDesc().toUpperCase().contains(txtSearchText.getText().toUpperCase()))
-					{
-						productListResult.add(product);
-					}
-				}
-
-			}
-
-			if (productListResult.size() == 0)
-			{
-				showNoresult();
-				return;
-			}
-
-			data = new String[productListResult.size()][];
-			for (int i = 0; i < productListResult.size(); i++)
-			{
-				String[] values = new String[columns.length];
-				values[0] = productListResult.get(i).getProductName();
-				values[1] = productListResult.get(i).getProductDesc();
-				values[2] = String.valueOf(productListResult.get(i).getPrice());
-				values[3] = String.valueOf(productListResult.get(i).getQuantity());
-				values[4] = String.valueOf(productListResult.get(i).getThresholdQuantity());
-				values[5] = String.valueOf(productListResult.get(i).getOrderQuantity());
-				data[i] = values;
-			}
-
-			showResultTable();
-		}
-
-	}
-
-	private void showResultTable()
-	{
-		lblNoResult.setText("");
-		btnReplenish.setEnabled(true);
-
-		model = new model();
-
-		TbResult.setModel(model);
-		TbResult.setVisible(true);
-		/*
-		 * TbResult = new JTable(data, columns) { private static final long
-		 * serialVersionUID = 1L;
-		 * 
-		 * public boolean isCellEditable(int row, int column) { Object o =
-		 * getValueAt(row, column); if (o != null) return false; return true; }
-		 * };
-		 * 
-		 * TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		 * TbResult.setFillsViewportHeight(true);
-		 * 
-		 * scrollPane = new JScrollPane(TbResult); scrollPane.setBounds(20, 100,
-		 * 560, 300); contentPane.add(scrollPane); scrollPane.setVisible(true);
-		 * TbResult.setVisible(true);
-		 */
-	}
-
-	private void showNoresult()
-	{
-		// scrollPane.setVisible(false);
-		btnReplenish.setEnabled(false);
-		TbResult.setVisible(false);
-		lblNoResult.setText("No result found");
-	}
-
-	private void replenish()
-	{
-		int selectedRow = TbResult.getSelectedRow();
-		System.out.println(selectedRow);
-		if (selectedRow == -1)
-		{
-			JOptionPane.showMessageDialog(contentPane, "Please select a product", "Warning",
-					JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-
-		showReplenishWindow();
-		
-	}
-
-	private void showReplenishWindow()
-	{
-		
-		JDialog replenishdialog = new JDialog(this,  "Replenish Stock", true);
-		
-		JButton btnCloseReplenishWindow = new JButton("Close");
-		replenishdialog.add(btnCloseReplenishWindow);
-		
-		btnCloseReplenishWindow.addActionListener( new ActionListener() {
-			
-			@Override
+		okButton = new JButton("OK");
+		okButton.setBounds(104, 5, 78, 23);
+		buttonPane.add(okButton);
+		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				replenishdialog.dispose();
-				
+				if (!validateForm()) {
+					return;
+				}
+				addStock();
+				reloadData();
+				dispose();
 			}
 		});
-		replenishdialog.setVisible(true);
-	}
-	
-	class model extends AbstractTableModel
-	{
+		okButton.setActionCommand("OK");
+		getRootPane().setDefaultButton(okButton);
 
-		@Override
-		public int getColumnCount()
-		{
-			return columns.length;
-		}
+		lblNewLabel = new JLabel("Product Name:");
+		lblNewLabel.setBounds(75, 24, 131, 14);
+		getContentPane().add(lblNewLabel);
 
-		@Override
-		public int getRowCount()
-		{
-			// TODO Auto-generated method stub
-			if (data == null)
-			{
-				return 0;
+		lblNewLabel_1 = new JLabel("Product Description:");
+		lblNewLabel_1.setBounds(75, 60, 131, 14);
+		getContentPane().add(lblNewLabel_1);
+
+		lblNewLabel_2 = new JLabel("Current quantity:");
+		lblNewLabel_2.setBounds(75, 132, 131, 14);
+		getContentPane().add(lblNewLabel_2);
+
+		lblNewLabel_3 = new JLabel("Add quantity:");
+		lblNewLabel_3.setBounds(75, 171, 130, 14);
+		getContentPane().add(lblNewLabel_3);
+
+		lblProductName = new JLabel("");
+		lblProductName.setBounds(223, 24, 211, 14);
+		getContentPane().add(lblProductName);
+
+		lblProductDescription = new JLabel("");
+		lblProductDescription.setBounds(223, 60, 211, 14);
+		getContentPane().add(lblProductDescription);
+
+		lblCurrentQuantity = new JLabel("");
+		lblCurrentQuantity.setBounds(223, 132, 211, 14);
+		getContentPane().add(lblCurrentQuantity);
+
+		txtAddQuantity = new JTextField();
+		txtAddQuantity.setDocument(new PlainDocument() {
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (str.matches("[0-9]"))
+					super.insertString(offs, str, a);
 			}
-			return data.length;
+		});
+		txtAddQuantity.setBounds(223, 168, 46, 20);
+		getContentPane().add(txtAddQuantity);
+
+		lblNewLabel_4 = new JLabel("Bar Code:");
+		lblNewLabel_4.setBounds(75, 96, 95, 14);
+		getContentPane().add(lblNewLabel_4);
+
+		lblBarCode = new JLabel("");
+		lblBarCode.setBounds(223, 96, 46, 14);
+		getContentPane().add(lblBarCode);
+
+		populateData();
+	}
+
+	private void populateData() {
+
+		lblProductName.setText(selectedProduct.getProductName());
+		lblProductDescription.setText(selectedProduct.getProductDesc());
+		lblBarCode.setText(String.valueOf(selectedProduct.getBarCode()));
+		lblCurrentQuantity.setText(String.valueOf(selectedProduct.getQuantity()));
+	}
+
+	private boolean validateForm() {
+		String stockTxt = txtAddQuantity.getText();
+		if (stockTxt == null || stockTxt.isEmpty()) {
+			DisplayUtil.displayValidationError(buttonPane, StoreConstants.BLANK_REPLENISH_QUANTITY);
+			return false;
+		}
+		return true;
+	}
+
+	private void addStock() {
+
+		long stockAdd = Long.parseLong(txtAddQuantity.getText());
+		this.selectedProduct.setQuantity(selectedProduct.getQuantity() + stockAdd);
+
+		for (Product p : FileDataWrapper.productMap.values()) {
+			Long barcode = p.getBarCode();
+			if (barcode == selectedProduct.getBarCode()) {
+				p = selectedProduct;
+				break;
+			}
+		}
+		// FileDataWrapper.productMap.(selectedProduct.getBarCode(),
+		// selectedProduct);
+
+		IOService<?> ioManager = new IOService<Entity>();
+		try {
+			ioManager.writeToFile(FileDataWrapper.productMap, new sg.edu.nus.iss.ssa.model.Product());
+			ioManager = null;
+		} catch (Exception ex)
+
+		{
+			// JOptionPane.showMessageDialog(contentPane, "Error occured during
+			// saving new category", "Error", JOptionPane.ERROR_MESSAGE);
+			DisplayUtil.displayValidationError(buttonPane, StoreConstants.ERROR + " saving product");
+			ioManager = null;
+			return;
 		}
 
-		@Override
-		public Object getValueAt(int arg0, int arg1)
-		{
-			// TODO Auto-generated method stub
-			return data[arg0][arg1];
-		}
+		DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.STOCK_UPDATED_SUCCESSFULLY);
+	}
 
-		@Override
-		public String getColumnName(int col)
-		{
-			return columns[col];
+	private void reloadData() {
+		IOService<?> ioManager = new IOService<Entity>();
+		FileDataWrapper.productMap.clear();
+		try {
+			ioManager.readFromFile(FileDataWrapper.productMap, new sg.edu.nus.iss.ssa.model.Product());
+			ioManager = null;
+			System.out.println("products : " + FileDataWrapper.productMap.keySet());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			ioManager = null;
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
 		}
 	}
+
 }
