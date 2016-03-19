@@ -15,7 +15,7 @@ public class Order {
 	
 	private User user;
 	
-	private Long poinitsRedeemed = new Long(0);
+	private Long pointsRedeemed = new Long(0);
 	
 	private long avlLoyaltyPoints;
 	
@@ -77,7 +77,7 @@ public class Order {
 	}
 	
 	public long getAvlLoyaltyPoints() {
-	//	return (this.getAvlLoyaltyPoints() - this.getPoinitsRedeemed());
+	//	return (this.getAvlLoyaltyPoints() - this.getPointsRedeemed());
 		return 0l;
 	}
 	
@@ -116,12 +116,12 @@ public class Order {
 		this.user = user;
 	}
 
-	public long getPoinitsRedeemed() {
-		return poinitsRedeemed;
+	public long getPointsRedeemed() {
+		return pointsRedeemed;
 	}
 
-	public void setPoinitsRedeemed(long poinitsRedeemed) {
-		this.poinitsRedeemed = poinitsRedeemed;
+	public void setPointsRedeemed(long pointsRedeemed) {
+		this.pointsRedeemed = pointsRedeemed;
 	}
 
 	public long getApplicableDiscountPerc() {

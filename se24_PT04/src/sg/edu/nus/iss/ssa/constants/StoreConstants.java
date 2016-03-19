@@ -14,4 +14,11 @@ public class StoreConstants {
 	//Member Validation error message
 	public static final String BLANK_MEMBER_NUMBER = "Please enter Member Number.";
 	public static final String INVALID_MEMBER_NUMBER = "Not a valid member.";
+
+	//payment validation
+	public static final String REQ_PAYMENT_FIELDS = "Please enter Cash or points to process the Payment.";
+	public static final String POINTS_REDEEMED_CONSTRAINT = "Points can be redeemed in multiple of 100.";
+	public static final String MAX_POINTS_REDEEMED_MSG = "Maximum points can be redeemed is : ";
+
+	public static final String NOT_ENOUGH_CASH = "Not enough amount to process the payment. ";
 }

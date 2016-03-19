@@ -9,4 +9,5 @@ public abstract class GeneralDiscount extends Entity {
 	protected String mapKey = "barCode";
 
 
+
 }

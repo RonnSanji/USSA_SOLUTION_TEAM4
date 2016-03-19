@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 import sg.edu.nus.iss.ssa.bo.DiscountOfferCalculator;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.model.LineItem;
+import sg.edu.nus.iss.ssa.model.Order;
 
 public class ReceiptSummary extends JFrame {
 
@@ -35,10 +36,14 @@ public class ReceiptSummary extends JFrame {
 	private JButton btnOk;
 	private JSeparator separator;
 
+	Order order=  null;
+
+
 	/**
 	 * Create the frame.
 	 */
 	public ReceiptSummary() {
+		order = FileDataWrapper.receipt;
 		
 		//Update Customer Receipt
 		/*FileDataWrapper.receipt.setReturnAmount(FileDataWrapper.receipt.getAmountTendered() - 
@@ -115,7 +120,7 @@ public class ReceiptSummary extends JFrame {
 		pointsRedeemed.setEditable(false);
 		pointsRedeemed.setColumns(10);
 		pointsRedeemed.setBounds(322, 370, 179, 26);
-		pointsRedeemed.setText(DiscountOfferCalculator.getDollarEqOfPointsText());
+		//pointsRedeemed.setText(DiscountOfferCalculator.getDollarEqOfPointsText());
 		contentPane.add(pointsRedeemed);
 		
 		JLabel lblCashRendered = new JLabel("Cash Rendered:");

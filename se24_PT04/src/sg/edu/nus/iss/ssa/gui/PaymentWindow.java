@@ -1,8 +1,5 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -14,8 +11,10 @@ import javax.swing.JButton;
 
 import sg.edu.nus.iss.ssa.bo.DiscountOfferCalculator;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
-import sg.edu.nus.iss.ssa.model.LineItem;
-import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.model.Order;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.validation.OrderValidator;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -32,15 +31,21 @@ public class PaymentWindow extends JFrame {
 	private JTextField cashRendered;
 	private JButton btnPay;
 	private JButton btnCancel;
+	private Order order;
 
+	DiscountOfferCalculator offerCalculator = null;
+	OrderValidator orderValidator;
 
 	/**
 	 * Create the frame.
 	 */
 	public PaymentWindow() {
+		offerCalculator = new DiscountOfferCalculator();
+		orderValidator = new OrderValidator(offerCalculator);
+		order = FileDataWrapper.receipt;
 		//Logic to create discount offer ..
-		FileDataWrapper.receipt.setFinalPrice(FileDataWrapper.receipt.getTotalPrice() - FileDataWrapper.receipt.getApplicableDiscountAmount());
-		
+		offerCalculator.applyDiscount(order);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Payment Summary");
 		setSize(600,500);
@@ -63,8 +68,20 @@ public class PaymentWindow extends JFrame {
 		memberNumberField.setBounds(230, 13, 267, 26);
 		contentPane.add(memberNumberField);
 		memberNumberField.setColumns(10);
-	//	memberNumberField.setText(FileDataWrapper.receipt.getUser().);
-		
+		memberNumberField.setText(order.getMemberInfo() != null ? order.getMemberInfo().getMemberId() : "");
+
+		JLabel lblLoyaltyPoints = new JLabel("Loyalty Points");
+		lblLoyaltyPoints.setBounds(28, 52, 166, 20);
+		contentPane.add(lblLoyaltyPoints);
+
+		loyaltyPoints = new JTextField();
+		loyaltyPoints.setEditable(false);
+		loyaltyPoints.setColumns(10);
+		loyaltyPoints.setBounds(230, 55, 267, 26);
+		loyaltyPoints.setText(String.valueOf(order.getMemberInfo() != null ? order.getMemberInfo().getLoyaltyPoints() : ""));
+		contentPane.add(loyaltyPoints);
+
+
 		JSeparator separator = new JSeparator();
 		separator.setBounds(28, 96, 509, 2);
 		contentPane.add(separator);
@@ -87,17 +104,7 @@ public class PaymentWindow extends JFrame {
 		discountAvailed.setText(DiscountOfferCalculator.getDiscountText());
 		contentPane.add(discountAvailed);
 		
-		JLabel lblLoyaltyPoints = new JLabel("Loyalty Points");
-		lblLoyaltyPoints.setBounds(28, 52, 166, 20);
-		contentPane.add(lblLoyaltyPoints);
-		
-		loyaltyPoints = new JTextField();
-		loyaltyPoints.setEditable(false);
-		loyaltyPoints.setColumns(10);
-		loyaltyPoints.setBounds(230, 55, 267, 26);
-		loyaltyPoints.setText(String.valueOf(FileDataWrapper.receipt.getAvlLoyaltyPoints()));
-		contentPane.add(loyaltyPoints);
-		
+
 		JLabel lblFinalPrice = new JLabel("Final Price:");
 		lblFinalPrice.setBounds(35, 217, 159, 20);
 		contentPane.add(lblFinalPrice);
@@ -133,39 +140,45 @@ public class PaymentWindow extends JFrame {
 				//Check Amount Rendered
 				String pointsRedeemedStr = pointsRedeemed.getText();
 				String renderedCashStr = cashRendered.getText();
-				long redeemedPoints =0l;
-				long renderedCash = 0l;
-				if(pointsRedeemedStr.equals("") && renderedCashStr.equals("")){
-					JOptionPane.showMessageDialog(contentPane, "Please enter Cash or points to process the Payment.", "Error", JOptionPane.ERROR_MESSAGE);
-				}else{
-					try{
-						if(!pointsRedeemedStr.equals("")){
+				Long redeemedPoints = new Long(0);
+				Double renderedCash = new Double(0);
+				if (pointsRedeemedStr.equals("") && renderedCashStr.equals("")) {
+					DisplayUtil.displayValidationError(contentPane, StoreConstants.REQ_PAYMENT_FIELDS);
+				} else {
+					try {
+						if (!pointsRedeemedStr.equals("")) {
 							redeemedPoints = Long.parseLong(pointsRedeemedStr);
 						}
-						if(!renderedCashStr.equals("")){
-							renderedCash = Long.parseLong(renderedCashStr);
+						if (!renderedCashStr.equals("")) {
+							renderedCash = Double.parseDouble(renderedCashStr);
 						}
-						
+
 						//validate Points
-						String message = null;
-						if((message = DiscountOfferCalculator.validateRedeemedPoints(redeemedPoints, renderedCash))!= null){
-							JOptionPane.showMessageDialog(contentPane, message, "Error", JOptionPane.ERROR_MESSAGE);
-						}else {
-							FileDataWrapper.receipt.setAmountTendered(renderedCash);
-							FileDataWrapper.receipt.setPoinitsRedeemed(redeemedPoints);
-							FileDataWrapper.receipt.setAvlLoyaltyPoints((FileDataWrapper.receipt.getAvlLoyaltyPoints() - redeemedPoints));
-							FileDataWrapper.receipt.setReturnAmount(FileDataWrapper.receipt.getAmountTendered() - 
-												DiscountOfferCalculator.getDollarEqOfPointsAndCash(renderedCash, redeemedPoints) );
-							ReceiptSummary newWindow = new ReceiptSummary();
-							newWindow.setVisible(true);
-							dispose();
+						String message = orderValidator.validateRedeemedPoints(redeemedPoints, renderedCash, order);
+						if (message != null) {
+							DisplayUtil.displayValidationError(contentPane, message);
+						} else {
+							order.setAmountTendered(renderedCash);
+							order.setPointsRedeemed(redeemedPoints);
+							message = orderValidator.checkAmountToProcessPayment(redeemedPoints, renderedCash, order);
+							if (message != null) {
+								DisplayUtil.displayValidationError(contentPane, message);
+							} else {
+								/*FileDataWrapper.receipt.setAvlLoyaltyPoints((FileDataWrapper.receipt.getAvlLoyaltyPoints() - redeemedPoints));
+								FileDataWrapper.receipt.setReturnAmount(FileDataWrapper.receipt.getAmountTendered() -
+										DiscountOfferCalculator.getDollarEqOfPointsAndCash(renderedCash, redeemedPoints));*/
+								ReceiptSummary newWindow = new ReceiptSummary();
+								newWindow.setVisible(true);
+								dispose();
+							}
+
 						}
-					}catch(Exception ne){
+					} catch (Exception ne) {
 						ne.printStackTrace();
 						JOptionPane.showMessageDialog(contentPane, "Quantity must be numeric value", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
-				
+
 			}
 		});
 		btnPay.setBounds(422, 399, 115, 29);
