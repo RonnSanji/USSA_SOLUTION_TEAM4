@@ -36,10 +36,11 @@ public class TotalReceiptCalculator {
             long remainingPoints = initialPoints + pointsEarned - order.getPointsRedeemed();
             order.setPointsEarned(pointsEarned);
             member.setLoyaltyPoints(remainingPoints);
-            double totalCashIncludingPoints = offerCalculator.getTotalCashIncludingPoints(order.getAmountTendered(),order.getPointsRedeemed());
-            double amountToReturn = totalCashIncludingPoints - order.getFinalPrice();
-            order.setReturnAmount(amountToReturn);
         }
+
+        double totalCashIncludingPoints = offerCalculator.getTotalCashIncludingPoints(order.getAmountTendered(),order.getPointsRedeemed());
+        double amountToReturn = totalCashIncludingPoints - order.getFinalPrice();
+        order.setReturnAmount(amountToReturn);
 
         //update productQuantity
         for(LineItem item : order.getItems()){

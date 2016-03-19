@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -37,7 +38,7 @@ public class IOService<E> {
 	 * @throws FieldMismatchExcepion - properties specified in model object and commas separated fields present in file must match.
 	 *  
 	 */
-	public  void readFromFile(Map entityMap,  Entity entityToCreate) throws FileNotFoundException, FieldMismatchExcepion  {
+	public  void readFromFile(Map entityMap, List entityList,  Entity entityToCreate) throws FileNotFoundException, FieldMismatchExcepion  {
 		InputStream inputStream = null;
 		BufferedReader br = null;
 		String fileName = entityToCreate.getFileName();
@@ -71,7 +72,11 @@ public class IOService<E> {
 						keyValue = value;
 					}
 				}
-				entityMap.put(keyValue, entity);				
+				if (entityMap != null ) {
+					entityMap.put(keyValue, entity);
+				}else {
+					entityList.add(entity);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

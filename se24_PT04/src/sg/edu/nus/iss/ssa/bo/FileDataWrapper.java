@@ -1,6 +1,8 @@
 package sg.edu.nus.iss.ssa.bo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import sg.edu.nus.iss.ssa.model.Category;
@@ -18,9 +20,9 @@ import sg.edu.nus.iss.ssa.model.Transaction;
 public class FileDataWrapper {
 
 	public static final Map<Long, Product> productMap = new HashMap<Long, Product>();
-	public static final Map<String, ?> categoryMap = new HashMap<String, Category>();
+	public static final Map<String, Category> categoryMap = new HashMap<String, Category>();
 	public static final Map<String, Member> memberMap = new HashMap<String, Member>();
-	public static final Map<String, ?> transactionMap = new HashMap<String, Transaction>();
+	public static final List<Transaction> transactionList = new ArrayList<Transaction>();
 	public static final Map<String, ?> storeKeeperMap = new HashMap<String, StoreKeeper>();
 	public static final Order receipt = new Order();
 

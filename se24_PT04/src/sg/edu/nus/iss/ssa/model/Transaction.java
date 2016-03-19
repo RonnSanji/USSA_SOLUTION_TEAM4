@@ -90,5 +90,10 @@ public class Transaction extends Entity{
 		this.transactionId = transactionId;
 	}
 
-	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("transactionID ").append(transactionId);
+		return sb.toString();
+	}
 }
