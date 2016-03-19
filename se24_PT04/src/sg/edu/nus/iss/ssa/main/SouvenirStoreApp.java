@@ -8,6 +8,9 @@ import sg.edu.nus.iss.ssa.bo.AuthenticationManager;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.gui.AddCategory;
+import sg.edu.nus.iss.ssa.gui.CategoryReport;
+import sg.edu.nus.iss.ssa.gui.MemberReport;
+import sg.edu.nus.iss.ssa.gui.ProductReport;
 import sg.edu.nus.iss.ssa.gui.ProductSelectionWindow;
 import sg.edu.nus.iss.ssa.gui.ReplenishStock;
 import sg.edu.nus.iss.ssa.model.Category;
@@ -70,6 +73,17 @@ public class SouvenirStoreApp {
 		// Launch Login window, for testing
 		LoginWindow loginWindow = new LoginWindow();
 		loginWindow.setVisible(true);
+		
+		//Launch Report for testing
+		try {
+			//CategoryReport cr=new CategoryReport();
+			//MemberReport mr=new MemberReport();
+			ProductReport pr=new ProductReport();
+			//TransactionReport tr=new TransactionReport();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
