@@ -21,6 +21,11 @@ import sg.edu.nus.iss.ssa.model.Member;
 import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
+/**
+ *Creates screen to capture member Number.
+ * @author Amarjeet B Singh
+ *
+ */
 public class MemberNumberScreen extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

@@ -33,21 +33,38 @@ public class Order {
 
 	}
 
+	/**
+	 * Utility method to add line item.
+	 * @param item
+	 */
 	public void addLineItem(LineItem item){
 		this.items.add(item);
 		this.totalPrice += item.getTotalProductPrice();
 	}
-
+	/**
+	 * Utility method to add line item.
+	 * @param item
+	 */
 	public void removeLineItem(LineItem item){
 		this.items.remove(item);
 		this.totalPrice -= item.getTotalProductPrice();
 	}
-
+	/**
+	 * Utility method to get member Object. It will return null if user is not a valid member.
+	 */
 	public Member getMemberInfo(){
 		if(user != null && user.isMember()){
 			return (Member)user;
 		}
 		return  null;
+	}
+
+	/**
+	 * It returns memberId if user is valid member otherwise it returns "PUBLIC"
+	 * @return
+	 */
+	public String getMemberIdOfUser(){
+		return getMemberInfo() != null ? getMemberInfo().getMemberId() : "PUBLIC";
 	}
 
 

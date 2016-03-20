@@ -5,6 +5,7 @@ public class StoreConstants {
 	public static final String FIELD_DELIMITER = ",";
 	public static final int CASH_EQ_POINTS = 100;
 	public static final int CATEGORY_ID_MAX_LENGTH = 3;
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
 
 	public static final String INVALID_PRODUCT = "Please Select a valid product.";
 	public static final String BLANK_INPUT_FOR_PRODUCT_PURCHASE = "Please enter BarCode and Quantity to purchase the product.";

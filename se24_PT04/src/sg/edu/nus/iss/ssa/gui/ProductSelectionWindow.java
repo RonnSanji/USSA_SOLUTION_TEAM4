@@ -26,6 +26,11 @@ import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.model.LineItem;
 import sg.edu.nus.iss.ssa.model.Order;
 
+/**
+ *Creates screen to capture product selection. This will constitute Order.
+ * @author Amarjeet B Singh
+ *
+ */
 public class ProductSelectionWindow extends JFrame {
 
 	private JPanel contentPane;

@@ -21,6 +21,12 @@ import sg.edu.nus.iss.ssa.model.LineItem;
 import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
+/**
+ *Creates screen to show Order Summary.
+ *
+ * @author Amarjeet B Singh
+ *
+ */
 public class ReceiptSummary extends JFrame {
 
 	private JPanel contentPane;

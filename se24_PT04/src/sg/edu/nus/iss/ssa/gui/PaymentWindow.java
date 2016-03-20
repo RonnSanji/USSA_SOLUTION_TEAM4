@@ -19,6 +19,11 @@ import sg.edu.nus.iss.ssa.validation.OrderValidator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ *Creates screen to capture payment details.
+ * @author Amarjeet B Singh
+ *
+ */
 public class PaymentWindow extends JFrame {
 
 	private JPanel contentPane;
