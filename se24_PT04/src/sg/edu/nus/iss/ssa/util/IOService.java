@@ -179,7 +179,7 @@ public class IOService<E> {
             currentDirectory = currentDir.getAbsolutePath();
         }
         if(!currentDirectory.contains(StoreConstants.PROJECT_NAME)){
-            currentDirectory += StoreConstants.PROJECT_NAME;
+            currentDirectory += "/"+StoreConstants.PROJECT_NAME;
         }
         return currentDirectory + "/data/";
     }
