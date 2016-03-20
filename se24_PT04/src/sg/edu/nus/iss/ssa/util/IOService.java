@@ -181,7 +181,7 @@ public class IOService<E> {
         if(!currentDirectory.contains(StoreConstants.PROJECT_NAME)){
             currentDirectory += StoreConstants.PROJECT_NAME;
         }
-        return currentDirectory;
+        return currentDirectory + "/data/";
     }
 
 }
