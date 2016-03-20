@@ -9,6 +9,7 @@ import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.*;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
+import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -112,7 +113,7 @@ public class AddCategory extends JDialog {
 			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 				// System.out.println(getLength() + str.length());
 				if (getLength() + str.length() <= StoreConstants.CATEGORY_ID_MAX_LENGTH && str.matches("[a-zA-Z]"))
-					super.insertString(offs, str, a);
+					super.insertString(offs, str.toUpperCase(), a);
 			}
 		});
 		txtCatogeryID.setBounds(206, 35, 177, 20);
@@ -133,30 +134,38 @@ public class AddCategory extends JDialog {
 		categoryID = txtCatogeryID.getText();
 		categoryName = txtaCategoryName.getText();
 
-		if (categoryID == null || categoryID.isEmpty()) {
-			// JOptionPane.showMessageDialog(contentPane, "Please enter category
-			// ID", "Error", JOptionPane.ERROR_MESSAGE);
-			DisplayUtil.displayValidationError(contentPane, StoreConstants.BLANK_CATEGORYID);
+		FormValidator formValidator = new FormValidator();
+		String validatorMessage = formValidator.addCategoryValidateForm(categoryID, categoryName);
+		if (validatorMessage != null) {
+			DisplayUtil.displayValidationError(contentPane, validatorMessage);
 			return false;
 		}
-		categoryID = categoryID.trim().toUpperCase();
-		txtCatogeryID.setText(categoryID);
-		if (categoryID.length() != 3) {
-			// JOptionPane.showMessageDialog(contentPane, "Category ID must be 3
-			// characters", "Error",JOptionPane.ERROR_MESSAGE);
-			DisplayUtil.displayValidationError(contentPane, StoreConstants.CATEGORY_3_LETTERS);
-			return false;
-		}
-		categoryName = categoryName.trim();
-		txtaCategoryName.setText(categoryName);
-		if (categoryName == null || categoryName.isEmpty()) {
-			// JOptionPane.showMessageDialog(contentPane, "Please enter category
-			// name", "Error", JOptionPane.ERROR_MESSAGE);
-			DisplayUtil.displayValidationError(contentPane, StoreConstants.BLANK_CATEGORYNAME);
-			return false;
-		}
-
 		return true;
+
+		/*
+		 * categoryID = txtCatogeryID.getText(); categoryName =
+		 * txtaCategoryName.getText();
+		 * 
+		 * if (categoryID == null || categoryID.isEmpty()) { //
+		 * JOptionPane.showMessageDialog(contentPane, "Please enter category //
+		 * ID", "Error", JOptionPane.ERROR_MESSAGE);
+		 * DisplayUtil.displayValidationError(contentPane,
+		 * StoreConstants.BLANK_CATEGORYID); return false; } categoryID =
+		 * categoryID.trim().toUpperCase(); txtCatogeryID.setText(categoryID);
+		 * if (categoryID.length() != 3) { //
+		 * JOptionPane.showMessageDialog(contentPane, "Category ID must be 3 //
+		 * characters", "Error",JOptionPane.ERROR_MESSAGE);
+		 * DisplayUtil.displayValidationError(contentPane,
+		 * StoreConstants.CATEGORY_3_LETTERS); return false; } categoryName =
+		 * categoryName.trim(); txtaCategoryName.setText(categoryName); if
+		 * (categoryName == null || categoryName.isEmpty()) { //
+		 * JOptionPane.showMessageDialog(contentPane, "Please enter category //
+		 * name", "Error", JOptionPane.ERROR_MESSAGE);
+		 * DisplayUtil.displayValidationError(contentPane,
+		 * StoreConstants.BLANK_CATEGORYNAME); return false; }
+		 * 
+		 * return true;
+		 */
 	}
 
 	private Boolean validateData() {
