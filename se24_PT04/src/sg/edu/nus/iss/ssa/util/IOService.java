@@ -178,8 +178,10 @@ public class IOService<E> {
             File currentDir = new File(".");
             currentDirectory = currentDir.getAbsolutePath();
         }
-        currentDirectory += StoreConstants.PROJECT_NAME;
-        return currentDirectory + "/data/";
+        if(!currentDirectory.contains(StoreConstants.PROJECT_NAME)){
+            currentDirectory += StoreConstants.PROJECT_NAME;
+        }
+        return currentDirectory;
     }
 
 }
