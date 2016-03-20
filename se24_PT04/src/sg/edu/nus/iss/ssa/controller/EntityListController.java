@@ -24,7 +24,7 @@ public class EntityListController {
 		}
 		IOService<?> ioManager = new IOService<Entity>();
 		try {
-			ioManager.writeToFile(FileDataWrapper.categoryMap, new sg.edu.nus.iss.ssa.model.Category());
+			ioManager.writeToFile(FileDataWrapper.categoryMap.values(), new sg.edu.nus.iss.ssa.model.Category());
 			ioManager = null;
 		} catch (Exception ex) {
 			ioManager = null;
@@ -49,7 +49,7 @@ public class EntityListController {
 
 		IOService<?> ioManager = new IOService<Entity>();
 		try {
-			ioManager.writeToFile(FileDataWrapper.productMap, new sg.edu.nus.iss.ssa.model.Product());
+			ioManager.writeToFile(FileDataWrapper.productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
 			ioManager = null;
 		} catch (Exception ex)
 

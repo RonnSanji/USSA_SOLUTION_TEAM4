@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.ssa.main;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class SouvenirStoreApp {
 	
 	
 
-	public static void main(String[] args) throws FieldMismatchExcepion {
+	public static void main(String[] args) throws FieldMismatchExcepion, IOException {
 
 		IOService<?> ioManager = new IOService<Entity>();
 				
@@ -65,7 +66,7 @@ public class SouvenirStoreApp {
 			e.printStackTrace();
 		}
 
-		// Launch Manage Category window, for testing
+	/*	// Launch Manage Category window, for testing
 		ManageCategory manageCategoryWindow = new ManageCategory();
 		manageCategoryWindow.setVisible(true);
 		
@@ -91,7 +92,7 @@ public class SouvenirStoreApp {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		*/
 	}
 
 }

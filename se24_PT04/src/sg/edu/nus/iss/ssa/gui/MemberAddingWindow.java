@@ -98,7 +98,7 @@ public class MemberAddingWindow extends JDialog {
 					  
 					  IOService<?> ioManager = new IOService<Entity>();
 						try {
-							ioManager.writeToFile(memberMap, new sg.edu.nus.iss.ssa.model.Member());
+							ioManager.writeToFile(memberMap.values(), new sg.edu.nus.iss.ssa.model.Member());
 							ioManager = null;
 						} catch (Exception ex)
 

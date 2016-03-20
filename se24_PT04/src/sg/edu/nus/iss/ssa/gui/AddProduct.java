@@ -83,6 +83,8 @@ public class AddProduct {
 			ioService.readFromFile(FileDataWrapper.categoryMap,null,new Category());
 		} catch(FileNotFoundException | FieldMismatchExcepion e){
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		Map<String,Category> categories = FileDataWrapper.categoryMap;
 		Set<String> ctgs = categories.keySet();
@@ -179,8 +181,8 @@ public class AddProduct {
 	private void writeToFile(int barcode,Product product){
 		try{
 			FileDataWrapper.productMap.put(barcode,product);
-			ioService.writeToFile(FileDataWrapper.productMap,new Product());
-		} catch(IOException | FileUnableToWriteException e){
+			ioService.writeToFile(FileDataWrapper.productMap.values(),new Product());
+		} catch(IOException  e){
 			e.printStackTrace();
 		}
 

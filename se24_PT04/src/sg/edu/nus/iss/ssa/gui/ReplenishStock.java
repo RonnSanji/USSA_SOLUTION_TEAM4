@@ -29,6 +29,7 @@ import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.awt.event.ActionEvent;
@@ -182,7 +183,7 @@ public class ReplenishStock extends JDialog {
 	}
 
 	private void reloadData() {
-		/*IOService<?> ioManager = new IOService<Entity>();
+		IOService<?> ioManager = new IOService<Entity>();
 		FileDataWrapper.productMap.clear();
 		try {
 			ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
@@ -194,7 +195,9 @@ public class ReplenishStock extends JDialog {
 			e.printStackTrace();
 		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
 			fieldMismatchExcepion.printStackTrace();
-		}*/
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

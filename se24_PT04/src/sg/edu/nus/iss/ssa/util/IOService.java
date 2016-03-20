@@ -6,10 +6,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
@@ -121,6 +118,8 @@ public class IOService<E> {
                 field.setDouble(object, Double.valueOf(value));
             } else if (type.getSimpleName().equals("float")) {
                 field.setFloat(object, Float.valueOf(value));
+            }else if (type.getSimpleName().equals("int")) {
+                field.setInt(object, Integer.valueOf(value));
             } else {
                 field.set(object, value);
             }
@@ -133,7 +132,7 @@ public class IOService<E> {
         }
     }
 
-    public void writeToFile(List entityList, Entity entityToCreate) throws IOException{
+    public void writeToFile(Collection entityList, Entity entityToCreate) throws IOException{
         String dataFilePathPrefix = getInputDataFileLocation();
         String fileName = entityToCreate.getFileName();
         String[] fields = entityToCreate.getProperties();

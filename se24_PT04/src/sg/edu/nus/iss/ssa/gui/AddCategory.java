@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 
 import javax.swing.text.*;
 import javax.swing.JScrollPane;
+import java.io.IOException;
 import java.util.*;
 
 public class AddCategory extends JDialog {
@@ -161,10 +162,10 @@ public class AddCategory extends JDialog {
 	}
 
 	private void reloadData() {
-		/*IOService<?> ioManager = new IOService<Entity>();
+		IOService<?> ioManager = new IOService<Entity>();
 		FileDataWrapper.categoryMap.clear();
 		try {
-			//ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
+			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
 			ioManager = null;
 			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
 		} catch (FileNotFoundException e) {
@@ -173,7 +174,9 @@ public class AddCategory extends JDialog {
 			e.printStackTrace();
 		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
 			fieldMismatchExcepion.printStackTrace();
-		}*/
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void clearFields() {

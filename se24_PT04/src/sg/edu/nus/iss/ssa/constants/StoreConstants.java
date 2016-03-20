@@ -31,7 +31,13 @@ public class StoreConstants {
 	public static final String BLANK_CATEGORYNAME = "Please enter category name";
 	public static final String CATEGORY_3_LETTERS = "Category ID must be 3 letters";
 	public static final String ERROR = "Error occured during";
-	
+
+	//Manage Member message
+	public static final String MEMBER_ADDED_SUCCESSFULLY = "Member has been added succesfully";
+	public static final String BLANK_MEMBER_NUMBERANDNAME = "Please enter Member Name and Member Number";
+	public static final String INVALID_NEWMEMBER_NUMBER = "Not a valid member, Please enter a number with 9 Charactor";
+
+
 	// Manage stock message
 	public static final String SELECT_PRODUCT = "Please select a product";
 	public static final String STOCK_UPDATED_SUCCESSFULLY = "Stock has been updated successfully !";
