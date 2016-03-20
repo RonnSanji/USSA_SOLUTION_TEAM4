@@ -10,6 +10,7 @@ public class StoreConstants {
 	public static final String PUBLIC_USER = "PUBLIC";
 
 	public static final String INVALID_PRODUCT = "Please Select a valid product.";
+	public static final String INVALID_DATE = "Please Select a valid date.";
 	public static final String BLANK_INPUT_FOR_PRODUCT_PURCHASE = "Please enter BarCode and Quantity to purchase the product.";
 	public static final String PRODUCT_QUANTITY_NON_NUMERIC = "Quantity must be numeric value.";
 	public static final String INVALID_PRODUCT_QUANTITY = "Entered Product Quantity is higher than available Stock.";
