@@ -12,6 +12,7 @@ import sg.edu.nus.iss.ssa.util.IOService;
  */
 public class EntityListController {
 
+	IOService<?> ioManager= new IOService<Entity>();
 	// For add category
 	public String addCategory(String categoryID, String categoryName) {
 		sg.edu.nus.iss.ssa.model.Category category = new sg.edu.nus.iss.ssa.model.Category();
@@ -22,7 +23,7 @@ public class EntityListController {
 		} catch (Exception ex) {
 			return StoreConstants.ERROR + " creating new category";
 		}
-		IOService<?> ioManager = new IOService<Entity>();
+
 		try {
 			ioManager.writeToFile(FileDataWrapper.categoryMap.values(), new sg.edu.nus.iss.ssa.model.Category());
 			ioManager = null;
@@ -47,7 +48,6 @@ public class EntityListController {
 			}
 		}
 
-		IOService<?> ioManager = new IOService<Entity>();
 		try {
 			ioManager.writeToFile(FileDataWrapper.productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
 			ioManager = null;
