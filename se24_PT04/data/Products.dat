@@ -1,10 +1,11 @@
+COMP/2,Apple book,Apple i5 17 inch notebook,23,1800.5,8002,10,15
+DRK/1,Root Beer,Root Beer 600ml,200,2.5,550,100,150
+CLO/2,clothing,my clothing,10,2.0,1,0,0
+STA/1,NUS Pen,A really cute blue pen,768,5.75,123459876,50,250
+COMP/1,HP powerbook,HP i7 14 inch powerbook,20,1500.0,8001,10,10
+WTCH/1,Rolexi fun,Copied Rolex Watch,60,120.0,9898,50,20
 CLO/1,Cenetary Jumper,A really nice momento,315,21.45,1234,500,100
 GIO/2,second  Jumper,Another really nice momento,345,100.5,423,20,200
-COMP/1,HP powerbook,HP i7 14 inch powerbook,20,1500.00,8001,10,10
-COMP/2,Apple book,Apple i5 17 inch notebook,23,1800.50,8002,10,15
-WTCH/1,Rolexi fun,Copied Rolex Watch,60,120.00,9898,50,20
-WTCH/2,007 watch,Same watch 007 uses,47,450.00,9899,30,20
-STA/1,NUS Pen,A really cute blue pen,768,5.75,123459876,50,250
+WTCH/2,007 watch,Same watch 007 uses,47,450.0,9899,30,20
 STA/2,NUS Notepad,Great notepad for those lectures,1000,3.15,6789,25,75
-DRK/1,Root Beer,Root Beer 600ml,200,2.50,550,100,150
-DRK/2,Icelemon Tea,Icelemon Tea can 350ml,542,1.50,560,300,125
+DRK/2,Icelemon Tea,Icelemon Tea can 350ml,542,1.5,560,300,125

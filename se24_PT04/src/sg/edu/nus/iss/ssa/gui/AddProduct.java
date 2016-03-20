@@ -174,8 +174,6 @@ public class AddProduct {
 
 		btnAddProduct.setBounds(105, 384, 117, 29);
 		frame.getContentPane().add(btnAddProduct);
-
-
 	}
 
 	private void writeToFile(int barcode,Product product){
@@ -185,7 +183,6 @@ public class AddProduct {
 		} catch(IOException  e){
 			e.printStackTrace();
 		}
-
 	}
 
 	private void fetchValuesFromTextFields(){
