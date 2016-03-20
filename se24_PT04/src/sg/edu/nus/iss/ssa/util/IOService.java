@@ -2,6 +2,7 @@ package sg.edu.nus.iss.ssa.util;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -38,14 +39,13 @@ public class IOService<E> {
         String mapKey = entityToCreate.getMapKey();
 
         File inputFile = new File(dataFilePathPrefix + fileName);
-			  System.out.println("I am here");
         if (inputFile == null || !inputFile.exists()) {
             throw new FileNotFoundException(fileName + " file is not available. Please make sure file is present " +
                     "	under \"data\" folder and same is added in classpath. ");
         }
 
         //by now we know that file is available for processing.
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(inputFile.toURI()))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             String line;
             int count = 0;
             while ((line = br.readLine()) != null) {
@@ -87,18 +87,33 @@ public class IOService<E> {
      * @param fieldName
      * @param fieldValue
      */
-    public void set(Object object, String fieldName, String fieldValue) {
+    private void set(Object object, String fieldName, String fieldValue) {
         Class<?> clazz = object.getClass();
         if (clazz != null) {
-            try {
-                Field field = clazz.getDeclaredField(fieldName);
-                field.setAccessible(true);
-                setValue(object, field, fieldValue);
-            } catch (NoSuchFieldException e) {
+            if(!setFieldValueToClass(clazz,object,fieldName,fieldValue)) {
                 clazz = clazz.getSuperclass();
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
+                setFieldValueToClass(clazz, object, fieldName, fieldValue);
             }
+        }
+    }
+
+    /**
+     *
+     * @param clazz
+     * @param object
+     * @param fieldName
+     * @param fieldValue
+     * @return
+     */
+    private boolean setFieldValueToClass(Class<?> clazz, Object object,String fieldName, String fieldValue ){
+        Field field = null;
+        try {
+            field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            setValue(object, field, fieldValue);
+            return true;
+        } catch (NoSuchFieldException e) {
+            return false;
         }
     }
 
