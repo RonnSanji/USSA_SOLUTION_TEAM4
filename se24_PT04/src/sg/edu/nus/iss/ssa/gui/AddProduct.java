@@ -13,7 +13,6 @@ import javax.swing.*;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
-import sg.edu.nus.iss.ssa.exception.FileUnableToWriteException;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.BarCodeGenerator;
