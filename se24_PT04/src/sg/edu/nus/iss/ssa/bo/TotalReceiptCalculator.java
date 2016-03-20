@@ -14,7 +14,7 @@ public class TotalReceiptCalculator {
 
     Order order = null;
     DiscountOfferCalculator offerCalculator = null;
-    Map<Long, Product> productMap;
+    Map<Integer, Product> productMap;
     List<Transaction> transactionList;
 
     public TotalReceiptCalculator(){

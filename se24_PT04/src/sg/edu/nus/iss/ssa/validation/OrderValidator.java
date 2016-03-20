@@ -33,7 +33,7 @@ public class OrderValidator {
         return errorMessage;
     }
 
-    public String validateSelectedProduct(final String productBarCode, final  Map<Long,Product> productMap){
+    public String validateSelectedProduct(final String productBarCode, final  Map<Integer,Product> productMap){
         String errorMessage = null;
         if(productBarCode != null){
             Product selectedItem = productMap.get(productBarCode);

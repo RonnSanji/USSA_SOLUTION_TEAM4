@@ -16,6 +16,7 @@ import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.exception.FileUnableToWriteException;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.util.BarCodeGenerator;
 import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.util.ProductIdGenerator;
 
@@ -26,10 +27,9 @@ public class AddProduct {
 	private JTextField txtProductDescription;
 	private JTextField txtQuantityAvailable;
 	private JTextField txtPrice;
-	private JTextField txtBarCodeNumber;
 	private JTextField txtReorderQuantity;
 	private JTextField txtOrderQuantity;
-	private JList txtProductCategory ;
+	private JComboBox txtProductCategory ;
 	private String productName;
 	private String productDescription;
 	private String quantityAvailable;
@@ -77,17 +77,19 @@ public class AddProduct {
 		frame.getContentPane().add(lblAddProduct);
 
 		JLabel lblProductCategory = new JLabel("Product Category");
-		lblProductCategory.setBounds(20, 55, 108, 16);
+		lblProductCategory.setBounds(20, 32, 108, 60);
 		frame.getContentPane().add(lblProductCategory);
-    try{
+		try{
 			ioService.readFromFile(FileDataWrapper.categoryMap,null,new Category());
 		} catch(FileNotFoundException | FieldMismatchExcepion e){
-    e.printStackTrace();
+			e.printStackTrace();
 		}
 		Map<String,Category> categories = FileDataWrapper.categoryMap;
 		Set<String> ctgs = categories.keySet();
-		Object arr[] = ctgs.toArray();
-		txtProductCategory = new JList(arr);
+		txtProductCategory = new JComboBox();
+		for(String c:ctgs){
+			txtProductCategory.addItem(c);
+		}
 		txtProductCategory.setBounds(164, 55, 120,16);
 		frame.getContentPane().add(txtProductCategory);
 
@@ -127,15 +129,6 @@ public class AddProduct {
 		frame.getContentPane().add(txtPrice);
 		txtPrice.setColumns(10);
 
-		JLabel lblBarCodeNumber = new JLabel("Bar Code Number");
-		lblBarCodeNumber.setBounds(20, 244, 119, 16);
-		frame.getContentPane().add(lblBarCodeNumber);
-
-		txtBarCodeNumber = new JTextField();
-		txtBarCodeNumber.setBounds(154, 239, 130, 26);
-		frame.getContentPane().add(txtBarCodeNumber);
-		txtBarCodeNumber.setColumns(10);
-
 		JLabel lblNewLabel = new JLabel("ReOrder Quantity");
 		lblNewLabel.setBounds(20, 283, 119, 16);
 		frame.getContentPane().add(lblNewLabel);
@@ -158,20 +151,22 @@ public class AddProduct {
 			public void actionPerformed(ActionEvent e) {
 				try{
 
-				fetchValuesFromTextFields();
-				Map<Long,Product> mapProduct = FileDataWrapper.productMap;
-				ioService.readFromFile(mapProduct,null,new Product());
-				Collection<Product> products = mapProduct.values();
-				ProductIdGenerator productIdGenerator = new ProductIdGenerator();
-				Product product = new Product(productIdGenerator.getProductId(products,productCategory), productName, productDescription,
-				Long.valueOf(quantityAvailable), Double.valueOf(
-						price), Long.valueOf(barCodeNumber), Long.valueOf(reorderQuantity),
-				Long.valueOf(orderQuantity));
-				writeToFile(product);
+					fetchValuesFromTextFields();
+					Map<Integer,Product> mapProduct = FileDataWrapper.productMap;
+					ioService.readFromFile(mapProduct,null,new Product());
+					Collection<Product> products = mapProduct.values();
+					ProductIdGenerator productIdGenerator = new ProductIdGenerator();
+					BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
+					int barCode = barCodeGenerator.generateBarCode();
+					Product product = new Product(productIdGenerator.getProductId(products,productCategory), productName, productDescription,
+							Long.valueOf(quantityAvailable), Double.valueOf(
+							price),barCode, Long.valueOf(reorderQuantity),
+							Long.valueOf(orderQuantity));
+					writeToFile(barCode,product);
 				}
-catch(Exception e1){
-	e1.printStackTrace();
-}
+				catch(Exception e1){
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -181,23 +176,22 @@ catch(Exception e1){
 
 	}
 
-	private void writeToFile(Product product){
+	private void writeToFile(int barcode,Product product){
 		try{
-			FileDataWrapper.productMap.put(Long.valueOf(barCodeNumber),product);
+			FileDataWrapper.productMap.put(barcode,product);
 			ioService.writeToFile(FileDataWrapper.productMap,new Product());
 		} catch(IOException | FileUnableToWriteException e){
-      e.printStackTrace();
+			e.printStackTrace();
 		}
 
 	}
 
 	private void fetchValuesFromTextFields(){
-		productCategory = (String)txtProductCategory.getSelectedValue();
+		productCategory = (String)txtProductCategory.getSelectedItem();
 		productName = txtProductName.getText();
 		productDescription = txtProductDescription.getText();
 		quantityAvailable = txtQuantityAvailable.getText();
 		price = txtPrice.getText();
-		barCodeNumber = txtBarCodeNumber.getText();
 		reorderQuantity = txtReorderQuantity.getText();
 		orderQuantity = txtOrderQuantity.getText();
 	}

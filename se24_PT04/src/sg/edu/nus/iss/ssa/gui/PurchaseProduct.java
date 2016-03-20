@@ -42,7 +42,7 @@ public class PurchaseProduct extends JDialog {
 	private JTextField barCodetext;
 	private JTextField productQnty;
 
-	Map<Long,Product> productMap = null;
+	Map<Integer,Product> productMap = null;
 	Order order = null;
 
 	private OrderValidator orderValidator = new OrderValidator();

@@ -40,7 +40,7 @@ public class EntityListController {
 		selectedProduct.setQuantity(selectedProduct.getQuantity() + stockAdd);
 
 		for (Product p : FileDataWrapper.productMap.values()) {
-			Long barcode = p.getBarCode();
+			int barcode = p.getBarCode();
 			if (barcode == selectedProduct.getBarCode()) {
 				p = selectedProduct;
 				break;

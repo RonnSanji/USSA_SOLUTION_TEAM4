@@ -2,7 +2,7 @@ package sg.edu.nus.iss.ssa.model;
 
 /**
  * @author Amarjeet B Singh
- * @param <T>
+ * @param
  *
  */
 public class Product extends Entity{
@@ -24,7 +24,7 @@ public class Product extends Entity{
 	
 	private double price;
 	
-	private long barCode;
+	private int barCode;
 	
 	private long thresholdQuantity;
 	
@@ -35,7 +35,7 @@ public class Product extends Entity{
 	}
 	
 	public Product(String productId, String productName, String productDesc,
-			long quantity, double price, long barCode, long thresholdQuantity,
+			long quantity, double price, int barCode, long thresholdQuantity,
 			long orderQuantity) {
 		super();
 		this.productId = productId;
@@ -123,11 +123,11 @@ public class Product extends Entity{
 		this.price = price;
 	}
 
-	public long getBarCode() {
+	public int getBarCode() {
 		return barCode;
 	}
 
-	public void setBarCode(long barCode) {
+	public void setBarCode(int barCode) {
 		this.barCode = barCode;
 	}
 
