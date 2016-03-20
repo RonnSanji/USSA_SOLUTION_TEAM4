@@ -24,6 +24,7 @@ import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.gui.LoginWindow;
 import sg.edu.nus.iss.ssa.gui.ManageCategory;
 import sg.edu.nus.iss.ssa.gui.ManageStock;
+import sg.edu.nus.iss.ssa.gui.MemberManagerWindow;;
 
 /**
  * Main Class to launch SouvenirStore Application.
@@ -75,6 +76,10 @@ public class SouvenirStoreApp {
 		// Launch Login window, for testing
 		LoginWindow loginWindow = new LoginWindow();
 		loginWindow.setVisible(true);
+		
+		MemberManagerWindow memberManager = new MemberManagerWindow();
+		memberManager.setVisible(true);
+		
 		
 		//Launch Report for testing
 		try {

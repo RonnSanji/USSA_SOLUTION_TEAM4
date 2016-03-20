@@ -18,7 +18,10 @@ import java.util.Map;
 import java.awt.event.ActionEvent;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.model.Member;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.model.Entity;
 
 public class MemberAddingWindow extends JDialog {
@@ -64,6 +67,7 @@ public class MemberAddingWindow extends JDialog {
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		JButton btnAddMember = new JButton("Add Member");
 		btnAddMember.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				
 			  String memberNameString , memberNumberString = new String();
@@ -86,8 +90,23 @@ public class MemberAddingWindow extends JDialog {
 				  }
 				  
 				  else{
-					  Member newMember = new Member(memberNameString,memberNumberString,-1);					
+					  Member newMember = new Member(memberNameString,memberNumberString,-1);	
+					  try{
 					  memberMap.put(memberNumberString,newMember);
+					  }catch (Exception ex){
+						  DisplayUtil.displayValidationError(contentPanel, StoreConstants.ERROR + " creating new member");
+					  }
+					  
+					  IOService<?> ioManager = new IOService<Entity>();
+						try {
+							ioManager.writeToFile(memberMap, new sg.edu.nus.iss.ssa.model.Member());
+							ioManager = null;
+						} catch (Exception ex)
+
+						{
+							DisplayUtil.displayValidationError(contentPanel, StoreConstants.ERROR + " saving new member");
+							ioManager = null;
+						}
 				      
 					  MemberManagerWindow newWindow = new MemberManagerWindow();  
 					  newWindow.setVisible(true);
