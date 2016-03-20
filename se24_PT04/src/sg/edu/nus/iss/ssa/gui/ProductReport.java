@@ -5,12 +5,14 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,6 +30,7 @@ public class ProductReport extends JFrame {
 	private JPanel jp;
 	private JButton btnPrint;
 	private JButton btnExit;
+	private JLabel title;
 
 	public ProductReport() throws FieldMismatchExcepion {
 
@@ -41,6 +44,9 @@ public class ProductReport extends JFrame {
 		// ArrayList<Category>(FileDataWrapper.categoryMap.values());
 
 		setLayout(new FlowLayout());
+		title=new JLabel("Product Report");
+		title.setFont(new Font("Arial", Font.BOLD, 15) );
+		
 		String[] columnName = { "ProductId", "ProductName", "ProductDescription",
 				"Quantity", "Price", "BarCode", "ThresholdQuantity",
 				"OrderQuantity" };
@@ -81,10 +87,24 @@ public class ProductReport extends JFrame {
 		table.setFillsViewportHeight(true);
 
 		scrollPane = new JScrollPane(table);
+		add(title);
 		add(scrollPane);
 
 		jp = new JPanel();
 		btnPrint = new JButton("Print");
+		btnPrint.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					table.print();
+				} catch (PrinterException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 

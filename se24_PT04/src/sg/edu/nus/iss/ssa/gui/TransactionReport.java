@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,6 +51,7 @@ private static final long serialVersionUID = 1L;
 	private JPanel panel;
 	List<String[]>reportEntryList;
 	TableModel model;
+	private JLabel title;
 	
 	public TransactionReport() throws FileNotFoundException, FieldMismatchExcepion{
 		
@@ -63,6 +65,10 @@ private static final long serialVersionUID = 1L;
 		
 		filterBtn=new JButton("Filter");
 		getContentPane().setLayout(new FlowLayout());
+		//title=new JLabel("Transaction Report");
+		//title.setFont(new Font("Arial", Font.BOLD, 15) );
+		//add(title);
+		
 		String[] columnName = { "TransId", "MemberId",
 				"Quantity", "Date","Product Id","Product Name","Product Description"};
 		
@@ -132,8 +138,8 @@ private static final long serialVersionUID = 1L;
 		
 		panel = new JPanel();
 		getContentPane().add(panel);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
+		//panel.add(title);
 		fromLbl=new JLabel("From:");
 		panel.add(fromLbl);
 		fromText=new JTextField();
@@ -161,6 +167,19 @@ private static final long serialVersionUID = 1L;
 
 		JPanel jp = new JPanel();
 		JButton btnPrint = new JButton("Print");
+		btnPrint.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					table.print();
+				} catch (PrinterException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 
@@ -181,7 +200,7 @@ private static final long serialVersionUID = 1L;
 		System.out.println(startDateString);
 		System.out.println(endDateString);
 		if(startDateString.isEmpty()||endDateString.isEmpty()){
-			JOptionPane.showMessageDialog(filterBtn, "Please enter the Date",null,JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(filterBtn, StoreConstants.INVALID_DATE,null,JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		RowFilter<Object,Object> dateFilter = new RowFilter<Object, Object>(){
