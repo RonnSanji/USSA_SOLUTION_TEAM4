@@ -31,6 +31,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
@@ -79,9 +80,9 @@ private static final long serialVersionUID = 1L;
 		//toArray
 		for(Transaction tx:txList){
 			String []txEntry=new String[7];
-			txEntry[0]=tx.getTransactionId();
+			txEntry[0]=String.valueOf(tx.getTransactionId());
 			txEntry[1]=tx.getMemberId();
-			txEntry[2]=tx.getQuantity();
+			txEntry[2]=String.valueOf(tx.getQuantity());
 			txEntry[3]=tx.getDate();
 			txEntry[4]=tx.getProductId();
 			Product p=productMap.get(tx.getProductId());
@@ -212,7 +213,7 @@ private static final long serialVersionUID = 1L;
 	
     private Date getDate(String s) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat(StoreConstants.DATE_FORMAT);
             Date d = sdf.parse(s);
             return d;
 
