@@ -23,6 +23,7 @@ import sg.edu.nus.iss.ssa.model.Member;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.model.Entity;
+import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 public class MemberAddingWindow extends JDialog {
 
@@ -80,13 +81,11 @@ public class MemberAddingWindow extends JDialog {
 			  }
 			  else if(!memberNameString.equals("") && !memberNumberString.equals("") ){
 				  //Check the IC number 
-				  if(memberNameString.length()>25)
+				  FormValidator validator = new FormValidator();
+				  String validateResult = validator.addMemberValidateForm(memberNameString, memberNumberString);
+				  if (validateResult!=null)
 				  {
-					  JOptionPane.showMessageDialog(btnAddMember, "Please enter Member Name Less than 25 Chractor", "Error", JOptionPane.ERROR_MESSAGE);
-				  }
-				  
-				  if(memberNumberString.length()!=9){
-					  JOptionPane.showMessageDialog(btnAddMember, "Please enter a valid ID with 9 Charactor", "Error", JOptionPane.ERROR_MESSAGE);
+					  JOptionPane.showMessageDialog(btnAddMember, validateResult, "Error", JOptionPane.ERROR_MESSAGE);
 				  }
 				  
 				  else{

@@ -56,5 +56,18 @@ public class FormValidator {
 		}
 		return null;
 	}
+	
+	public String addMemberValidateForm(String memberName, String memberNumber) {
+
+		if (memberName == null || memberNumber.isEmpty()) {
+			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
+		}
+		
+		if (memberNumber.length() != 9) {
+			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
+		}
+
+		return null;
+	}
 
 }
