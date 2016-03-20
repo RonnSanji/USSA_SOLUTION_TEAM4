@@ -155,8 +155,6 @@ public class IOService<E> {
                 sb.deleteCharAt(sb.length() - 1);
                 sb.append(System.lineSeparator());
             }
-            System.out.println(sb);
-          //  URL url = getClass().getClassLoader().getResource(fileName);
             PrintWriter pw = new PrintWriter(outputFile);
 
             pw.print(sb.toString());
