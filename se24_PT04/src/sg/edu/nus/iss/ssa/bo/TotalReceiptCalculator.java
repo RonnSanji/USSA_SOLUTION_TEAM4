@@ -1,7 +1,9 @@
 package sg.edu.nus.iss.ssa.bo;
 
 import sg.edu.nus.iss.ssa.model.*;
+import sg.edu.nus.iss.ssa.util.IOService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,8 @@ public class TotalReceiptCalculator {
     DiscountOfferCalculator offerCalculator = null;
     Map<Integer, Product> productMap;
     List<Transaction> transactionList;
+    IOService<?> ioManager = new IOService<Entity>();
+
 
     public TotalReceiptCalculator(){
 
@@ -58,6 +62,11 @@ public class TotalReceiptCalculator {
 
             //update Transaction
             System.out.println(transactionList);
+            try {
+                ioManager.writeToFile(transactionList,new Transaction());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 

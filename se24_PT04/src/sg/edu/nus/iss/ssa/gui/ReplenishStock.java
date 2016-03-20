@@ -182,7 +182,7 @@ public class ReplenishStock extends JDialog {
 	}
 
 	private void reloadData() {
-		IOService<?> ioManager = new IOService<Entity>();
+		/*IOService<?> ioManager = new IOService<Entity>();
 		FileDataWrapper.productMap.clear();
 		try {
 			ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
@@ -194,7 +194,7 @@ public class ReplenishStock extends JDialog {
 			e.printStackTrace();
 		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
 			fieldMismatchExcepion.printStackTrace();
-		}
+		}*/
 	}
 
 }

@@ -2,6 +2,7 @@ package sg.edu.nus.iss.ssa.constants;
 
 public class StoreConstants {
 
+	public static final String PROJECT_NAME = "\\se24_PT04";
 	public static final String FIELD_DELIMITER = ",";
 	public static final int CASH_EQ_POINTS = 100;
 	public static final int CATEGORY_ID_MAX_LENGTH = 3;
@@ -30,13 +31,6 @@ public class StoreConstants {
 	public static final String BLANK_CATEGORYNAME = "Please enter category name";
 	public static final String CATEGORY_3_LETTERS = "Category ID must be 3 letters";
 	public static final String ERROR = "Error occured during";
-	
-	
-	//Manage Member message 
-	public static final String MEMBER_ADDED_SUCCESSFULLY = "Member has been added succesfully";
-	public static final String BLANK_MEMBER_NUMBERANDNAME = "Please enter Member Name and Member Number";
-	public static final String INVALID_NEWMEMBER_NUMBER = "Not a valid member, Please enter a number with 9 Charactor";
-	
 	
 	// Manage stock message
 	public static final String SELECT_PRODUCT = "Please select a product";
