@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.*;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
@@ -35,11 +36,14 @@ public class AddCategory extends JDialog {
 
 	private String categoryID;
 	private String categoryName;
+	private FormValidator formValidator = new FormValidator();
+	private EntityListController controller = new EntityListController();
 
 	public AddCategory() {
+		setResizable(false);
 		setTitle("Add Category Page");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 453, 314);
+		setBounds(100, 100, 453, 330);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -58,7 +62,8 @@ public class AddCategory extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				int dialogResult = -1;
 				if (validateForm()) {
-					if (validateData()) {
+					String msg = validateData();
+					if (msg == null) {
 						if (addCategory()) {
 							// dialogResult =
 							// JOptionPane.showConfirmDialog(contentPane,"Category
@@ -83,8 +88,7 @@ public class AddCategory extends JDialog {
 						// to add another one ?", "Warning",
 						// JOptionPane.YES_NO_OPTION,
 						// JOptionPane.WARNING_MESSAGE);
-						dialogResult = DisplayUtil.displayConfirmationMessage(contentPane,
-								"Category ID: " + categoryID + StoreConstants.CATEGORY_EXISTS);
+						dialogResult = DisplayUtil.displayConfirmationMessage(contentPane, msg);
 						if (dialogResult == 0) {
 							clearFields();
 						} else if (dialogResult == 1) {
@@ -104,7 +108,7 @@ public class AddCategory extends JDialog {
 				dispose();
 			}
 		});
-		btnClose.setBounds(239, 240, 89, 23);
+		btnClose.setBounds(249, 240, 89, 23);
 		contentPane.add(btnClose);
 
 		txtCatogeryID = new JTextField();
@@ -134,83 +138,26 @@ public class AddCategory extends JDialog {
 		categoryID = txtCatogeryID.getText();
 		categoryName = txtaCategoryName.getText();
 
-		FormValidator formValidator = new FormValidator();
 		String validatorMessage = formValidator.addCategoryValidateForm(categoryID, categoryName);
 		if (validatorMessage != null) {
 			DisplayUtil.displayValidationError(contentPane, validatorMessage);
 			return false;
 		}
 		return true;
-
-		/*
-		 * categoryID = txtCatogeryID.getText(); categoryName =
-		 * txtaCategoryName.getText();
-		 * 
-		 * if (categoryID == null || categoryID.isEmpty()) { //
-		 * JOptionPane.showMessageDialog(contentPane, "Please enter category //
-		 * ID", "Error", JOptionPane.ERROR_MESSAGE);
-		 * DisplayUtil.displayValidationError(contentPane,
-		 * StoreConstants.BLANK_CATEGORYID); return false; } categoryID =
-		 * categoryID.trim().toUpperCase(); txtCatogeryID.setText(categoryID);
-		 * if (categoryID.length() != 3) { //
-		 * JOptionPane.showMessageDialog(contentPane, "Category ID must be 3 //
-		 * characters", "Error",JOptionPane.ERROR_MESSAGE);
-		 * DisplayUtil.displayValidationError(contentPane,
-		 * StoreConstants.CATEGORY_3_LETTERS); return false; } categoryName =
-		 * categoryName.trim(); txtaCategoryName.setText(categoryName); if
-		 * (categoryName == null || categoryName.isEmpty()) { //
-		 * JOptionPane.showMessageDialog(contentPane, "Please enter category //
-		 * name", "Error", JOptionPane.ERROR_MESSAGE);
-		 * DisplayUtil.displayValidationError(contentPane,
-		 * StoreConstants.BLANK_CATEGORYNAME); return false; }
-		 * 
-		 * return true;
-		 */
 	}
 
-	private Boolean validateData() {
-		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
-		ArrayList<String> tempKeyList = new ArrayList<>();
-
-		if (keySet != null && keySet.size() > 0) {
-			for (String key : keySet) {
-				tempKeyList.add(key.toUpperCase());
-			}
-			if (tempKeyList.contains(categoryID.toUpperCase())) {
-				return false;
-			}
-		}
-		return true;
+	private String validateData() {
+		String validatorMessage = formValidator.addCategoryValidateData(categoryID);
+		return validatorMessage;
 	}
 
-	private Boolean addCategory() {
-		sg.edu.nus.iss.ssa.model.Category category = new sg.edu.nus.iss.ssa.model.Category();
-		category.setCategoryId(categoryID);
-		category.setCategoryName(categoryName);
-		try {
-			FileDataWrapper.categoryMap.put(categoryID, category);
-		} catch (Exception ex) {
-			// JOptionPane.showMessageDialog(contentPane, "Error occured during
-			// creating new category", "Error",JOptionPane.ERROR_MESSAGE);
-
-			DisplayUtil.displayValidationError(contentPane, StoreConstants.ERROR + " creating new category");
-			return false;
-		}
-		IOService<?> ioManager = new IOService<Entity>();
-		try {
-			ioManager.writeToFile(FileDataWrapper.categoryMap, new sg.edu.nus.iss.ssa.model.Category());
-			ioManager = null;
-		} catch (Exception ex)
-
-		{
-			// JOptionPane.showMessageDialog(contentPane, "Error occured during
-			// saving new category", "Error", JOptionPane.ERROR_MESSAGE);
-			DisplayUtil.displayValidationError(contentPane, StoreConstants.ERROR + " saving new category");
-			ioManager = null;
+	private boolean addCategory() {
+		String msg = controller.addCategory(categoryID, categoryName);
+		if (msg != null) {
+			DisplayUtil.displayValidationError(contentPane, msg);
 			return false;
 		}
 		return true;
-
 	}
 
 	private void reloadData() {

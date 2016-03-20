@@ -30,9 +30,10 @@ public class ManageCategory extends JFrame {
 
 	private static final long serialVersionUID = -8767406220537538426L;
 	private JPanel contentPane;
-	private JTextField txtSearchText;
+	//private JTextField txtSearchText;
+	//privateJButton btnSearch
 	private JTable TbResult;
-	JComboBox<String> comboBoxSearchBy;
+	//JComboBox<String> comboBoxSearchBy;
 	JScrollPane scrollPane;
 	JLabel lblNoResult;
 	JButton btnAddCategory;
@@ -53,36 +54,37 @@ public class ManageCategory extends JFrame {
 	TableModel model;
 
 	public ManageCategory() {
+		setResizable(false);
 		setTitle("Manage Category");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 708, 588);
+		setBounds(100, 100, 699, 588);
 		contentPane = new JPanel();
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Search by");
-		lblNewLabel.setBounds(50, 30, 80, 14);
-		contentPane.add(lblNewLabel);
+		//JLabel lblNewLabel = new JLabel("Search by");
+		//lblNewLabel.setBounds(50, 30, 80, 14);
+		//contentPane.add(lblNewLabel);
 
-		comboBoxSearchBy = new JComboBox<String>();
-		comboBoxSearchBy.setBounds(129, 27, 106, 20);
-		contentPane.add(comboBoxSearchBy);
-		comboBoxSearchBy.setModel(new DefaultComboBoxModel<String>(comboBoxSearchByItem));
+		//comboBoxSearchBy = new JComboBox<String>();
+		//comboBoxSearchBy.setBounds(129, 27, 106, 20);
+		//contentPane.add(comboBoxSearchBy);
+		//comboBoxSearchBy.setModel(new DefaultComboBoxModel<String>(comboBoxSearchByItem));
 
-		txtSearchText = new JTextField();
-		txtSearchText.setBounds(257, 27, 184, 20);
-		contentPane.add(txtSearchText);
-		txtSearchText.setColumns(10);
+		//txtSearchText = new JTextField();
+		//txtSearchText.setBounds(257, 27, 184, 20);
+		//contentPane.add(txtSearchText);
+		//txtSearchText.setColumns(10);
 
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(451, 26, 79, 23);
-		contentPane.add(btnSearch);
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				search();
-			}
-		});
+		//privateJButton = new JButton("Search");
+		//btnSearch.setBounds(451, 26, 79, 23);
+		//contentPane.add(btnSearch);
+		//btnSearch.addActionListener(new ActionListener() {
+			//public void actionPerformed(ActionEvent arg0) {
+				//searchAll();
+			//}
+		//});
 
 		lblNoResult = new JLabel("");
 		lblNoResult.setBounds(75, 73, 150, 14);
@@ -115,40 +117,48 @@ public class ManageCategory extends JFrame {
 		scrollPane.setBounds(20, 100, 650, 350);
 		contentPane.add(scrollPane);
 
-		JButton btnClear = new JButton("Clear");
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clearKeyWordTextBox();
-			}
-		});
-		btnClear.setBounds(540, 26, 89, 23);
-		contentPane.add(btnClear);
+		//JButton btnClear = new JButton("Clear");
+		//btnClear.addActionListener(new ActionListener() {
+			//public void actionPerformed(ActionEvent e) {
+				//clearKeyWordTextBox();
+			//}
+		//});
+		//btnClear.setBounds(540, 26, 89, 23);
+		//contentPane.add(btnClear);
+		
+		JLabel lblNewLabel = new JLabel("Category List");
+		lblNewLabel.setBounds(20, 48, 188, 20);
+		contentPane.add(lblNewLabel);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
+
+		searchAll();
 	}
 
 	private void clearKeyWordTextBox() {
-		txtSearchText.setText("");
+		//txtSearchText.setText("");
 	}
 
-	private void search() {
+	private void searchAll() {
 		categoryList = (Collection<Category>) FileDataWrapper.categoryMap.values();
 		categoryListResult = new ArrayList<Category>();
-		if (comboBoxSearchBy.getSelectedItem() != null) {
-			searchBy = comboBoxSearchBy.getSelectedItem().toString();
+		//if (comboBoxSearchBy.getSelectedItem() != null) {
+			// searchBy = comboBoxSearchBy.getSelectedItem().toString();
 			for (Category category : categoryList) {
 				// Name
-				if (searchBy == comboBoxSearchByItem[0]) {
-					if (category.getCategoryId().toUpperCase().contains(txtSearchText.getText().toUpperCase())) {
-						categoryListResult.add(category);
-					}
-				}
+				// if (searchBy == comboBoxSearchByItem[0]) {
+				//if (category.getCategoryId().toUpperCase().contains(txtSearchText.getText().toUpperCase())) {
+					categoryListResult.add(category);
+				//}
+				// }
 				// Description
-				else if (searchBy == comboBoxSearchByItem[1]) {
-					if (category.getCategoryName().toUpperCase().contains(txtSearchText.getText().toUpperCase())) {
-						categoryListResult.add(category);
-					}
-				}
+				// else if (searchBy == comboBoxSearchByItem[1]) {
+				// if
+				// (category.getCategoryName().toUpperCase().contains(txtSearchText.getText().toUpperCase()))
+				// {
+				// categoryListResult.add(category);
+				// }
+				// }
 
 			}
 
@@ -161,8 +171,8 @@ public class ManageCategory extends JFrame {
 
 			showResultTable();
 
-			searchType = 1;
-		}
+			// searchType = 1;
+		//}
 	}
 
 	private void prepareTableData() {
@@ -203,9 +213,9 @@ public class ManageCategory extends JFrame {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				if (searchType == 1) {
-					search();
-				}
+				// if (searchType == 1) {
+				searchAll();
+				// }
 			}
 
 			@Override

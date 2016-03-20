@@ -19,11 +19,13 @@ import javax.swing.text.Segment;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
+import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -51,6 +53,9 @@ public class ReplenishStock extends JDialog {
 	private JLabel lblNewLabel_4;
 	private JLabel lblBarCode;
 
+	private FormValidator formValidator = new FormValidator();
+	private EntityListController controller = new EntityListController();
+
 	public ReplenishStock(Product selectedProduct) {
 		if (selectedProduct == null) {
 			DisplayUtil.displayValidationError(contentPanel, StoreConstants.ERROR + " loading product");
@@ -59,17 +64,17 @@ public class ReplenishStock extends JDialog {
 		this.selectedProduct = selectedProduct;
 		setResizable(false);
 		setTitle("Replenish Stock");
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 337);
 		contentPanel.setLayout(null);
 		getContentPane().setLayout(null);
 
 		buttonPane = new JPanel();
-		buttonPane.setBounds(0, 231, 444, 41);
+		buttonPane.setBounds(0, 231, 444, 50);
 		getContentPane().add(buttonPane);
 		buttonPane.setLayout(null);
 
 		cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(266, 5, 78, 23);
+		cancelButton.setBounds(255, 16, 78, 23);
 		cancelButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -81,7 +86,7 @@ public class ReplenishStock extends JDialog {
 		buttonPane.add(cancelButton);
 
 		okButton = new JButton("OK");
-		okButton.setBounds(104, 5, 78, 23);
+		okButton.setBounds(111, 16, 78, 23);
 		buttonPane.add(okButton);
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -156,39 +161,20 @@ public class ReplenishStock extends JDialog {
 
 	private boolean validateForm() {
 		String stockTxt = txtAddQuantity.getText();
-		if (stockTxt == null || stockTxt.isEmpty()) {
-			DisplayUtil.displayValidationError(buttonPane, StoreConstants.BLANK_REPLENISH_QUANTITY);
+		String msg = formValidator.replenishStockValidateForm(stockTxt);
+		if (msg != null) {
+			DisplayUtil.displayValidationError(buttonPane, msg);
 			return false;
 		}
+
 		return true;
 	}
 
 	private void addStock() {
-
 		long stockAdd = Long.parseLong(txtAddQuantity.getText());
-		this.selectedProduct.setQuantity(selectedProduct.getQuantity() + stockAdd);
-
-		for (Product p : FileDataWrapper.productMap.values()) {
-			Long barcode = p.getBarCode();
-			if (barcode == selectedProduct.getBarCode()) {
-				p = selectedProduct;
-				break;
-			}
-		}
-		// FileDataWrapper.productMap.(selectedProduct.getBarCode(),
-		// selectedProduct);
-
-		IOService<?> ioManager = new IOService<Entity>();
-		try {
-			ioManager.writeToFile(FileDataWrapper.productMap, new sg.edu.nus.iss.ssa.model.Product());
-			ioManager = null;
-		} catch (Exception ex)
-
-		{
-			// JOptionPane.showMessageDialog(contentPane, "Error occured during
-			// saving new category", "Error", JOptionPane.ERROR_MESSAGE);
-			DisplayUtil.displayValidationError(buttonPane, StoreConstants.ERROR + " saving product");
-			ioManager = null;
+		String msg = controller.addStock(selectedProduct,stockAdd);
+		if (msg != null) {
+			DisplayUtil.displayValidationError(buttonPane, msg);
 			return;
 		}
 
