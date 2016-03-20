@@ -22,6 +22,8 @@ import sg.edu.nus.iss.ssa.model.StoreKeeper;
 import sg.edu.nus.iss.ssa.model.Transaction;
 import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.gui.LoginWindow;
+import sg.edu.nus.iss.ssa.gui.ManageCategory;
+import sg.edu.nus.iss.ssa.gui.ManageStock;
 
 /**
  * Main Class to launch SouvenirStore Application.
@@ -63,12 +65,12 @@ public class SouvenirStoreApp {
 		}
 
 		// Launch Manage Category window, for testing
-		//ManageCategory manageCategoryWindow = new ManageCategory();
-		//manageCategoryWindow.setVisible(true);
+		ManageCategory manageCategoryWindow = new ManageCategory();
+		manageCategoryWindow.setVisible(true);
 		
 		// Launch Manage Stock window, for testing
-		//ManageStock manageStockWindow = new ManageStock();
-		//manageStockWindow.setVisible(true);
+		ManageStock manageStockWindow = new ManageStock();
+		manageStockWindow.setVisible(true);
 		
 		// Launch Login window, for testing
 		LoginWindow loginWindow = new LoginWindow();

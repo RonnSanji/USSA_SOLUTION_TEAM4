@@ -199,7 +199,7 @@ public class ReplenishStock extends JDialog {
 		IOService<?> ioManager = new IOService<Entity>();
 		FileDataWrapper.productMap.clear();
 		try {
-			ioManager.readFromFile(FileDataWrapper.productMap, new sg.edu.nus.iss.ssa.model.Product());
+			ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
 			ioManager = null;
 			System.out.println("products : " + FileDataWrapper.productMap.keySet());
 		} catch (FileNotFoundException e) {

@@ -208,7 +208,7 @@ public class AddCategory extends JDialog {
 		IOService<?> ioManager = new IOService<Entity>();
 		FileDataWrapper.categoryMap.clear();
 		try {
-			ioManager.readFromFile(FileDataWrapper.categoryMap, new sg.edu.nus.iss.ssa.model.Category());
+			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
 			ioManager = null;
 			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
 		} catch (FileNotFoundException e) {
