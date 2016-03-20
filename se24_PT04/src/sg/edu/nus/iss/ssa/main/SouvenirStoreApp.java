@@ -41,16 +41,16 @@ public class SouvenirStoreApp {
 				
 		try {
 			//load data in memory
-			ioManager.readFromFile( FileDataWrapper.productMap, new Product());
-			ioManager.readFromFile( FileDataWrapper.categoryMap, new Category());
-			ioManager.readFromFile( FileDataWrapper.memberMap, new Member());
-			ioManager.readFromFile( FileDataWrapper.transactionMap, new Transaction());
-			ioManager.readFromFile( FileDataWrapper.storeKeeperMap, new StoreKeeper());
+			ioManager.readFromFile( FileDataWrapper.productMap,null, new Product());
+			ioManager.readFromFile( FileDataWrapper.categoryMap,null, new Category());
+			ioManager.readFromFile( FileDataWrapper.memberMap,null, new Member());
+			ioManager.readFromFile( null, FileDataWrapper.transactionList, new Transaction());
+			ioManager.readFromFile( FileDataWrapper.storeKeeperMap,null, new StoreKeeper());
 			
 			System.out.println("products :" + FileDataWrapper.productMap.keySet());
 			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
 			System.out.println("members : " + FileDataWrapper.memberMap.keySet());
-			System.out.println("transactions : " + FileDataWrapper.transactionMap.keySet());
+			System.out.println("transactions : " + FileDataWrapper.transactionList);
 			System.out.println("SoreKeeper : " + FileDataWrapper.storeKeeperMap.keySet());
 			
 			//Launch Purchase Window 
