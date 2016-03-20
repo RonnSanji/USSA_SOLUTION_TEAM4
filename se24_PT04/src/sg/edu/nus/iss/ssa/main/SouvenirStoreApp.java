@@ -14,13 +14,7 @@ import sg.edu.nus.iss.ssa.gui.MemberReport;
 import sg.edu.nus.iss.ssa.gui.ProductReport;
 import sg.edu.nus.iss.ssa.gui.ProductSelectionWindow;
 import sg.edu.nus.iss.ssa.gui.ReplenishStock;
-import sg.edu.nus.iss.ssa.model.Category;
-import sg.edu.nus.iss.ssa.model.Order;
-import sg.edu.nus.iss.ssa.model.Entity;
-import sg.edu.nus.iss.ssa.model.Member;
-import sg.edu.nus.iss.ssa.model.Product;
-import sg.edu.nus.iss.ssa.model.StoreKeeper;
-import sg.edu.nus.iss.ssa.model.Transaction;
+import sg.edu.nus.iss.ssa.model.*;
 import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.gui.LoginWindow;
 import sg.edu.nus.iss.ssa.gui.ManageCategory;
@@ -50,12 +44,15 @@ public class SouvenirStoreApp {
 			ioManager.readFromFile( FileDataWrapper.memberMap,null, new Member());
 			ioManager.readFromFile( null, FileDataWrapper.transactionList, new Transaction());
 			ioManager.readFromFile( FileDataWrapper.storeKeeperMap,null, new StoreKeeper());
+			ioManager.readFromFile( null, FileDataWrapper.discounts, new PeriodDiscount());
 			
 			System.out.println("products :" + FileDataWrapper.productMap.keySet());
 			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
 			System.out.println("members : " + FileDataWrapper.memberMap.keySet());
 			System.out.println("transactions : " + FileDataWrapper.transactionList);
 			System.out.println("SoreKeeper : " + FileDataWrapper.storeKeeperMap.keySet());
+			System.out.println("discounts : " + FileDataWrapper.discounts);
+			System.out.println(((PeriodDiscount)FileDataWrapper.discounts.get(4)).checkIfPeriodicDiscountAvailable());
 			
 			//Launch Purchase Window 
 			ProductSelectionWindow productWindow = new ProductSelectionWindow();

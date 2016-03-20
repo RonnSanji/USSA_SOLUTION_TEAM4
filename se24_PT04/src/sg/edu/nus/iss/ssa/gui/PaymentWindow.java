@@ -36,8 +36,8 @@ public class PaymentWindow extends JFrame {
 	private JTextField cashRendered;
 	private JButton btnPay;
 	private JButton btnCancel;
-	private Order order;
 
+	private Order order;
 	DiscountOfferCalculator offerCalculator = null;
 	OrderValidator orderValidator;
 

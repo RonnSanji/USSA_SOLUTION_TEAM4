@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.ssa.model;
 
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class Order {
 	 * @return
 	 */
 	public String getMemberIdOfUser(){
-		return getMemberInfo() != null ? getMemberInfo().getMemberId() : "PUBLIC";
+		return getMemberInfo() != null ? getMemberInfo().getMemberId() : StoreConstants.PUBLIC_USER;
 	}
 
 
