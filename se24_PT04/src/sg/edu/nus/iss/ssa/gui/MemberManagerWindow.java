@@ -33,7 +33,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
 
-public class MemberManagerWindow extends JFrame {
+public class MemberManagerWindow extends JPanel {
 
 	private  JScrollPane scrollPane;
 	private  JPanel buttonPanel;
@@ -62,35 +62,37 @@ public class MemberManagerWindow extends JFrame {
 		
 		System.out.println("members : " + FileDataWrapper.memberMap.keySet());
 		*/
-		setResizable(false);
-		setTitle("Member Information");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1000,670);
-		setLocationRelativeTo(null);
-
+		//setResizable(false);
+		//setTitle("Member Information");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(800,600);
+		//setLocationRelativeTo(null);
+		this.setOpaque(false);
+		setLayout(null);
+		//this.setLayout(null);
 		scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
+		scrollPane.setBounds(153, 6, 492, 405);
+
+		this.add(scrollPane);
 
 		buttonPanel = new JPanel();
-		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-
-		JButton btnBackToMain = new JButton("Back To DashBoard");
-		btnBackToMain.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
+		buttonPanel.setBounds(153, 423, 492, 66);
+		this.add(buttonPanel);
+		buttonPanel.setOpaque(false);
 
 		btnAddNewMember = new JButton("Add New Memeber");
+		btnAddNewMember.setBounds(5, 5, 161, 55);
 		btnAddNewMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MemberAddingWindow memberAddWindow = new MemberAddingWindow(FileDataWrapper.memberMap,memberManagerWindow);
 				memberAddWindow.setVisible(true);
 			}
 		});
+		buttonPanel.setLayout(null);
 		buttonPanel.add(btnAddNewMember);
 
 		btnRemoveMember = new JButton("Remove Member");
+		btnRemoveMember.setBounds(328, 5, 147, 55);
 		btnRemoveMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
@@ -123,8 +125,6 @@ public class MemberManagerWindow extends JFrame {
 			}
 		});
 		buttonPanel.add(btnRemoveMember);
-		btnBackToMain.setHorizontalAlignment(SwingConstants.RIGHT);
-		buttonPanel.add(btnBackToMain);
 
 		// jTable Data Display
 		String[] columns = new String[] { "Member Name", "Member Number", "LoytyPoints" };
