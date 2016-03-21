@@ -44,7 +44,7 @@ public class StoreConstants {
 	public static final String SELECT_PRODUCT = "Please select a product";
 	public static final String STOCK_UPDATED_SUCCESSFULLY = "Stock has been updated successfully !";
 	public static final String BLANK_REPLENISH_QUANTITY = "Please enter replenish quantity";
-
+	public static final String INVALID_REPLENISH_QUANTITY = "Please enter a valid replenish quantity";
 
 
 

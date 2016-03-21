@@ -11,59 +11,93 @@ import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
-public class FormValidator {
+public class FormValidator
+{
 
 	/*
 	 * Naming convention rule: form name + ValidateForm No UI controller
 	 * 
 	 */
-	public String addCategoryValidateForm(String categoryID, String categoryName) {
-
-		if (categoryID == null || categoryID.isEmpty()) {
+	public String addCategoryValidateForm(String categoryID, String categoryName)
+	{
+		if (categoryID == null)
+		{
 			return StoreConstants.BLANK_CATEGORYID;
 		}
 		categoryID = categoryID.trim().toUpperCase();
-		if (categoryID.length() != 3) {
+		if (categoryID.isEmpty())
+		{
+			return StoreConstants.BLANK_CATEGORYID;
+		}
+		if (categoryID.length() != 3)
+		{
 			return StoreConstants.CATEGORY_3_LETTERS;
 		}
+		if (categoryName == null)
+		{
+			return StoreConstants.BLANK_CATEGORYNAME;
+		}
 		categoryName = categoryName.trim();
-		if (categoryName == null || categoryName.isEmpty()) {
+		if (categoryName.isEmpty())
+		{
 			return StoreConstants.BLANK_CATEGORYNAME;
 		}
 
 		return null;
 	}
 
-	public String addCategoryValidateData(String categoryID) {
+	public String addCategoryValidateData(String categoryID)
+	{
 		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
 		ArrayList<String> tempKeyList = new ArrayList<>();
 
-		if (keySet != null && keySet.size() > 0) {
-			for (String key : keySet) {
+		if (keySet != null && keySet.size() > 0)
+		{
+			for (String key : keySet)
+			{
 				tempKeyList.add(key.toUpperCase());
 			}
-			if (tempKeyList.contains(categoryID.toUpperCase())) {
+			if (tempKeyList.contains(categoryID.toUpperCase()))
+			{
 				return "Category ID: " + categoryID + " " + StoreConstants.CATEGORY_EXISTS;
 			}
 		}
 		return null;
 	}
 
-	public String replenishStockValidateForm(String stockTxt) {
-		
-		if (stockTxt == null || stockTxt.isEmpty()) {
+	public String replenishStockValidateForm(String stockTxt)
+	{
+
+		if (stockTxt == null || stockTxt.isEmpty())
+		{
 			return StoreConstants.BLANK_REPLENISH_QUANTITY;
+		}
+		try
+		{
+			long l = Long.parseLong(stockTxt);
+			if (l <= 0)
+			{
+				return StoreConstants.INVALID_REPLENISH_QUANTITY;
+			}
+		}
+		catch (Exception ex)
+		{
+			//ex.printStackTrace();
+			return StoreConstants.INVALID_REPLENISH_QUANTITY;
 		}
 		return null;
 	}
-	
-	public String addMemberValidateForm(String memberName, String memberNumber) {
 
-		if (memberName == null || memberNumber.isEmpty()) {
+	public String addMemberValidateForm(String memberName, String memberNumber)
+	{
+
+		if (memberName == null || memberNumber.isEmpty())
+		{
 			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
 		}
-		
-		if (memberNumber.length() != 9) {
+
+		if (memberNumber.length() != 9)
+		{
 			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
 		}
 

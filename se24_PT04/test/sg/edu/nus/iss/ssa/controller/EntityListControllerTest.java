@@ -62,31 +62,27 @@ public class EntityListControllerTest extends TestCase {
 	}
 
 	@Test
-	public void test() {
-
-	}
-
-	@Test
 	public void testaddCategory() {
 		Random ran = new Random();
 		String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		IOService service = new IOService<>();
-		try {
-			service.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			service = null;
-			e.printStackTrace();
-		} catch (FieldMismatchExcepion e) {
-
-			// TODO Auto-generated catch block
-			service = null;
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		IOService<?> ioManager = new IOService<>();
+		FileDataWrapper.categoryMap.clear();
+		if (ioManager == null) {
+			ioManager = new IOService<>();
 		}
-		service = null;
+		try {
+			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
+			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ioManager = null;
+		}
+
 		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
 		ArrayList<String> tempKeyList = new ArrayList<>();
 
@@ -122,23 +118,23 @@ public class EntityListControllerTest extends TestCase {
 
 		if (msg == null) {
 
-			service = new IOService<>();
-			try {
-				service.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				service = null;
-				e.printStackTrace();
-			} catch (FieldMismatchExcepion e) {
-
-				// TODO Auto-generated catch block
-				service = null;
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			FileDataWrapper.categoryMap.clear();
+			if (ioManager == null) {
+				ioManager = new IOService<>();
 			}
-			service = null;
+			try {
+				ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
+				System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+				fieldMismatchExcepion.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				ioManager = null;
+				controller = null;
+			}
 
 			assertEquals(categoryID, FileDataWrapper.categoryMap.get(categoryID).getCategoryId());
 			assertEquals(categoryID, FileDataWrapper.categoryMap.get(categoryID).getCategoryName());
@@ -146,26 +142,79 @@ public class EntityListControllerTest extends TestCase {
 	}
 
 	@Test
+	public void testReloadCategoryData() {
+		Random ran = new Random();
+
+		IOService<?> ioManager = new IOService<>();
+		FileDataWrapper.categoryMap.clear();
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
+			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ioManager = null;
+		}
+
+		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
+		ArrayList<String> tempKeyList = new ArrayList<>();
+
+		if (keySet != null && keySet.size() > 0) {
+			for (String key : keySet) {
+				tempKeyList.add(key.toUpperCase());
+			}
+		}
+
+		String categoryID = tempKeyList.get(ran.nextInt(tempKeyList.size()));
+		String originalCategoryName = FileDataWrapper.categoryMap.get(categoryID).getCategoryName();
+
+		FileDataWrapper.categoryMap.get(categoryID).setCategoryName("A new category name");
+
+		System.out.println("Original Category Name: " + originalCategoryName);
+
+		System.out.println("New Category Name: " + FileDataWrapper.categoryMap.get(categoryID).getCategoryName());
+
+		EntityListController controller = new EntityListController();
+		try {
+			controller.reloadCategoryData();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			controller = null;
+		}
+
+		assertEquals(originalCategoryName, FileDataWrapper.categoryMap.get(categoryID).getCategoryName());
+
+	}
+
+	@Test
 	public void testaddStock() {
 		Random ran = new Random();
 
-		IOService service = new IOService<>();
-		try {
-			service.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			service = null;
-			e.printStackTrace();
-		} catch (FieldMismatchExcepion e) {
-
-			// TODO Auto-generated catch block
-			service = null;
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		IOService<?> ioManager = new IOService<>();
+		FileDataWrapper.productMap.clear();
+		if (ioManager == null) {
+			ioManager = new IOService<>();
 		}
-		service = null;
+		try {
+			ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
+			System.out.println("products : " + FileDataWrapper.productMap.keySet());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ioManager = null;
+		}
 
 		// for (int i = 0; i < 100; i++) {
 		int stockAdd = ran.nextInt(100);
@@ -189,29 +238,92 @@ public class EntityListControllerTest extends TestCase {
 		String msg = controller.addStock(selectedProduct, stockAdd);
 
 		if (msg == null) {
-			service = new IOService<>();
-			try {
-				service.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				service = null;
-				e.printStackTrace();
-			} catch (FieldMismatchExcepion e) {
-
-				// TODO Auto-generated catch block
-				service = null;
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			FileDataWrapper.productMap.clear();
+			if (ioManager == null) {
+				ioManager = new IOService<>();
 			}
-			service = null;
-			
-			assertEquals(oldStock + stockAdd,
-					FileDataWrapper.productMap.get(selectedProduct.getBarCode()).getQuantity());
-			// assertEquals(categoryID,
-			// FileDataWrapper.categoryMap.get(categoryID).getCategoryName());
+			try {
+				ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
+				System.out.println("products : " + FileDataWrapper.productMap.keySet());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+				fieldMismatchExcepion.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				ioManager = null;
+				controller = null;
+			}
+			for (Product product : FileDataWrapper.productMap.values()) {
+				if (product.getBarCode() == selectedProduct.getBarCode()) {
+					assertEquals(oldStock + stockAdd, product.getQuantity());
+					break;
+				}
+			}
+
 		}
 
 	}
+
+	@Test
+	public void testReloadProductData() {
+		Random ran = new Random();
+
+		IOService<?> ioManager = new IOService<>();
+		FileDataWrapper.productMap.clear();
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
+			System.out.println("products : " + FileDataWrapper.productMap.keySet());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ioManager = null;
+		}
+
+		ArrayList<Product> tempProductList = new ArrayList<Product>();
+
+		for (Product p : FileDataWrapper.productMap.values()) {
+			tempProductList.add(p);
+		}
+
+		Product p = tempProductList.get(ran.nextInt(tempProductList.size()));
+		Integer barCode = p.getBarCode();
+		String originalProductName = p.getProductName();
+
+		for (Product product : FileDataWrapper.productMap.values()) {
+			if (p.getBarCode() == barCode) {
+				product.setProductName("A new product name");
+				break;
+			}
+		}
+
+		System.out.println("Original Product Name: " + originalProductName);
+
+		System.out.println("New Product Name: A new product name");
+
+		EntityListController controller = new EntityListController();
+		try {
+			controller.reloadProductData();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			controller = null;
+		}
+
+		for (Product product : FileDataWrapper.productMap.values()) {
+			if (p.getBarCode() == barCode) {
+				assertEquals(originalProductName, p.getProductName());
+				break;
+			}
+		}
+	}
+
 }

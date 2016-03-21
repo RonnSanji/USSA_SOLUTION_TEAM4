@@ -1,42 +1,26 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.UndoableEditListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
-import javax.swing.text.Position;
-import javax.swing.text.Segment;
-
-import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
-import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
-import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
-import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class ReplenishStock extends JDialog {
+public class ReplenishStock extends JDialog
+{
 	private static final long serialVersionUID = 4069437661115880594L;
 	private final JPanel contentPanel = new JPanel();
 	public Product selectedProduct;
@@ -57,8 +41,12 @@ public class ReplenishStock extends JDialog {
 	private FormValidator formValidator = new FormValidator();
 	private EntityListController controller = new EntityListController();
 
-	public ReplenishStock(Product selectedProduct) {
-		if (selectedProduct == null) {
+	public ReplenishStock(Product selectedProduct)
+	{
+		this.addWindowListener(new MyWindowListener());
+
+		if (selectedProduct == null)
+		{
 			DisplayUtil.displayValidationError(contentPanel, StoreConstants.ERROR + " loading product");
 			return;
 		}
@@ -76,9 +64,11 @@ public class ReplenishStock extends JDialog {
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.setBounds(255, 16, 78, 23);
-		cancelButton.addActionListener(new ActionListener() {
+		cancelButton.addActionListener(new ActionListener()
+		{
 
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				dispose();
 			}
 		});
@@ -89,9 +79,12 @@ public class ReplenishStock extends JDialog {
 		okButton = new JButton("OK");
 		okButton.setBounds(111, 16, 78, 23);
 		buttonPane.add(okButton);
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!validateForm()) {
+		okButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (!validateForm())
+				{
 					return;
 				}
 				addStock();
@@ -131,9 +124,11 @@ public class ReplenishStock extends JDialog {
 		getContentPane().add(lblCurrentQuantity);
 
 		txtAddQuantity = new JTextField();
-		txtAddQuantity.setDocument(new PlainDocument() {
+		txtAddQuantity.setDocument(new PlainDocument()
+		{
 			@Override
-			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
+			{
 				if (str.matches("[0-9]"))
 					super.insertString(offs, str, a);
 			}
@@ -152,7 +147,8 @@ public class ReplenishStock extends JDialog {
 		populateData();
 	}
 
-	private void populateData() {
+	private void populateData()
+	{
 
 		lblProductName.setText(selectedProduct.getProductName());
 		lblProductDescription.setText(selectedProduct.getProductDesc());
@@ -160,10 +156,12 @@ public class ReplenishStock extends JDialog {
 		lblCurrentQuantity.setText(String.valueOf(selectedProduct.getQuantity()));
 	}
 
-	private boolean validateForm() {
+	private boolean validateForm()
+	{
 		String stockTxt = txtAddQuantity.getText();
 		String msg = formValidator.replenishStockValidateForm(stockTxt);
-		if (msg != null) {
+		if (msg != null)
+		{
 			DisplayUtil.displayValidationError(buttonPane, msg);
 			return false;
 		}
@@ -171,10 +169,12 @@ public class ReplenishStock extends JDialog {
 		return true;
 	}
 
-	private void addStock() {
+	private void addStock()
+	{
 		long stockAdd = Long.parseLong(txtAddQuantity.getText());
-		String msg = controller.addStock(selectedProduct,stockAdd);
-		if (msg != null) {
+		String msg = controller.addStock(selectedProduct, stockAdd);
+		if (msg != null)
+		{
 			DisplayUtil.displayValidationError(buttonPane, msg);
 			return;
 		}
@@ -182,22 +182,63 @@ public class ReplenishStock extends JDialog {
 		DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.STOCK_UPDATED_SUCCESSFULLY);
 	}
 
-	private void reloadData() {
-		IOService<?> ioManager = new IOService<Entity>();
-		FileDataWrapper.productMap.clear();
-		try {
-			ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
-			ioManager = null;
-			System.out.println("products : " + FileDataWrapper.productMap.keySet());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			ioManager = null;
-			e.printStackTrace();
-		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
-			fieldMismatchExcepion.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void reloadData()
+	{
+		controller.reloadProductData();
 	}
 
+	class MyWindowListener implements WindowListener
+	{
+
+		@Override
+		public void windowActivated(WindowEvent arg0)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowClosed(WindowEvent arg0)
+		{
+			// TODO Auto-generated method stub
+			formValidator = null;
+			controller = null;
+		}
+
+		@Override
+		public void windowClosing(WindowEvent arg0)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent arg0)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent arg0)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowIconified(WindowEvent arg0)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowOpened(WindowEvent arg0)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+	}
 }
