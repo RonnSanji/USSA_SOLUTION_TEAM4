@@ -19,7 +19,8 @@ import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.gui.LoginWindow;
 import sg.edu.nus.iss.ssa.gui.ManageCategory;
 import sg.edu.nus.iss.ssa.gui.ManageStock;
-import sg.edu.nus.iss.ssa.gui.MemberManagerWindow;;
+import sg.edu.nus.iss.ssa.gui.MemberManagerWindow;
+import sg.edu.nus.iss.ssa.gui.DashBoard;
 
 /**
  * Main Class to launch SouvenirStore Application.
@@ -55,8 +56,15 @@ public class SouvenirStoreApp {
 			System.out.println(((PeriodDiscount)FileDataWrapper.discounts.get(4)).checkIfPeriodicDiscountAvailable());
 			
 			//Launch Purchase Window 
-			ProductSelectionWindow productWindow = new ProductSelectionWindow();
-			productWindow.setVisible(true);
+			//ProductSelectionWindow productWindow = new ProductSelectionWindow();
+			//productWindow.setVisible(true);
+			try {
+				DashBoard dashboardwindow = new DashBoard();
+				dashboardwindow.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		} catch (FileNotFoundException e) {
 			System.err
 					.println("Error occurred while executing program, please resolve the error and continue again");

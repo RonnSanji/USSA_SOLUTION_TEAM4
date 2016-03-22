@@ -30,9 +30,9 @@ import javax.swing.SwingConstants;
 
 
 
-public class DashBoard {
+public class DashBoard extends JFrame{
 
-	private JFrame frame;
+
 
 	private ImageIcon imgStoreKeeper,imgBackGround,imgPurchasing,imgMember,imgCategory,imgInventory,imgClock,imgDiscount,imgReport,imgLogout;
 	private MemberManagerWindow memberManagerWindow;
@@ -42,7 +42,7 @@ public class DashBoard {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -53,12 +53,13 @@ public class DashBoard {
 				}
 			}
 		});
-	}
+	}/*
 
 	/**
 	 * Create the application.
 	 */
 	public DashBoard() {
+	
 		initialize();
 	}
 
@@ -90,18 +91,18 @@ public class DashBoard {
 
 
 		
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setSize(1280, 800);
+	
+		this.setResizable(false);
+		this.setBounds(100, 100, 450, 300);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
+		this.setSize(1280, 800);
 		
 		JPanel stroreKepperInfoPanel = new JPanel();
 		stroreKepperInfoPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
 		stroreKepperInfoPanel.setBounds(40, 0, 1200, 138);
 		stroreKepperInfoPanel.setOpaque(false);
-		frame.getContentPane().add(stroreKepperInfoPanel);
+		this.getContentPane().add(stroreKepperInfoPanel);
 		stroreKepperInfoPanel.setLayout(null);
 		
 		JLabel lblFantasyTeam = new JLabel("Fantasy Team 4 Souvenir Store");
@@ -151,7 +152,7 @@ public class DashBoard {
 		JPanel mainActivityPanel = new JPanel();
 		mainActivityPanel.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2, true), "MainActivities", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		mainActivityPanel.setBounds(380, 161, 860, 600);
-		frame.getContentPane().add(mainActivityPanel);
+		this.getContentPane().add(mainActivityPanel);
 		mainActivityPanel.setOpaque(false);
 		mainActivityPanel.setLayout(null);
 		
@@ -163,7 +164,7 @@ public class DashBoard {
 		JPanel menuPanel = new JPanel();
 		menuPanel.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2, true), "MENU", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		menuPanel.setBounds(42, 161, 298, 600);
-		frame.getContentPane().add(menuPanel);
+		this.getContentPane().add(menuPanel);
 		menuPanel.setLayout(null);
 		menuPanel.setOpaque(false);
 		
@@ -241,6 +242,6 @@ public class DashBoard {
 		JLabel lblBackGround = new JLabel("");
 		lblBackGround.setIcon(imgBackGround);
 		lblBackGround.setBounds(0, 0, 1280, 800);
-		frame.getContentPane().add(lblBackGround);
+		this.getContentPane().add(lblBackGround);
 	}
 }

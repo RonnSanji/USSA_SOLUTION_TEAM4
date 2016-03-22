@@ -89,13 +89,17 @@ public class MemberAddingWindow extends JDialog {
 				  }
 				  
 				  else{
+					  //create new member object
 					  Member newMember = new Member(memberNameString,memberNumberString,-1);	
+					  
+					  //add new member to memory 
 					  try{
 					  memberMap.put(memberNumberString,newMember);
 					  }catch (Exception ex){
 						  DisplayUtil.displayValidationError(contentPanel, StoreConstants.ERROR + " creating new member");
 					  }
 					  
+					  //write new memeber from memory to .dat file
 					  IOService<?> ioManager = new IOService<Entity>();
 						try {
 							ioManager.writeToFile(memberMap.values(), new sg.edu.nus.iss.ssa.model.Member());
@@ -106,9 +110,9 @@ public class MemberAddingWindow extends JDialog {
 							DisplayUtil.displayValidationError(contentPanel, StoreConstants.ERROR + " saving new member");
 							ioManager = null;
 						}
-				      
-					  MemberManagerWindow newWindow = new MemberManagerWindow();  
-					  newWindow.setVisible(true);
+				      	
+						//update the table data in MemberManagerWindow
+						memberManagerWindow.refreshTable(newMember.getMemeberArray());
 					dispose();
 				  }
 				

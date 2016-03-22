@@ -51,32 +51,16 @@ public class MemberManagerWindow extends JPanel {
 
 		MemberManagerWindow memberManagerWindow = this;
 		//show the current memory members 
-		
-		/*IOService<?> ioManager = new IOService<Entity>();
-		try {
-			ioManager.readFromFile( FileDataWrapper.memberMap, null, new Member());
-		} catch (FileNotFoundException | FieldMismatchExcepion e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		System.out.println("members : " + FileDataWrapper.memberMap.keySet());
-		*/
-		//setResizable(false);
-		//setTitle("Member Information");
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		setSize(800,600);
-		//setLocationRelativeTo(null);
+
 		this.setOpaque(false);
 		setLayout(null);
-		//this.setLayout(null);
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(153, 6, 492, 405);
-
+		scrollPane.setBounds(12, 46, 782, 405);
 		this.add(scrollPane);
-
 		buttonPanel = new JPanel();
-		buttonPanel.setBounds(153, 423, 492, 66);
+		buttonPanel.setBounds(154, 483, 492, 66);
 		this.add(buttonPanel);
 		buttonPanel.setOpaque(false);
 
@@ -94,10 +78,19 @@ public class MemberManagerWindow extends JPanel {
 		btnRemoveMember = new JButton("Remove Member");
 		btnRemoveMember.setBounds(328, 5, 147, 55);
 		btnRemoveMember.addActionListener(new ActionListener() {
+			
+			
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
-				String selectedRowKey = table.getValueAt(selectedRow, 1).toString();
-
+				String selectedRowKey =null;
+				try
+				{
+				 selectedRowKey = table.getValueAt(selectedRow, 1).toString();
+				}
+				catch( Exception es)
+				{
+					JOptionPane.showMessageDialog(table, "Please select at least one row", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 				// check if any row is selected
 				if(selectedRow != -1){
 					System.out.print(selectedRow);
@@ -137,8 +130,12 @@ public class MemberManagerWindow extends JPanel {
 		}
 		model = new DefaultTableModel(data, columns);
 		table =   new JTable(model);
+		
 		scrollPane.setViewportView(table);
 
+	}
+	public void refreshTable(String[] memberProperty){
+		this.model.addRow(memberProperty);
 	}
 
 }
