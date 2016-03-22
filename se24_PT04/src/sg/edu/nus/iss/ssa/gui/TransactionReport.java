@@ -38,6 +38,7 @@ import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.model.Transaction;
 import sg.edu.nus.iss.ssa.util.IOService;
+import sg.edu.nus.iss.ssa.validation.ReportValidator;
 
 public class TransactionReport extends JFrame {
 private static final long serialVersionUID = 1L;
@@ -52,6 +53,7 @@ private static final long serialVersionUID = 1L;
 	List<String[]>reportEntryList;
 	TableModel model;
 	private JLabel title;
+	private ReportValidator rv=new ReportValidator();
 	
 	public TransactionReport() throws FileNotFoundException, FieldMismatchExcepion{
 		
@@ -129,7 +131,7 @@ private static final long serialVersionUID = 1L;
 		table.getColumnModel().getColumn(0).setPreferredWidth(30);
 		table.getColumnModel().getColumn(1).setPreferredWidth(50);
 		table.getColumnModel().getColumn(2).setPreferredWidth(10);
-		table.getColumnModel().getColumn(3).setPreferredWidth(30);
+		table.getColumnModel().getColumn(3).setPreferredWidth(35);
 		table.getColumnModel().getColumn(4).setPreferredWidth(30);
 		table.getColumnModel().getColumn(5).setPreferredWidth(80);
 		table.getColumnModel().getColumn(6).setPreferredWidth(200);
@@ -199,7 +201,7 @@ private static final long serialVersionUID = 1L;
 		String endDateString = toText.getText();
 		System.out.println(startDateString);
 		System.out.println(endDateString);
-		if(startDateString.isEmpty()||endDateString.isEmpty()){
+		if(!(rv.isDateValid(startDateString)&&rv.isDateValid(endDateString))){
 			JOptionPane.showMessageDialog(filterBtn, StoreConstants.INVALID_DATE,null,JOptionPane.ERROR_MESSAGE);
 			return;
 		}
