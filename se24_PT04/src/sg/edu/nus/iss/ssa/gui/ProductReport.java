@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.model.Member;
 import sg.edu.nus.iss.ssa.model.Product;
 
 public class ProductReport extends JFrame {
@@ -31,6 +32,7 @@ public class ProductReport extends JFrame {
 	private JButton btnPrint;
 	private JButton btnExit;
 	private JLabel title;
+	private Object[][] data;
 
 	public ProductReport() throws FieldMismatchExcepion {
 
@@ -44,25 +46,14 @@ public class ProductReport extends JFrame {
 		// ArrayList<Category>(FileDataWrapper.categoryMap.values());
 
 		setLayout(new FlowLayout());
-		title=new JLabel("Product Report");
-		title.setFont(new Font("Arial", Font.BOLD, 15) );
-		
-		String[] columnName = { "ProductId", "ProductName", "ProductDescription",
-				"Quantity", "Price", "BarCode", "ThresholdQuantity",
-				"OrderQuantity" };
+		title = new JLabel("Product Report");
+		title.setFont(new Font("Arial", Font.BOLD, 15));
 
-		list = new ArrayList<Product>(
-				(Collection<? extends Product>) FileDataWrapper.productMap
-						.values());
-		// System.out.println("Product" + FileDataWrapper.productMap.values());
-		int count = FileDataWrapper.productMap.size();
-		Object[][] data = new Object[count][];
-		for (int i = 0; i < count; i++) {
+		String[] columnName = { "ProductId", "ProductName",
+				"ProductDescription", "Quantity", "Price", "BarCode",
+				"ThresholdQuantity", "OrderQuantity" };
 
-			data[i] = list.get(i).getProductArray();
-
-		}
-
+		prepareTableData();
 		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
 		leftRenderer.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -93,7 +84,7 @@ public class ProductReport extends JFrame {
 		jp = new JPanel();
 		btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -102,7 +93,7 @@ public class ProductReport extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 		btnExit = new JButton("Exit");
@@ -117,5 +108,20 @@ public class ProductReport extends JFrame {
 		jp.add(btnPrint);
 		jp.add(btnExit);
 		add(jp);
+	}
+
+	public void prepareTableData() {
+		list = new ArrayList<Product>(
+				(Collection<? extends Product>) FileDataWrapper.productMap
+						.values());
+		// System.out.println("Product" + FileDataWrapper.productMap.values());
+		int count = FileDataWrapper.productMap.size();
+		data = new Object[count][];
+		for (int i = 0; i < count; i++) {
+
+			data[i] = list.get(i).getProductArray();
+
+		}
+
 	}
 }

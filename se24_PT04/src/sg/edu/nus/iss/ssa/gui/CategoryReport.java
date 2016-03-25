@@ -31,7 +31,7 @@ public class CategoryReport extends JFrame {
 	private JButton btnExit;
 	private List<Category> list;
 	private JLabel title;
-
+	private Object[][] data;
 	public CategoryReport() throws FieldMismatchExcepion {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,17 +46,8 @@ public class CategoryReport extends JFrame {
 		
 		String[] columnName = { "Category Id", "Category Name" };
 
-		list = new ArrayList<Category>(
-				(Collection<? extends Category>) FileDataWrapper.categoryMap
-						.values());
 		// System.out.println("cate"+FileDataWrapper.categoryMap.values());
-		int count = FileDataWrapper.categoryMap.size();
-		Object[][] data = new Object[count][];
-		for (int i = 0; i < count; i++) {
-
-			data[i] = list.get(i).getCategoryArray();
-
-		}
+		prepareTableData();
 
 		// DefaultTableCellRenderer middleRenderer = new
 		// DefaultTableCellRenderer();
@@ -106,5 +97,18 @@ public class CategoryReport extends JFrame {
 		jp.add(btnPrint);
 		jp.add(btnExit);
 		add(jp);
+	}
+	
+	public void prepareTableData(){
+		int count = FileDataWrapper.categoryMap.size();
+		list = new ArrayList<Category>(
+				(Collection<? extends Category>) FileDataWrapper.categoryMap
+						.values());
+		data = new Object[count][];
+		for (int i = 0; i < count; i++) {
+
+			data[i] = list.get(i).getCategoryArray();
+
+		}
 	}
 }

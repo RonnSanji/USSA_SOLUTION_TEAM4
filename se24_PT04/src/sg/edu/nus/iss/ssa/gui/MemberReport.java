@@ -30,7 +30,7 @@ public class MemberReport extends JFrame {
 	private JButton btnPrint;
 	private JButton btnExit;
 	private JLabel title;
-
+	private Object[][] data;
 	public MemberReport() {
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -44,15 +44,7 @@ public class MemberReport extends JFrame {
 		title.setFont(new Font("Arial", Font.BOLD, 15) );
 		String[] columnName = { "Member Id", "Member Name", "Loyalty Points" };
 
-		listMember = new ArrayList<Member>(
-				(Collection<? extends Member>) FileDataWrapper.memberMap
-						.values());
-
-		int count = FileDataWrapper.memberMap.size();
-		Object[][] data = new Object[count][];
-		for (int i = 0; i < count; i++) {
-			data[i] = listMember.get(i).getMemeberArray();
-		}
+		prepareTableData();
 
 		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
 		leftRenderer.setHorizontalAlignment(SwingConstants.LEFT);
@@ -98,6 +90,17 @@ public class MemberReport extends JFrame {
 		jp.add(btnPrint);
 		jp.add(btnExit);
 		add(jp);
+	}
+	
+	public void prepareTableData(){
+		listMember = new ArrayList<Member>(
+				(Collection<? extends Member>) FileDataWrapper.memberMap
+						.values());
+		int count = FileDataWrapper.memberMap.size();
+		data = new Object[count][];
+		for (int i = 0; i < count; i++) {
+			data[i] = listMember.get(i).getMemeberArray();
+		}
 	}
 
 }
