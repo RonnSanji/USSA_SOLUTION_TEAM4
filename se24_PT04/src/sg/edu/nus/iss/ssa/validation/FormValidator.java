@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
 public class FormValidator
@@ -88,20 +89,38 @@ public class FormValidator
 		return null;
 	}
 
-	public String addMemberValidateForm(String memberName, String memberNumber)
-	{
-
-		if (memberName == null || memberNumber.isEmpty())
-		{
+	public String addMemberValidateForm(String memberName, String memberNumber){
+		if (memberName == null || memberNumber.isEmpty()) {
 			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
 		}
-
-		if (memberNumber.length() != 9)
-		{
+		if (memberNumber.length() != 9) {
 			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
 		}
-
 		return null;
 	}
 
+	public static String addProductValidateForm(String categoryName,String productName,String quantityAvailable,String price,String thresholdQuantity){
+     if(categoryName==null || categoryName.isEmpty()){
+			 return StoreConstants.BLANK_CATEGORYNAME;
+		 } else if(quantityAvailable.isEmpty() || quantityAvailable==null){
+			 return StoreConstants.EMPTY_QUANTITY;
+		 } else if(price.isEmpty() || price==null){
+        return StoreConstants.EMPTY_PRICE;
+		 } else if(productName==null || productName.isEmpty()){
+			 return StoreConstants.EMPTY_PRODUCT_NAME;
+		 } else if(categoryName.length()!=3){
+			 return "Invalid Category, Please select a valid one";
+		 } else if(!quantityAvailable.matches(StoreConstants.NUMBER_REGEX)) {
+       return "Invalid Quantity Entered. Please Enter a valid one.";
+		 } else if(!(categoryName.matches(StoreConstants.STRING_REGEX))){
+			  return "Invalid Category Name. Please Enter only characters";
+		 } else if(!(price.matches(StoreConstants.NUMBER_REGEX))){
+        return "Invalid Product Price. Please Enter only number.";
+		 } else if(!(productName.matches(StoreConstants.STRING_REGEX))){
+       return "Invalid Product Name. Please Enter a correct name.";
+		}  else if(!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))){
+       return "Invalid Product Threshold Quantity. Please Enter Only Digits.";
+		 }
+		return null;
+	}
 }

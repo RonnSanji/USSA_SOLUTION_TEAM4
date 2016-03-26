@@ -46,8 +46,12 @@ public class StoreConstants {
 	public static final String BLANK_REPLENISH_QUANTITY = "Please enter replenish quantity";
 	public static final String INVALID_REPLENISH_QUANTITY = "Please enter a valid replenish quantity";
 
-
-
+	//Add Product Message
+	public static final String EMPTY_QUANTITY = "Please Enter the Quantity greater than 0";
+	public static final String EMPTY_PRICE = "Please Enter the Price greater than 0";
+	public static final String EMPTY_PRODUCT_NAME = "Please Enter the Product Name. Product Name cannot be Empty";
+	public static final String NUMBER_REGEX = "[0-9]";
+	public static final String STRING_REGEX = "[a-zA-Z]";
 
 
 }

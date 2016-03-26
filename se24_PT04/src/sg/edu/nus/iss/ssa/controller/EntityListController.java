@@ -106,4 +106,24 @@ public class EntityListController {
 		}
 	}
 
+	// For add product
+	public String addProduct(Product product) {
+		try {
+			FileDataWrapper.productMap.put(product.getBarCode(),product);
+		} catch (Exception ex) {
+			return StoreConstants.ERROR + " creating new product";
+		}
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.writeToFile(FileDataWrapper.productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
+		} catch (Exception ex) {
+			return StoreConstants.ERROR + " saving new Product Information";
+		} finally {
+			ioManager = null;
+		}
+		return null;
+	}
+
 }
