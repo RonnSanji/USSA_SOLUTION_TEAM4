@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.ssa.validation;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -7,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.ssa.bo.AuthenticationManager;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.model.Product;
@@ -89,7 +91,7 @@ public class FormValidator
 		return null;
 	}
 
-	public String addMemberValidateForm(String memberName, String memberNumber){
+	public static String addMemberValidateForm(String memberName, String memberNumber){
 		if (memberName == null || memberNumber.isEmpty()) {
 			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
 		}
@@ -99,6 +101,15 @@ public class FormValidator
 		return null;
 	}
 
+	public static String addStoreKeeperValidateForm(String name, String password){
+		AuthenticationManager authManager = new AuthenticationManager();
+		Boolean isValidStoreKeeper = authManager.authenticateUser(name, password);
+		if (!isValidStoreKeeper) {
+			return authManager.getErrorMessage();
+		}
+		return null;
+	}
+	
 	public static String addProductValidateForm(String categoryName,String productName,String quantityAvailable,String price,String thresholdQuantity){
      if(categoryName==null || categoryName.isEmpty()){
 			 return StoreConstants.BLANK_CATEGORYNAME;

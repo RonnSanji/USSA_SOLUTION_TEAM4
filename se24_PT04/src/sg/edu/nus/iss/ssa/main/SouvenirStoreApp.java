@@ -1,5 +1,8 @@
 package sg.edu.nus.iss.ssa.main;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,7 +18,9 @@ import sg.edu.nus.iss.ssa.gui.ProductReport;
 import sg.edu.nus.iss.ssa.gui.ProductSelectionWindow;
 import sg.edu.nus.iss.ssa.gui.ReplenishStock;
 import sg.edu.nus.iss.ssa.model.*;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
+import sg.edu.nus.iss.ssa.validation.FormValidator;
 import sg.edu.nus.iss.ssa.gui.LoginWindow;
 import sg.edu.nus.iss.ssa.gui.ManageCategory;
 import sg.edu.nus.iss.ssa.gui.ManageStock;
@@ -58,12 +63,29 @@ public class SouvenirStoreApp {
 			//Launch Purchase Window 
 			//ProductSelectionWindow productWindow = new ProductSelectionWindow();
 			//productWindow.setVisible(true);
-			try {
-				DashBoard dashboardwindow = new DashBoard();
-				dashboardwindow.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			
+			LoginWindow login = new LoginWindow();
+			login.btnLogin.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {					
+					String errorMsg = FormValidator.addStoreKeeperValidateForm(login.txtUsername.getText(), login.txtPassword.getText());
+					if (errorMsg != null) {
+						login.lblError.setForeground(Color.RED);
+						login.lblError.setText(errorMsg);
+					}else {
+						login.lblError.setForeground(Color.GREEN);
+						login.lblError.setText("");
+						login.dispose();
+						
+						try {
+							DashBoard dashboardwindow = new DashBoard();
+							dashboardwindow.setVisible(true);
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}				
+				}
+			});		
+			login.setVisible(true);
 
 		} catch (FileNotFoundException e) {
 			System.err
