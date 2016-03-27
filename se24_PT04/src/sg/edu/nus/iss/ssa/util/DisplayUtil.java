@@ -5,6 +5,7 @@ import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.model.Product;
 
 import javax.swing.*;
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -35,4 +36,8 @@ public class DisplayUtil {
         sb.append(discountAmnt).append(" (" ).append(discountPer).append(" %)");
         return sb.toString();
     }
+
+	public static double roundOffTwoDecimalPlaces(double number){
+		return new BigDecimal(number).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
 }

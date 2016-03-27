@@ -25,11 +25,11 @@ public class TotalReceiptCalculator {
 
     }
 
-    public TotalReceiptCalculator(Order order){
+    public TotalReceiptCalculator(Order order ){
         this.order = order;
-        offerCalculator = new DiscountOfferCalculator(transactionList, FileDataWrapper.discounts);
-        productMap = FileDataWrapper.productMap;
-        transactionList = FileDataWrapper.transactionList;
+        this.transactionList = FileDataWrapper.transactionList;
+        this.productMap = FileDataWrapper.productMap;
+        this.offerCalculator = new DiscountOfferCalculator(transactionList, FileDataWrapper.discounts);
     }
 
     public void processPayment() {
@@ -48,7 +48,7 @@ public class TotalReceiptCalculator {
 
         long transactionId = getLatestTransactionId();
 
-        //update productQuantity adn transaction
+        //update productQuantity and transaction
         for(LineItem item : order.getItems()){
             Product product = item.getProduct();
             System.out.println(product.toString());
@@ -63,15 +63,12 @@ public class TotalReceiptCalculator {
             //update Transaction
             System.out.println(transactionList);
             try {
+                ioManager.writeToFile(productMap.values(),new Product());
                 ioManager.writeToFile(transactionList,new Transaction());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-
-
-
     }
 
 
@@ -82,7 +79,7 @@ public class TotalReceiptCalculator {
     public  String getCashEquivalentPointstext(Order order ) {
         StringBuilder sb = new StringBuilder();
         long pointsRedeemed = order.getPointsRedeemed();
-        sb.append(pointsRedeemed).append(" (" ).append(offerCalculator.getCashValueForPoints(pointsRedeemed)).append(" $)");
+        sb.append(pointsRedeemed).append(" (" ).append(offerCalculator.getCashValueForPoints(pointsRedeemed)).append("$)");
         return sb.toString();
     }
 

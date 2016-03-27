@@ -5,6 +5,7 @@ import sg.edu.nus.iss.ssa.model.Discount;
 import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Transaction;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
 import java.util.List;
 
@@ -42,12 +43,12 @@ public class DiscountOfferCalculator {
 	 * @param redeemedPoints
 	 * @return
 	 */
-	public double getCashValueForPoints(long redeemedPoints) {
+	public double  	getCashValueForPoints(long redeemedPoints) {
 		if(redeemedPoints < 0){
 			redeemedPoints = 0;
 		}
-		double cashEqPoints = redeemedPoints/StoreConstants.CASH_EQ_POINTS;
-		return  cashEqPoints;
+		double cashEqPoints = DisplayUtil.roundOffTwoDecimalPlaces(redeemedPoints/StoreConstants.CASH_EQ_POINTS);
+		return cashEqPoints;
 	}
 
 	/**
