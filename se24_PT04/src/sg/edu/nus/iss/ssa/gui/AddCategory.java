@@ -30,8 +30,7 @@ import javax.swing.JScrollPane;
 import java.io.IOException;
 import java.util.*;
 
-public class AddCategory extends JDialog
-{
+public class AddCategory extends JDialog {
 
 	private static final long serialVersionUID = -1420940689801074313L;
 	private JPanel contentPane;
@@ -40,11 +39,9 @@ public class AddCategory extends JDialog
 
 	private String categoryID;
 	private String categoryName;
-	private FormValidator formValidator = new FormValidator();
 	private EntityListController controller = new EntityListController();
 
-	public AddCategory()
-	{
+	public AddCategory() {
 		this.addWindowListener(new MyWindowListener());
 		setResizable(false);
 		setTitle("Add Category Page");
@@ -64,18 +61,13 @@ public class AddCategory extends JDialog
 		contentPane.add(lblCategoryName);
 
 		JButton btnAdd = new JButton("OK");
-		btnAdd.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent arg0)
-			{
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				int dialogResult = -1;
-				if (validateForm())
-				{
+				if (validateForm()) {
 					String msg = validateData();
-					if (msg == null)
-					{
-						if (addCategory())
-						{
+					if (msg == null) {
+						if (addCategory()) {
 							// dialogResult =
 							// JOptionPane.showConfirmDialog(contentPane,"Category
 							// has been added successfully. Would like to add
@@ -84,20 +76,15 @@ public class AddCategory extends JDialog
 							// JOptionPane.INFORMATION_MESSAGE);
 							dialogResult = DisplayUtil.displayConfirmationMessage(contentPane,
 									StoreConstants.CATEGORY_ADDED_SUCCESSFULLY);
-							if (dialogResult == 0)
-							{
+							if (dialogResult == 0) {
 								clearFields();
-							}
-							else if (dialogResult == 1)
-							{
+							} else if (dialogResult == 1) {
 								dispose();
 							}
 						}
 
 						reloadData();
-					}
-					else
-					{
+					} else {
 						// dialogResult =
 						// JOptionPane.showConfirmDialog(contentPane, "Category
 						// ID: " + categoryID + " already exists. Would you like
@@ -105,12 +92,9 @@ public class AddCategory extends JDialog
 						// JOptionPane.YES_NO_OPTION,
 						// JOptionPane.WARNING_MESSAGE);
 						dialogResult = DisplayUtil.displayConfirmationMessage(contentPane, msg);
-						if (dialogResult == 0)
-						{
+						if (dialogResult == 0) {
 							clearFields();
-						}
-						else if (dialogResult == 1)
-						{
+						} else if (dialogResult == 1) {
 							dispose();
 						}
 					}
@@ -122,10 +106,8 @@ public class AddCategory extends JDialog
 		contentPane.add(btnAdd);
 
 		JButton btnClose = new JButton("Cancel");
-		btnClose.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
@@ -133,11 +115,11 @@ public class AddCategory extends JDialog
 		contentPane.add(btnClose);
 
 		txtCatogeryID = new JTextField();
-		txtCatogeryID.setDocument(new PlainDocument()
-		{
+		txtCatogeryID.setDocument(new PlainDocument() {
+			private static final long serialVersionUID = 5790057198546248513L;
+
 			@Override
-			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
-			{
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 				// System.out.println(getLength() + str.length());
 				if (getLength() + str.length() <= StoreConstants.CATEGORY_ID_MAX_LENGTH && str.matches("[a-zA-Z]"))
 					super.insertString(offs, str.toUpperCase(), a);
@@ -157,97 +139,81 @@ public class AddCategory extends JDialog
 
 	}
 
-	private Boolean validateForm()
-	{
+	private Boolean validateForm() {
 		categoryID = txtCatogeryID.getText();
 		categoryName = txtaCategoryName.getText();
 
-		String validatorMessage = formValidator.addCategoryValidateForm(categoryID, categoryName);
-		if (validatorMessage != null)
-		{
+		String validatorMessage = FormValidator.addCategoryValidateForm(categoryID, categoryName);
+		if (validatorMessage != null) {
 			DisplayUtil.displayValidationError(contentPane, validatorMessage);
 			return false;
 		}
 		return true;
 	}
 
-	private String validateData()
-	{
-		String validatorMessage = formValidator.addCategoryValidateData(categoryID);
+	private String validateData() {
+		String validatorMessage = FormValidator.addCategoryValidateData(categoryID);
 		return validatorMessage;
 	}
 
-	private boolean addCategory()
-	{
+	private boolean addCategory() {
 		String msg = controller.addCategory(categoryID, categoryName);
-		if (msg != null)
-		{
+		if (msg != null) {
 			DisplayUtil.displayValidationError(contentPane, msg);
 			return false;
 		}
 		return true;
 	}
 
-	private void reloadData()
-	{
+	private void reloadData() {
 		controller.reloadCategoryData();
 	}
 
-	private void clearFields()
-	{
+	private void clearFields() {
 		txtCatogeryID.setText("");
 		txtaCategoryName.setText("");
 	}
 
-	class MyWindowListener implements WindowListener
-	{
+	class MyWindowListener implements WindowListener {
 
 		@Override
-		public void windowActivated(WindowEvent arg0)
-		{
+		public void windowActivated(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowClosed(WindowEvent arg0)
-		{
+		public void windowClosed(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			formValidator = null;
 			controller = null;
 		}
 
 		@Override
-		public void windowClosing(WindowEvent arg0)
-		{
+		public void windowClosing(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowDeactivated(WindowEvent arg0)
-		{
+		public void windowDeactivated(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowDeiconified(WindowEvent arg0)
-		{
+		public void windowDeiconified(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowIconified(WindowEvent arg0)
-		{
+		public void windowIconified(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowOpened(WindowEvent arg0)
-		{
+		public void windowOpened(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}

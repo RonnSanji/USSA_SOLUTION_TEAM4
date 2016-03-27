@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.main.SouvenirStoreApp;
 import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
@@ -34,10 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class ManageStock extends JFrame {
+public class ManageStock extends JPanel {
 
 	private static final long serialVersionUID = 5485764052645713039L;
-	private JPanel contentPane;
+	// private JPanel contentPane;
 	private JTextField txtSearchText;
 	private JTable TbResult;
 	JComboBox<String> comboBoxSearchBy;
@@ -47,6 +48,7 @@ public class ManageStock extends JFrame {
 	JButton btnShowBelowThreshold;
 
 	private String[] comboBoxSearchByItem = new String[] { "Name", "Description" };
+	private EntityListController controller = new EntityListController();
 
 	private String searchBy;
 	private String searchText;
@@ -65,32 +67,34 @@ public class ManageStock extends JFrame {
 	private JButton btnClear;
 
 	public ManageStock() {
-		setResizable(false);
-		setTitle("Manage Stock Page");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 847, 553);
-		contentPane = new JPanel();
+		// setResizable(false);
+		// setTitle("Manage Stock Page");
+		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(800, 600);
+		this.setOpaque(false);
+		setLayout(null);
+		// contentPane = new JPanel();
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		// setContentPane(contentPane);
+		// contentPane.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Search by");
 		lblNewLabel.setBounds(20, 30, 80, 14);
-		contentPane.add(lblNewLabel);
+		this.add(lblNewLabel);
 
 		comboBoxSearchBy = new JComboBox();
-		comboBoxSearchBy.setBounds(110, 27, 106, 20);
-		contentPane.add(comboBoxSearchBy);
+		comboBoxSearchBy.setBounds(88, 27, 106, 20);
+		this.add(comboBoxSearchBy);
 		comboBoxSearchBy.setModel(new DefaultComboBoxModel(comboBoxSearchByItem));
 
 		txtSearchText = new JTextField();
-		txtSearchText.setBounds(226, 27, 168, 20);
-		contentPane.add(txtSearchText);
+		txtSearchText.setBounds(204, 27, 168, 20);
+		this.add(txtSearchText);
 		txtSearchText.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(404, 26, 79, 23);
-		contentPane.add(btnSearch);
+		btnSearch.setBounds(382, 26, 79, 23);
+		this.add(btnSearch);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				search();
@@ -99,10 +103,10 @@ public class ManageStock extends JFrame {
 
 		lblNoResult = new JLabel("");
 		lblNoResult.setBounds(75, 71, 150, 14);
-		contentPane.add(lblNoResult);
+		this.add(lblNoResult);
 
 		btnReplenish = new JButton("Replenish");
-		btnReplenish.setBounds(239, 474, 100, 23);
+		btnReplenish.setBounds(333, 555, 139, 38);
 		btnReplenish.setEnabled(false);
 		btnReplenish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -110,16 +114,16 @@ public class ManageStock extends JFrame {
 
 			}
 		});
-		contentPane.add(btnReplenish);
+		this.add(btnReplenish);
 
-		JButton btnClose = new JButton("Close");
-		btnClose.setBounds(510, 474, 100, 23);
-		contentPane.add(btnClose);
-		btnClose.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
+		// JButton btnClose = new JButton("Close");
+		// btnClose.setBounds(510, 474, 100, 23);
+		// contentPane.add(btnClose);
+		// btnClose.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent e) {
+		// dispose();
+		// }
+		// });
 
 		btnShowBelowThreshold = new JButton("Show all below threshold");
 		btnShowBelowThreshold.addActionListener(new ActionListener() {
@@ -127,31 +131,33 @@ public class ManageStock extends JFrame {
 				showAllBelowThreshold();
 			}
 		});
-		btnShowBelowThreshold.setBounds(627, 26, 193, 23);
-		contentPane.add(btnShowBelowThreshold);
+		btnShowBelowThreshold.setBounds(592, 26, 193, 23);
+		this.add(btnShowBelowThreshold);
 
 		TbResult = new JTable(new model());
 		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TbResult.setFillsViewportHeight(true);
 
 		scrollPane = new JScrollPane(TbResult);
-		scrollPane.setBounds(20, 100, 800, 350);
-		contentPane.add(scrollPane);
-		
+		scrollPane.setBounds(10, 100, 780, 450);
+		this.add(scrollPane);
+
 		btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearKeyWordTextBox();
 			}
 		});
-		btnClear.setBounds(493, 26, 89, 23);
-		contentPane.add(btnClear);
+		btnClear.setBounds(471, 26, 89, 23);
+		this.add(btnClear);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
 	}
+
 	private void clearKeyWordTextBox() {
 		txtSearchText.setText("");
 	}
+
 	private void showAllBelowThreshold() {
 		productList = (Collection<Product>) FileDataWrapper.productMap.values();
 		productListResult = new ArrayList<Product>();
@@ -259,7 +265,7 @@ public class ManageStock extends JFrame {
 		if (selectedRow == -1) {
 			// JOptionPane.showMessageDialog(contentPane, "Please select a
 			// product", "Warning",JOptionPane.WARNING_MESSAGE);
-			DisplayUtil.displayValidationError(contentPane, StoreConstants.SELECT_PRODUCT);
+			DisplayUtil.displayValidationError(scrollPane, StoreConstants.SELECT_PRODUCT);
 			return;
 		}
 		selectedProduct = productListResult.get(selectedRow);
@@ -268,7 +274,7 @@ public class ManageStock extends JFrame {
 
 	private void showReplenishWindow() {
 		ReplenishStock replenishStockWindow = new ReplenishStock(selectedProduct);
-		replenishStockWindow.setLocation(this.getLocation());
+		replenishStockWindow.setLocation(this.getLocationOnScreen());
 		replenishStockWindow.setModal(true);
 		replenishStockWindow.setVisible(true);
 		replenishStockWindow.addWindowListener(new WindowListener() {
@@ -308,6 +314,22 @@ public class ManageStock extends JFrame {
 			public void windowActivated(WindowEvent e) {
 			}
 		});
+	}
+
+	public void reloadData() {
+		if (controller == null) {
+			controller = new EntityListController();
+		}
+		controller.reloadProductData();
+		controller = null;
+	}
+
+	public void bindData() {
+		if (searchType == 1) {
+			search();
+		} else if (searchType == 2) {
+			showAllBelowThreshold();
+		}
 	}
 
 	class model extends AbstractTableModel {

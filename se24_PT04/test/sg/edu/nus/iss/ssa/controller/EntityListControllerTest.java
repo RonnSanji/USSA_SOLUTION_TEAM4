@@ -142,6 +142,70 @@ public class EntityListControllerTest extends TestCase {
 	}
 
 	@Test
+	public void testRemoveCategory() {
+		Random ran = new Random();
+		String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		IOService<?> ioManager = new IOService<>();
+		FileDataWrapper.categoryMap.clear();
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
+			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ioManager = null;
+		}
+
+		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
+		ArrayList<String> tempKeyList = new ArrayList<>();
+
+		if (keySet != null && keySet.size() > 0) {
+			for (String key : keySet) {
+				tempKeyList.add(key.toUpperCase());
+			}
+		}
+
+		String categoryID = tempKeyList.get(ran.nextInt(keySet.size()));
+
+		System.out.println(categoryID);
+
+		EntityListController controller = new EntityListController();
+
+		String msg = controller.RemoveCategory(categoryID);
+
+		if (msg == null) {
+
+			FileDataWrapper.categoryMap.clear();
+			if (ioManager == null) {
+				ioManager = new IOService<>();
+			}
+			try {
+				ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
+				System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+				fieldMismatchExcepion.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				ioManager = null;
+				controller = null;
+			}
+
+			assertTrue(FileDataWrapper.categoryMap.get(categoryID) == null);
+
+		}
+	}
+
+	@Test
 	public void testReloadCategoryData() {
 		Random ran = new Random();
 
@@ -319,7 +383,7 @@ public class EntityListControllerTest extends TestCase {
 		}
 
 		for (Product product : FileDataWrapper.productMap.values()) {
-			if (p.getBarCode() == barCode) {
+			if (product.getBarCode() == barCode) {
 				assertEquals(originalProductName, p.getProductName());
 				break;
 			}

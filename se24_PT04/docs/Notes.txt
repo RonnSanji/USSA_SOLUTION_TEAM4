@@ -1,2 +1,16 @@
 1. Assume Category ID is always caps
 2. Assume data files are in classes folder
+
+
+
+Progress check:
+1. Login window done ?
+2. Flow in main app ?
+
+
+
+Clarifications:
+1.Which folder for image files in the delivery package ? It might have the same issue as dat files
+2.Should we have standard UI designs ? E.g. window size, button size, text font & size, icon. Etc.
+3.What is the finalized design for management window ? show & hide or instantiate upon button click?
+ 

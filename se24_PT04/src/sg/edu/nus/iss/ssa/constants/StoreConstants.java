@@ -30,10 +30,16 @@ public class StoreConstants {
 	// Manage category message
 	public static final String CATEGORY_ADDED_SUCCESSFULLY = "Category has been added successfully. Would like to add another one ?";
 	public static final String CATEGORY_EXISTS = "already exists. Would you like to add another one ?";
-	public static final String BLANK_CATEGORYID = "Please enter category ID";
-	public static final String BLANK_CATEGORYNAME = "Please enter category name";
+	public static final String ENTER_CATEGORYID = "Please enter category ID";
+	public static final String ENTER_CATEGORYNAME = "Please enter category name";
+	public static final String BLANK_CATEGORYID = "Category ID is blank !";
+	public static final String BLANK_CATEGORYNAME = "Category name is blank !";
 	public static final String CATEGORY_3_LETTERS = "Category ID must be 3 letters";
 	public static final String ERROR = "Error occured during";
+	public static final String SELECT_CATEGORY = "Please select a category";
+	public static final String CATEGORY_REMOVED_SUCCESSFULLY = "Category has been removed successfully !";
+	public static final String CATEGORYID_NOT_EXIST = "does not exist";
+	public static final String CONFIRM_TO_REMOVE_CATEROGY = "Confirm to remove category ?";
 
 	//Manage Member message
 	public static final String MEMBER_ADDED_SUCCESSFULLY = "Member has been added succesfully";
@@ -44,8 +50,12 @@ public class StoreConstants {
 	// Manage stock message
 	public static final String SELECT_PRODUCT = "Please select a product";
 	public static final String STOCK_UPDATED_SUCCESSFULLY = "Stock has been updated successfully !";
-	public static final String BLANK_REPLENISH_QUANTITY = "Please enter replenish quantity";
+	public static final String ENTER_REPLENISH_QUANTITY = "Please enter replenish quantity";
+	public static final String BLANK_REPLENISH_QUANTITY = "Replenish quantity is empty !";
+	public static final String BLANK_PRODUCT_BAR_CODE = "Bar code is blank !";
+	public static final String INVALID_PRODUCT_BAR_CODE = "is not a valid bar code !";
 	public static final String INVALID_REPLENISH_QUANTITY = "Please enter a valid replenish quantity";
+	public static final String BAR_CODE_NOT_EXIST = "does not exist";
 
 	//Add Product Message
 	public static final String EMPTY_QUANTITY = "Please Enter the Quantity greater than 0";

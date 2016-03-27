@@ -19,8 +19,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class ReplenishStock extends JDialog
-{
+public class ReplenishStock extends JDialog {
 	private static final long serialVersionUID = 4069437661115880594L;
 	private final JPanel contentPanel = new JPanel();
 	public Product selectedProduct;
@@ -38,15 +37,12 @@ public class ReplenishStock extends JDialog
 	private JLabel lblNewLabel_4;
 	private JLabel lblBarCode;
 
-	private FormValidator formValidator = new FormValidator();
 	private EntityListController controller = new EntityListController();
 
-	public ReplenishStock(Product selectedProduct)
-	{
+	public ReplenishStock(Product selectedProduct) {
 		this.addWindowListener(new MyWindowListener());
 
-		if (selectedProduct == null)
-		{
+		if (selectedProduct == null) {
 			DisplayUtil.displayValidationError(contentPanel, StoreConstants.ERROR + " loading product");
 			return;
 		}
@@ -64,11 +60,9 @@ public class ReplenishStock extends JDialog
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.setBounds(255, 16, 78, 23);
-		cancelButton.addActionListener(new ActionListener()
-		{
+		cancelButton.addActionListener(new ActionListener() {
 
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
@@ -79,15 +73,12 @@ public class ReplenishStock extends JDialog
 		okButton = new JButton("OK");
 		okButton.setBounds(111, 16, 78, 23);
 		buttonPane.add(okButton);
-		okButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (!validateForm())
-				{
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!validateForm()) {
 					return;
 				}
-				addStock();
+				replenishStock();
 				reloadData();
 				dispose();
 			}
@@ -124,11 +115,9 @@ public class ReplenishStock extends JDialog
 		getContentPane().add(lblCurrentQuantity);
 
 		txtAddQuantity = new JTextField();
-		txtAddQuantity.setDocument(new PlainDocument()
-		{
+		txtAddQuantity.setDocument(new PlainDocument() {
 			@Override
-			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException
-			{
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 				if (str.matches("[0-9]"))
 					super.insertString(offs, str, a);
 			}
@@ -147,8 +136,7 @@ public class ReplenishStock extends JDialog
 		populateData();
 	}
 
-	private void populateData()
-	{
+	private void populateData() {
 
 		lblProductName.setText(selectedProduct.getProductName());
 		lblProductDescription.setText(selectedProduct.getProductDesc());
@@ -156,12 +144,10 @@ public class ReplenishStock extends JDialog
 		lblCurrentQuantity.setText(String.valueOf(selectedProduct.getQuantity()));
 	}
 
-	private boolean validateForm()
-	{
+	private boolean validateForm() {
 		String stockTxt = txtAddQuantity.getText();
-		String msg = formValidator.replenishStockValidateForm(stockTxt);
-		if (msg != null)
-		{
+		String msg = FormValidator.replenishStockValidateForm(stockTxt);
+		if (msg != null) {
 			DisplayUtil.displayValidationError(buttonPane, msg);
 			return false;
 		}
@@ -169,12 +155,15 @@ public class ReplenishStock extends JDialog
 		return true;
 	}
 
-	private void addStock()
-	{
+	private void replenishStock() {
+		String msg = FormValidator.replenishStockValidateData(selectedProduct.getBarCode());
+		if (msg != null) {
+			DisplayUtil.displayValidationError(buttonPane, msg);
+			return;
+		}
 		long stockAdd = Long.parseLong(txtAddQuantity.getText());
-		String msg = controller.addStock(selectedProduct, stockAdd);
-		if (msg != null)
-		{
+		msg = controller.addStock(selectedProduct, stockAdd);
+		if (msg != null) {
 			DisplayUtil.displayValidationError(buttonPane, msg);
 			return;
 		}
@@ -182,60 +171,50 @@ public class ReplenishStock extends JDialog
 		DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.STOCK_UPDATED_SUCCESSFULLY);
 	}
 
-	private void reloadData()
-	{
+	private void reloadData() {
 		controller.reloadProductData();
 	}
 
-	class MyWindowListener implements WindowListener
-	{
+	class MyWindowListener implements WindowListener {
 
 		@Override
-		public void windowActivated(WindowEvent arg0)
-		{
+		public void windowActivated(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowClosed(WindowEvent arg0)
-		{
+		public void windowClosed(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			formValidator = null;
 			controller = null;
 		}
 
 		@Override
-		public void windowClosing(WindowEvent arg0)
-		{
+		public void windowClosing(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowDeactivated(WindowEvent arg0)
-		{
+		public void windowDeactivated(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowDeiconified(WindowEvent arg0)
-		{
+		public void windowDeiconified(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowIconified(WindowEvent arg0)
-		{
+		public void windowIconified(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
 		@Override
-		public void windowOpened(WindowEvent arg0)
-		{
+		public void windowOpened(WindowEvent arg0) {
 			// TODO Auto-generated method stub
 
 		}

@@ -21,22 +21,28 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 import javax.swing.JLabel;
 
-public class ManageCategory extends JFrame {
+public class ManageCategory extends JPanel {
 
 	private static final long serialVersionUID = -8767406220537538426L;
-	private JPanel contentPane;
-	//private JTextField txtSearchText;
-	//privateJButton btnSearch
+	EntityListController controller = new EntityListController();
+	// private JPanel contentPane;
+	// private JTextField txtSearchText;
+	// privateJButton btnSearch
 	private JTable TbResult;
-	//JComboBox<String> comboBoxSearchBy;
+	// JComboBox<String> comboBoxSearchBy;
 	JScrollPane scrollPane;
 	JLabel lblNoResult;
 	JButton btnAddCategory;
+	JButton btnRemoveCategory;
 
 	private String[] comboBoxSearchByItem = new String[] { "Code", "Name" };
 
@@ -45,6 +51,8 @@ public class ManageCategory extends JFrame {
 	private Product selectedProduct;
 	private Collection<Category> categoryList;
 	private List<Category> categoryListResult;
+	private Category selectedCategory;
+
 	// 1 for search, 2 for show all below threshold
 	int searchType = 0;
 
@@ -53,59 +61,66 @@ public class ManageCategory extends JFrame {
 
 	TableModel model;
 
+	private int selectedRow;
+
 	public ManageCategory() {
-		setResizable(false);
-		setTitle("Manage Category");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 699, 588);
-		contentPane = new JPanel();
+		// setResizable(false);
+		this.setSize(800, 600);
+		this.setOpaque(false);
+		// setTitle("Manage Category");
+		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// this.setBounds(100, 100, 800, 550);
+		setLayout(null);
+		// contentPane = new JPanel();
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		// this.add(contentPane);
+		// contentPane.setBounds(120, 205, 1, 1);
+		// contentPane.setLayout(null);
 
-		//JLabel lblNewLabel = new JLabel("Search by");
-		//lblNewLabel.setBounds(50, 30, 80, 14);
-		//contentPane.add(lblNewLabel);
+		// JLabel lblNewLabel = new JLabel("Search by");
+		// lblNewLabel.setBounds(50, 30, 80, 14);
+		// contentPane.add(lblNewLabel);
 
-		//comboBoxSearchBy = new JComboBox<String>();
-		//comboBoxSearchBy.setBounds(129, 27, 106, 20);
-		//contentPane.add(comboBoxSearchBy);
-		//comboBoxSearchBy.setModel(new DefaultComboBoxModel<String>(comboBoxSearchByItem));
+		// comboBoxSearchBy = new JComboBox<String>();
+		// comboBoxSearchBy.setBounds(129, 27, 106, 20);
+		// contentPane.add(comboBoxSearchBy);
+		// comboBoxSearchBy.setModel(new
+		// DefaultComboBoxModel<String>(comboBoxSearchByItem));
 
-		//txtSearchText = new JTextField();
-		//txtSearchText.setBounds(257, 27, 184, 20);
-		//contentPane.add(txtSearchText);
-		//txtSearchText.setColumns(10);
+		// txtSearchText = new JTextField();
+		// txtSearchText.setBounds(257, 27, 184, 20);
+		// contentPane.add(txtSearchText);
+		// txtSearchText.setColumns(10);
 
-		//privateJButton = new JButton("Search");
-		//btnSearch.setBounds(451, 26, 79, 23);
-		//contentPane.add(btnSearch);
-		//btnSearch.addActionListener(new ActionListener() {
-			//public void actionPerformed(ActionEvent arg0) {
-				//searchAll();
-			//}
-		//});
+		// privateJButton = new JButton("Search");
+		// btnSearch.setBounds(451, 26, 79, 23);
+		// contentPane.add(btnSearch);
+		// btnSearch.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent arg0) {
+		// searchAll();
+		// }
+		// });
 
 		lblNoResult = new JLabel("");
-		lblNoResult.setBounds(75, 73, 150, 14);
-		contentPane.add(lblNoResult);
+		lblNoResult.setBounds(75, 60, 150, 14);
+		this.add(lblNoResult);
 
 		btnAddCategory = new JButton("Add Category");
-		btnAddCategory.setBounds(170, 487, 120, 23);
+		btnAddCategory.setBounds(191, 550, 130, 23);
 		btnAddCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addCategory();
 			}
 
 		});
-		contentPane.add(btnAddCategory);
+		this.add(btnAddCategory);
 
 		JButton btnClose = new JButton("Close");
-		btnClose.setBounds(440, 487, 120, 23);
-		contentPane.add(btnClose);
+		btnClose.setBounds(447, 550, 120, 23);
+		// this.add(btnClose);
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				// dispose();
 			}
 		});
 
@@ -114,65 +129,136 @@ public class ManageCategory extends JFrame {
 		TbResult.setFillsViewportHeight(true);
 
 		scrollPane = new JScrollPane(TbResult);
-		scrollPane.setBounds(20, 100, 650, 350);
-		contentPane.add(scrollPane);
+		scrollPane.setBounds(10, 80, 780, 450);
+		this.add(scrollPane);
 
-		//JButton btnClear = new JButton("Clear");
-		//btnClear.addActionListener(new ActionListener() {
-			//public void actionPerformed(ActionEvent e) {
-				//clearKeyWordTextBox();
-			//}
-		//});
-		//btnClear.setBounds(540, 26, 89, 23);
-		//contentPane.add(btnClear);
-		
+		// JButton btnClear = new JButton("Clear");
+		// btnClear.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent e) {
+		// clearKeyWordTextBox();
+		// }
+		// });
+		// btnClear.setBounds(540, 26, 89, 23);
+		// contentPane.add(btnClear);
+
 		JLabel lblNewLabel = new JLabel("Category List");
-		lblNewLabel.setBounds(20, 48, 188, 20);
-		contentPane.add(lblNewLabel);
+		lblNewLabel.setBounds(20, 20, 188, 20);
+		this.add(lblNewLabel);
+
+		btnRemoveCategory = new JButton("Remove Category");
+		btnRemoveCategory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int dialogResult = -1;
+				if (validateForm()) {
+					dialogResult = DisplayUtil.displayConfirmationMessage(scrollPane,
+							StoreConstants.CONFIRM_TO_REMOVE_CATEROGY);
+					if (dialogResult == 0) {
+						removeCategory();
+					}
+					bindData();
+				}
+			}
+		});
+		btnRemoveCategory.setBounds(460, 550, 150, 23);
+		add(btnRemoveCategory);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
 
-		searchAll();
+		bindData();
+	}
+
+	protected boolean validateForm() {
+		selectedRow = TbResult.getSelectedRow();
+		if (selectedRow == -1) {
+			// JOptionPane.showMessageDialog(contentPane, "Please select a
+			// product", "Warning",JOptionPane.WARNING_MESSAGE);
+			DisplayUtil.displayValidationError(this, StoreConstants.SELECT_CATEGORY);
+			return false;
+		}
+		selectedCategory = categoryListResult.get(selectedRow);
+		if (selectedCategory == null) {
+			DisplayUtil.displayValidationError(this, StoreConstants.SELECT_CATEGORY);
+			return false;
+		}
+		return true;
+	}
+
+	protected void removeCategory() {
+		String msg = FormValidator.removeCategoryValidateForm(selectedCategory.getCategoryId());
+		if (msg != null) {
+			DisplayUtil.displayValidationError(this, msg);
+			return;
+		}
+		msg = FormValidator.removeCategoryValidateData(selectedCategory.getCategoryId());
+		if (msg != null) {
+			DisplayUtil.displayValidationError(this, msg);
+			return;
+		}
+		if (controller == null) {
+			controller = new EntityListController();
+		}
+		msg = controller.RemoveCategory(selectedCategory.getCategoryId());
+		if (msg != null) {
+			DisplayUtil.displayValidationError(this, msg);
+			controller = null;
+			return;
+		}
+		reloadData();
+		controller = null;
+
+		DisplayUtil.displayAcknowledgeMessage(this, StoreConstants.CATEGORY_REMOVED_SUCCESSFULLY);
+
+		////
+	}
+
+	public void reloadData() {
+		if (controller == null) {
+			controller = new EntityListController();
+		}
+		controller.reloadCategoryData();
+		controller = null;
 	}
 
 	private void clearKeyWordTextBox() {
-		//txtSearchText.setText("");
+		// txtSearchText.setText("");
 	}
 
-	private void searchAll() {
+	public void bindData() {
 		categoryList = (Collection<Category>) FileDataWrapper.categoryMap.values();
 		categoryListResult = new ArrayList<Category>();
-		//if (comboBoxSearchBy.getSelectedItem() != null) {
-			// searchBy = comboBoxSearchBy.getSelectedItem().toString();
-			for (Category category : categoryList) {
-				// Name
-				// if (searchBy == comboBoxSearchByItem[0]) {
-				//if (category.getCategoryId().toUpperCase().contains(txtSearchText.getText().toUpperCase())) {
-					categoryListResult.add(category);
-				//}
-				// }
-				// Description
-				// else if (searchBy == comboBoxSearchByItem[1]) {
-				// if
-				// (category.getCategoryName().toUpperCase().contains(txtSearchText.getText().toUpperCase()))
-				// {
-				// categoryListResult.add(category);
-				// }
-				// }
+		// if (comboBoxSearchBy.getSelectedItem() != null) {
+		// searchBy = comboBoxSearchBy.getSelectedItem().toString();
+		for (Category category : categoryList) {
+			// Name
+			// if (searchBy == comboBoxSearchByItem[0]) {
+			// if
+			// (category.getCategoryId().toUpperCase().contains(txtSearchText.getText().toUpperCase()))
+			// {
+			categoryListResult.add(category);
+			// }
+			// }
+			// Description
+			// else if (searchBy == comboBoxSearchByItem[1]) {
+			// if
+			// (category.getCategoryName().toUpperCase().contains(txtSearchText.getText().toUpperCase()))
+			// {
+			// categoryListResult.add(category);
+			// }
+			// }
 
-			}
+		}
 
-			if (categoryListResult.size() == 0) {
-				showNoresult();
-				return;
-			}
+		if (categoryListResult.size() == 0) {
+			showNoresult();
+			return;
+		}
 
-			prepareTableData();
+		prepareTableData();
 
-			showResultTable();
+		showResultTable();
 
-			// searchType = 1;
-		//}
+		// searchType = 1;
+		// }
 	}
 
 	private void prepareTableData() {
@@ -188,6 +274,7 @@ public class ManageCategory extends JFrame {
 
 	private void showNoresult() {
 		TbResult.setVisible(false);
+		btnRemoveCategory.setEnabled(false);
 		lblNoResult.setText("No result found");
 	}
 
@@ -197,7 +284,7 @@ public class ManageCategory extends JFrame {
 
 		TbResult.setModel(model);
 		TbResult.setVisible(true);
-
+		btnRemoveCategory.setEnabled(true);
 	}
 
 	private void addCategory() {
@@ -206,7 +293,9 @@ public class ManageCategory extends JFrame {
 
 	private void showAddCategoryWindow() {
 		AddCategory addCategoryWindow = new AddCategory();
-		addCategoryWindow.setLocation(this.getLocation());
+
+		addCategoryWindow.setLocation(scrollPane.getLocationOnScreen());
+
 		addCategoryWindow.setModal(true);
 		addCategoryWindow.setVisible(true);
 		addCategoryWindow.addWindowListener(new WindowListener() {
@@ -214,7 +303,7 @@ public class ManageCategory extends JFrame {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				// if (searchType == 1) {
-				searchAll();
+				bindData();
 				// }
 			}
 

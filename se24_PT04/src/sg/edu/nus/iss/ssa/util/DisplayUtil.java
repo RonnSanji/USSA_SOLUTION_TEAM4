@@ -17,13 +17,17 @@ public class DisplayUtil {
 		JOptionPane.showMessageDialog(panel, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	public static int displayConfirmationMessage(JPanel panel, String message) {
-		return JOptionPane.showConfirmDialog(panel, message, "Message", JOptionPane.YES_NO_OPTION,
+	public static void displayValidationError(JComponent component, String message) {
+		JOptionPane.showMessageDialog(component, message, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public static int displayConfirmationMessage(JComponent component, String message) {
+		return JOptionPane.showConfirmDialog(component, message, "Message", JOptionPane.YES_NO_OPTION,
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void displayAcknowledgeMessage(JPanel panel, String message) {
-		JOptionPane.showMessageDialog(panel, message, "Message", JOptionPane.INFORMATION_MESSAGE);
+	public static void displayAcknowledgeMessage(JComponent component, String message) {
+		JOptionPane.showMessageDialog(component, message, "Message", JOptionPane.INFORMATION_MESSAGE);
 	}
     /**
      * Returns String representation for points and equivalent cash

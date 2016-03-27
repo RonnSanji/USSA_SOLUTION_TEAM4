@@ -6,6 +6,7 @@ import java.io.IOException;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
@@ -41,7 +42,32 @@ public class EntityListController {
 		return null;
 
 	}
+// For remove category
+	public String RemoveCategory(String categoryID) {
+		if(categoryID == null || categoryID.isEmpty())
+		{
+			return StoreConstants.SELECT_CATEGORY;
+		}
 
+		try {
+			FileDataWrapper.categoryMap.remove(categoryID);
+		} catch (Exception ex) {
+			return StoreConstants.ERROR + " removing category " + categoryID ;
+		}
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.writeToFile(FileDataWrapper.categoryMap.values(), new sg.edu.nus.iss.ssa.model.Category());
+		} catch (Exception ex) {
+			return StoreConstants.ERROR + " removing category " + categoryID ;
+		} finally {
+			ioManager = null;
+		}
+		return null;
+
+	}
+	
 	// for add category
 	public void reloadCategoryData() {
 		FileDataWrapper.categoryMap.clear();
