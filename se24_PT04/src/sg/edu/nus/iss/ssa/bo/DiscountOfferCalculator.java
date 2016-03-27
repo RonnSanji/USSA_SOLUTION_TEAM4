@@ -6,7 +6,6 @@ import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Transaction;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -19,9 +18,9 @@ public class DiscountOfferCalculator {
 	List<Transaction> transactions;
 	List<? extends Discount> discounts;
 
-	public DiscountOfferCalculator(){
-		transactions = FileDataWrapper.transactionList;
-		discounts = FileDataWrapper.discounts;
+	public DiscountOfferCalculator(final List<Transaction>  transactions, final List<? extends Discount> discounts){
+		this.transactions = transactions;
+		this.discounts = discounts;
 	}
 
 	/**
@@ -30,7 +29,10 @@ public class DiscountOfferCalculator {
 	 * @param redeemedPoints
 	 * @return
 	 */
-	public double getTotalCashIncludingPoints(double renderedCash, long redeemedPoints) {
+	public double getTotalCashIncludingPoints(final double renderedCash,  long redeemedPoints) {
+		if(redeemedPoints < 0){
+			redeemedPoints = 0;
+		}
 		double dollarEqPoints = getCashValueForPoints(redeemedPoints);
 		return (renderedCash + dollarEqPoints);
 	}
@@ -41,6 +43,9 @@ public class DiscountOfferCalculator {
 	 * @return
 	 */
 	public double getCashValueForPoints(long redeemedPoints) {
+		if(redeemedPoints < 0){
+			redeemedPoints = 0;
+		}
 		double cashEqPoints = redeemedPoints/StoreConstants.CASH_EQ_POINTS;
 		return  cashEqPoints;
 	}
@@ -50,7 +55,7 @@ public class DiscountOfferCalculator {
 	 * @return
 	 */
 	public Long calculatePointsEqCash(Order order) {
-		long cashEqPoints = (long) (order.getFinalPrice()/StoreConstants.CASH_EQ_POINTS);
+		long cashEqPoints = (long) (order.getFinalPrice()/StoreConstants.POINTS_FOR_CASH);
 		return  cashEqPoints;
 	}
 
@@ -89,7 +94,7 @@ public class DiscountOfferCalculator {
 		for(Discount discount : discounts){
 			PeriodDiscount periodDiscount = (PeriodDiscount)discount;
 			if(periodDiscount.getApplicableTo().equalsIgnoreCase("A") &&
-				periodDiscount.checkIfPeriodicDiscountAvailable()){
+				periodDiscount.checkIfDiscountAvailable()){
 				if(periodDiscount.getDiscountPerc() > maxGeneralDiscount){
 					maxGeneralDiscount = periodDiscount.getDiscountPerc();
 				}
@@ -98,18 +103,19 @@ public class DiscountOfferCalculator {
 		return maxGeneralDiscount;
 	}
 
-	private float getDiscountForFirstTransaction() {
+	protected float getDiscountForFirstTransaction() {
 		for(Discount discount : discounts){
 			PeriodDiscount periodDiscount = (PeriodDiscount)discount;
 			if(periodDiscount.getApplicableTo().equalsIgnoreCase("M") &&
-					periodDiscount.getDiscountCode().equalsIgnoreCase("MEMBER_FIRST")){
+					periodDiscount.getDiscountCode().equalsIgnoreCase("MEMBER_FIRST")
+					&& periodDiscount.checkIfDiscountAvailable()){
 				return periodDiscount.getDiscountPerc();
 			}
 		}
 		return 0;
 	}
 
-	private float getDiscountForSubSequentTransaction() {
+	protected float getDiscountForSubSequentTransaction() {
 		for(Discount discount : discounts){
 			PeriodDiscount periodDiscount = (PeriodDiscount)discount;
 			if(periodDiscount.getApplicableTo().equalsIgnoreCase("M") &&
@@ -120,7 +126,8 @@ public class DiscountOfferCalculator {
 		return 0;
 	}
 
-	private boolean isFirstTransactionForMember(String memberId){
+	protected boolean isFirstTransactionForMember(String memberId){
+		int count = 0;
 		for(Transaction txn: transactions){
 			if(txn.getMemberId().equalsIgnoreCase(memberId)){
 				return false;
@@ -128,5 +135,4 @@ public class DiscountOfferCalculator {
 		}
 		return true;
 	}
-
 }

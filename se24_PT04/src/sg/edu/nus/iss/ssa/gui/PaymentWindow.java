@@ -45,7 +45,7 @@ public class PaymentWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public PaymentWindow() {
-		offerCalculator = new DiscountOfferCalculator();
+		offerCalculator = new DiscountOfferCalculator(FileDataWrapper.transactionList,FileDataWrapper.discounts);
 		orderValidator = new OrderValidator(offerCalculator);
 		order = FileDataWrapper.receipt;
 		//Logic to create discount offer ..

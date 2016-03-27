@@ -27,7 +27,7 @@ public class TotalReceiptCalculator {
 
     public TotalReceiptCalculator(Order order){
         this.order = order;
-        offerCalculator = new DiscountOfferCalculator();
+        offerCalculator = new DiscountOfferCalculator(transactionList, FileDataWrapper.discounts);
         productMap = FileDataWrapper.productMap;
         transactionList = FileDataWrapper.transactionList;
     }

@@ -5,26 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import sg.edu.nus.iss.ssa.bo.AuthenticationManager;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
-import sg.edu.nus.iss.ssa.gui.AddCategory;
-import sg.edu.nus.iss.ssa.gui.CategoryReport;
-import sg.edu.nus.iss.ssa.gui.MemberReport;
-import sg.edu.nus.iss.ssa.gui.ProductReport;
-import sg.edu.nus.iss.ssa.gui.ProductSelectionWindow;
-import sg.edu.nus.iss.ssa.gui.ReplenishStock;
 import sg.edu.nus.iss.ssa.model.*;
-import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
 import sg.edu.nus.iss.ssa.gui.LoginWindow;
-import sg.edu.nus.iss.ssa.gui.ManageCategory;
-import sg.edu.nus.iss.ssa.gui.ManageStock;
-import sg.edu.nus.iss.ssa.gui.MemberManagerWindow;
 import sg.edu.nus.iss.ssa.gui.DashBoard;
 
 /**
@@ -58,7 +45,7 @@ public class SouvenirStoreApp {
 			System.out.println("transactions : " + FileDataWrapper.transactionList);
 			System.out.println("SoreKeeper : " + FileDataWrapper.storeKeeperMap.keySet());
 			System.out.println("discounts : " + FileDataWrapper.discounts);
-			System.out.println(((PeriodDiscount)FileDataWrapper.discounts.get(4)).checkIfPeriodicDiscountAvailable());
+			System.out.println(((PeriodDiscount)FileDataWrapper.discounts.get(4)).checkIfDiscountAvailable());
 			
 			//Launch Purchase Window 
 			//ProductSelectionWindow productWindow = new ProductSelectionWindow();

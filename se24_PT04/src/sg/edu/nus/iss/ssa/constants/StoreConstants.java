@@ -4,7 +4,8 @@ public class StoreConstants {
 
 	public static final String PROJECT_NAME = "se24_PT04";
 	public static final String FIELD_DELIMITER = ",";
-	public static final int CASH_EQ_POINTS = 100;
+	public static final int CASH_EQ_POINTS = 100; // 100 points equal to 1 $
+	public static final int POINTS_FOR_CASH = 1;  // every 1$ spent will earn 1 point
 	public static final int CATEGORY_ID_MAX_LENGTH = 3;
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String PUBLIC_USER = "PUBLIC";

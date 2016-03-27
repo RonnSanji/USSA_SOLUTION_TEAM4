@@ -17,7 +17,7 @@ public class PeriodDiscount extends GeneralDiscount {
 	private String discountPeriod ;
 
 
-	public boolean checkIfPeriodicDiscountAvailable(){
+	public boolean checkIfDiscountAvailable(){
 		if(this.discountPeriod.equalsIgnoreCase("ALWAYS")){
 			return  true;
 		}else {
