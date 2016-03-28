@@ -133,7 +133,7 @@ public class FormValidator {
 		return null;
 	}
 
-	public static String addStoreKeeperValidateForm(String name, String password) {
+	public static String addStoreKeeperValidateForm(String name, char[] password) {
 		AuthenticationManager authManager = new AuthenticationManager();
 		Boolean isValidStoreKeeper = authManager.authenticateUser(name, password);
 		if (!isValidStoreKeeper) {

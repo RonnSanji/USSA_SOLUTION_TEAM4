@@ -9,11 +9,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import sg.edu.nus.iss.ssa.bo.AuthenticationManager;
+import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 /**
  * 
@@ -22,11 +23,6 @@ import sg.edu.nus.iss.ssa.bo.AuthenticationManager;
  */
 
 public class LoginWindow extends JFrame {
-	
-	public JButton btnLogin;
-	public JTextField txtUsername;
-	public JTextField txtPassword;
-	public JLabel lblError;
 
 	private static final long serialVersionUID = 1L;
 	private static final String LoginWindowName = "Store Keeper Login";
@@ -41,6 +37,10 @@ public class LoginWindow extends JFrame {
 	private static final int LoginWindowElementVerticalMargin = 10;
 	
 	private JPanel contentPane;
+	private JButton btnLogin;
+	private JTextField txtUsername;
+	private JPasswordField txtPassword;
+	private JLabel lblError;
 	
 	public LoginWindow() {
 		initializeUIElements();
@@ -76,7 +76,7 @@ public class LoginWindow extends JFrame {
 		lblPassword.setBounds(lblUsername.getBounds().x, txtUsername.getBounds().y + txtUsername.getSize().height + LoginWindowElementVerticalMargin, LoginWindowTextFieldWidth, LoginWindowLableHeight);
 		contentPane.add(lblPassword);
 		
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		txtPassword.setBounds(lblUsername.getBounds().x, lblPassword.getBounds().y + lblPassword.getSize().height, LoginWindowTextFieldWidth, LoginWindowTextFieldHeight);
 		contentPane.add(txtPassword);
 		
@@ -89,5 +89,26 @@ public class LoginWindow extends JFrame {
 		btnLogin.setBounds(lblUsername.getBounds().x, lblError.getBounds().y + lblError.getSize().height + LoginWindowElementVerticalMargin, LoginWindowTextFieldWidth, LoginWindowTextFieldHeight);
 		contentPane.add(btnLogin);
 		
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String userName =  txtUsername.getText();
+				String errorMsg = FormValidator.addStoreKeeperValidateForm(userName, txtPassword.getPassword());
+				if (errorMsg != null) {
+					lblError.setForeground(Color.RED);
+					lblError.setText(errorMsg);
+				}else {
+					lblError.setForeground(Color.GREEN);
+					lblError.setText("");
+					dispose();
+					
+					try {
+						DashBoard dashboardwindow = new DashBoard(userName);
+						dashboardwindow.setVisible(true);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}				
+			}
+		});	
 	}
 }

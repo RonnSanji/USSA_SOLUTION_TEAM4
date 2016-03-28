@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.ssa.bo;
 
+import java.util.Arrays;
+
 import sg.edu.nus.iss.ssa.model.StoreKeeper;
 
 /**
@@ -12,13 +14,14 @@ public class AuthenticationManager {
 	
 	protected String errorMessage = null;
 
-	public boolean authenticateUser(String username, String password) {
-		StoreKeeper storeKeeper = (StoreKeeper) FileDataWrapper.storeKeeperMap.get(username);
+	public boolean authenticateUser(String username, char[] password) {
+		StoreKeeper storeKeeper = (StoreKeeper) FileDataWrapper.storeKeeperMap.get(username.toLowerCase());
 		if (storeKeeper == null) {
 			errorMessage = "StoreKeeper not found.";
 			return false;
 		}
-		if (!storeKeeper.getPassword().equals(password)) {
+		char[] desiredPassword = storeKeeper.getPassword().toCharArray();
+		if (desiredPassword.length != password.length || !Arrays.equals(password, desiredPassword)) {
 			errorMessage = "Incorrect password";
 			return false;
 		}		
