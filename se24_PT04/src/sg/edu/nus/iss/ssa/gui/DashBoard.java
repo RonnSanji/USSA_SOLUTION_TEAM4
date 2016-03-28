@@ -1,28 +1,17 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import java.awt.EventQueue;
-import java.awt.Image;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 
-import sg.edu.nus.iss.ssa.constants.StoreConstants;
-import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
-import sg.edu.nus.iss.ssa.gui.*;
 
 import java.awt.Color;
 import java.awt.Component;
 
-import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
@@ -35,9 +24,9 @@ public class DashBoard extends JFrame
 
 	private ImageIcon imgStoreKeeper, imgBackGround, imgPurchasing, imgMember, imgCategory, imgInventory, imgClock,
 			imgDiscount, imgReport, imgLogout;
-	private MemberManagerWindow memberManagerWindow;
-	private ManageCategory manageCaterogy;
-	private ManageStock manageStock;
+	//private MemberManagerWindow memberManagerWindow;
+	//private ManageCategory manageCaterogy;
+	//private ManageStock manageStock;
 	private JTextField textFieldSKName;
 	private JTextField txtTime;
 	private JPanel mainActivityPanel;
@@ -53,10 +42,10 @@ public class DashBoard extends JFrame
 	 * 
 	 * /** Create the application.
 	 */
-	public DashBoard()
+	public DashBoard(String loginuser)
 	{
 
-		initialize();
+		initialize(loginuser);
 	}
 
 	/**
@@ -107,7 +96,7 @@ public class DashBoard extends JFrame
 		}
 	}
 
-	private void initialize()
+	private void initialize(String loginuser)
 	{
 		imageInitialize();
 
@@ -140,6 +129,7 @@ public class DashBoard extends JFrame
 		stroreKepperInfoPanel.add(lblSkName);
 
 		textFieldSKName = new JTextField();
+		textFieldSKName.setText(loginuser);
 		textFieldSKName.setEditable(false);
 		textFieldSKName.setBounds(270, 82, 200, 35);
 		stroreKepperInfoPanel.add(textFieldSKName);
@@ -176,21 +166,6 @@ public class DashBoard extends JFrame
 		mainActivityPanel.setOpaque(false);
 		mainActivityPanel.setLayout(null);
 
-		memberManagerWindow = new MemberManagerWindow();
-		memberManagerWindow.setBounds(6, 6, 854, 588);
-		memberManagerWindow.setVisible(false);
-		mainActivityPanel.add(memberManagerWindow);
-
-		manageCaterogy = new ManageCategory();
-		manageCaterogy.setBounds(6, 6, 854, 588);
-		manageCaterogy.setVisible(false);
-		mainActivityPanel.add(manageCaterogy);
-
-		manageStock = new ManageStock();
-		manageStock.setBounds(6, 6, 854, 588);
-		manageStock.setVisible(false);
-		mainActivityPanel.add(manageStock);
-
 		JPanel menuPanel = new JPanel();
 		menuPanel.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2, true), "MENU",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -225,23 +200,21 @@ public class DashBoard extends JFrame
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				showWindow(manageCaterogy);
-				manageCaterogy.reloadData();
-				manageCaterogy.bindData();
+				ManageCategory manageCaterogy = new ManageCategory();
+				activateMainPanel(mainActivityPanel,manageCaterogy);
 			}
 		});
 		btnCategoryManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
 		btnCategoryManagement.setBounds(92, 212, 200, 50);
 		menuPanel.add(btnCategoryManagement);
 
-		JButton btnProductManagement = new JButton("Inventoy Management");
+		JButton btnProductManagement = new JButton("Inventory Management");
 		btnProductManagement.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				showWindow(manageStock);
-				manageStock.reloadData();
-				manageStock.bindData();
+				ManageStock manageStock = new ManageStock();
+				activateMainPanel(mainActivityPanel,manageStock);
 			}
 		});
 		btnProductManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
@@ -288,7 +261,8 @@ public class DashBoard extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				memberManagerWindow.setVisible(true);
+				MemberManagerWindow memberManagerWindow = new MemberManagerWindow();
+				activateMainPanel(mainActivityPanel, memberManagerWindow);
 			}
 		});
 
@@ -298,7 +272,7 @@ public class DashBoard extends JFrame
 		this.getContentPane().add(lblBackGround);
 	}
 
-	private void showWindow(Component component)
+	/*private void showWindow(Component component)
 	{
 		Component[] components = mainActivityPanel.getComponents();
 		if (components != null)
@@ -309,5 +283,13 @@ public class DashBoard extends JFrame
 			}
 		}
 		component.setVisible(true);
+	}*/
+
+	private void activateMainPanel(JPanel mainActivityPanel, JPanel memberManagerWindow){
+		mainActivityPanel.removeAll();
+		memberManagerWindow.setBounds(6, 6, 854, 588);
+		memberManagerWindow.setVisible(false);
+		mainActivityPanel.add(memberManagerWindow);
+		memberManagerWindow.setVisible(true);
 	}
 }

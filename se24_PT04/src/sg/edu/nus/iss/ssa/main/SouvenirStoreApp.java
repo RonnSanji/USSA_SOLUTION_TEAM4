@@ -53,8 +53,9 @@ public class SouvenirStoreApp {
 			
 			LoginWindow login = new LoginWindow();
 			login.btnLogin.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {					
-					String errorMsg = FormValidator.addStoreKeeperValidateForm(login.txtUsername.getText(), login.txtPassword.getText());
+				public void actionPerformed(ActionEvent e) {
+					String userName =  login.txtUsername.getText();
+					String errorMsg = FormValidator.addStoreKeeperValidateForm(userName, login.txtPassword.getText());
 					if (errorMsg != null) {
 						login.lblError.setForeground(Color.RED);
 						login.lblError.setText(errorMsg);
@@ -64,7 +65,7 @@ public class SouvenirStoreApp {
 						login.dispose();
 						
 						try {
-							DashBoard dashboardwindow = new DashBoard();
+							DashBoard dashboardwindow = new DashBoard(userName);
 							dashboardwindow.setVisible(true);
 						} catch (Exception ex) {
 							ex.printStackTrace();
