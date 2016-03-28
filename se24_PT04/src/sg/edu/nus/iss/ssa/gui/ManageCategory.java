@@ -106,7 +106,7 @@ public class ManageCategory extends JPanel {
 		this.add(lblNoResult);
 
 		btnAddCategory = new JButton("Add Category");
-		btnAddCategory.setBounds(191, 550, 130, 23);
+		btnAddCategory.setBounds(192, 520, 150, 60);
 		btnAddCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addCategory();
@@ -129,7 +129,7 @@ public class ManageCategory extends JPanel {
 		TbResult.setFillsViewportHeight(true);
 
 		scrollPane = new JScrollPane(TbResult);
-		scrollPane.setBounds(10, 80, 780, 450);
+		scrollPane.setBounds(10, 80, 780, 420);
 		this.add(scrollPane);
 
 		// JButton btnClear = new JButton("Clear");
@@ -159,7 +159,7 @@ public class ManageCategory extends JPanel {
 				}
 			}
 		});
-		btnRemoveCategory.setBounds(460, 550, 150, 23);
+		btnRemoveCategory.setBounds(460, 520, 150, 60);
 		add(btnRemoveCategory);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);

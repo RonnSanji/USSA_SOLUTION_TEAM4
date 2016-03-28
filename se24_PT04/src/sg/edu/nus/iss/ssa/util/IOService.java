@@ -196,5 +196,18 @@ public class IOService<E> {
         }
         return currentDirectory + "/data/";
     }
+    
+    public static String getImageFileLocation() throws IOException {
+        String currentDirectory = null;
+        currentDirectory = System.getProperty("user.dir");
+        if (currentDirectory == null || currentDirectory.equals("")) {
+            File currentDir = new File(".");
+            currentDirectory = currentDir.getAbsolutePath();
+        }
+        if(!currentDirectory.contains(StoreConstants.PROJECT_NAME)){
+            currentDirectory += "/"+StoreConstants.PROJECT_NAME;
+        }
+        return currentDirectory + "/src/img";
+    }
 
 }

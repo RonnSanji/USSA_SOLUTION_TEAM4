@@ -16,6 +16,7 @@ import javax.swing.border.LineBorder;
 
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.gui.*;
 
 import java.awt.Color;
@@ -29,10 +30,11 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class DashBoard extends JFrame {
+public class DashBoard extends JFrame
+{
 
-
-	private ImageIcon imgStoreKeeper,imgBackGround,imgPurchasing,imgMember,imgCategory,imgInventory,imgClock,imgDiscount,imgReport,imgLogout;
+	private ImageIcon imgStoreKeeper, imgBackGround, imgPurchasing, imgMember, imgCategory, imgInventory, imgClock,
+			imgDiscount, imgReport, imgLogout;
 	private MemberManagerWindow memberManagerWindow;
 	private ManageCategory manageCaterogy;
 	private ManageStock manageStock;
@@ -43,50 +45,70 @@ public class DashBoard extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DashBoard window = new DashBoard();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}/*
-
-	/**
-	 * Create the application.
+	/*
+	 * public static void main(String[] args) { EventQueue.invokeLater(new
+	 * Runnable() { public void run() { try { DashBoard window = new
+	 * DashBoard(); window.frame.setVisible(true); } catch (Exception e) {
+	 * e.printStackTrace(); } } }); }/*
+	 * 
+	 * /** Create the application.
 	 */
-	public DashBoard() {
-	
+	public DashBoard()
+	{
+
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void imageInitialize(){
-		try{
-		 imgBackGround = new ImageIcon(this.getClass().getResource("/background1280.jpg"));
-		 imgStoreKeeper = new ImageIcon(this.getClass().getResource("/storeKeeper.png"));
-		 imgPurchasing =  new ImageIcon(this.getClass().getResource("/purchasing.png"));
-		 imgMember = new ImageIcon(this.getClass().getResource("/member.png"));
-		 imgCategory = new ImageIcon(this.getClass().getResource("/category.png"));
-		 imgInventory =  new ImageIcon(this.getClass().getResource("/inventory.png"));
-		 imgClock =  new ImageIcon(this.getClass().getResource("/clock.png")); 
-		 imgDiscount = new ImageIcon(this.getClass().getResource("/discount.png")); 
-		 imgReport = new ImageIcon(this.getClass().getResource("/report.png")); 
-		 imgLogout = new ImageIcon(this.getClass().getResource("/logout.png")); 
-		
-		 }catch(Exception ex)
+	private void imageInitialize()
+	{
+		try
 		{
-			System.out.println("File not found" + ex.getMessage());
+			/*
+			 * imgBackGround = new
+			 * ImageIcon(this.getClass().getResource("/background1280.jpg"));
+			 * imgStoreKeeper = new
+			 * ImageIcon(this.getClass().getResource("/storeKeeper.png"));
+			 * imgPurchasing = new
+			 * ImageIcon(this.getClass().getResource("/purchasing.png"));
+			 * imgMember = new
+			 * ImageIcon(this.getClass().getResource("/member.png"));
+			 * imgCategory = new
+			 * ImageIcon(this.getClass().getResource("/category.png"));
+			 * imgInventory = new
+			 * ImageIcon(this.getClass().getResource("/inventory.png"));
+			 * imgClock = new
+			 * ImageIcon(this.getClass().getResource("/clock.png")); imgDiscount
+			 * = new ImageIcon(this.getClass().getResource("/discount.png"));
+			 * imgReport = new
+			 * ImageIcon(this.getClass().getResource("/report.png")); imgLogout
+			 * = new ImageIcon(this.getClass().getResource("/logout.png"));
+			 */
+			String imgFolderPath = IOService.getImageFileLocation();
+			System.out.println(imgFolderPath);
+			imgBackGround = new ImageIcon(imgFolderPath + "/background1280.jpg");
+			imgStoreKeeper = new ImageIcon(imgFolderPath + "/storeKeeper.png");
+			imgPurchasing = new ImageIcon(imgFolderPath + "/purchasing.png");
+			imgMember = new ImageIcon(imgFolderPath + "/member.png");
+			imgCategory = new ImageIcon(imgFolderPath + "/category.png");
+			imgInventory = new ImageIcon(imgFolderPath + "/inventory.png");
+			imgClock = new ImageIcon(imgFolderPath + "/clock.png");
+			imgDiscount = new ImageIcon(imgFolderPath + "/discount.png");
+			imgReport = new ImageIcon(imgFolderPath + "/report.png");
+			imgLogout = new ImageIcon(imgFolderPath + "/logout.png");
+
+		}
+		catch (Exception ex)
+		{
+			//ex.printStackTrace();
+			System.out.println("File not found " + ex.getMessage());
 		}
 	}
 
-	private void initialize() {
+	private void initialize()
+	{
 		imageInitialize();
 
 		this.setResizable(false);
@@ -163,7 +185,7 @@ public class DashBoard extends JFrame {
 		manageCaterogy.setBounds(6, 6, 854, 588);
 		manageCaterogy.setVisible(false);
 		mainActivityPanel.add(manageCaterogy);
-		
+
 		manageStock = new ManageStock();
 		manageStock.setBounds(6, 6, 854, 588);
 		manageStock.setVisible(false);
@@ -188,8 +210,10 @@ public class DashBoard extends JFrame {
 		menuPanel.add(lblPurchasing);
 
 		JButton btnNewButton = new JButton("Purchase Management");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnNewButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 			}
 		});
 		btnNewButton.setFont(new Font("Zapfino", Font.PLAIN, 13));
@@ -197,8 +221,10 @@ public class DashBoard extends JFrame {
 		menuPanel.add(btnNewButton);
 
 		JButton btnCategoryManagement = new JButton("Category Management");
-		btnCategoryManagement.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnCategoryManagement.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
 				showWindow(manageCaterogy);
 				manageCaterogy.reloadData();
 				manageCaterogy.bindData();
@@ -209,11 +235,13 @@ public class DashBoard extends JFrame {
 		menuPanel.add(btnCategoryManagement);
 
 		JButton btnProductManagement = new JButton("Inventoy Management");
-		btnProductManagement.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnProductManagement.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
 				showWindow(manageStock);
 				manageStock.reloadData();
-				manageStock.bindData();	
+				manageStock.bindData();
 			}
 		});
 		btnProductManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
@@ -256,8 +284,10 @@ public class DashBoard extends JFrame {
 		;
 		menuPanel.add(lblReport);
 
-		btnMemberManage.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnMemberManage.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				memberManagerWindow.setVisible(true);
 			}
 		});
@@ -268,10 +298,13 @@ public class DashBoard extends JFrame {
 		this.getContentPane().add(lblBackGround);
 	}
 
-	private void showWindow(Component component) {
+	private void showWindow(Component component)
+	{
 		Component[] components = mainActivityPanel.getComponents();
-		if (components != null) {
-			for (Component c : components) {
+		if (components != null)
+		{
+			for (Component c : components)
+			{
 				c.setVisible(false);
 			}
 		}

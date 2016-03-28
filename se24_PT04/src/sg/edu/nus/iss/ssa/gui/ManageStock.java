@@ -106,7 +106,7 @@ public class ManageStock extends JPanel {
 		this.add(lblNoResult);
 
 		btnReplenish = new JButton("Replenish");
-		btnReplenish.setBounds(333, 555, 139, 38);
+		btnReplenish.setBounds(334, 525, 139, 60);
 		btnReplenish.setEnabled(false);
 		btnReplenish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -139,7 +139,7 @@ public class ManageStock extends JPanel {
 		TbResult.setFillsViewportHeight(true);
 
 		scrollPane = new JScrollPane(TbResult);
-		scrollPane.setBounds(10, 100, 780, 450);
+		scrollPane.setBounds(10, 100, 780, 420);
 		this.add(scrollPane);
 
 		btnClear = new JButton("Clear");
