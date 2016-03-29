@@ -11,32 +11,31 @@ import sg.edu.nus.iss.ssa.util.IOService;
 
 import java.awt.Color;
 import java.awt.Component;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.border.TitledBorder;
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
 
-import java.util.Date;
+import javax.swing.border.TitledBorder;
+
+import java.awt.Font;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 public class DashBoard extends JFrame
 {
 
 	private ImageIcon imgStoreKeeper, imgBackGround, imgPurchasing, imgMember, imgCategory, imgInventory, imgClock,
 			imgDiscount, imgReport, imgLogout;
-
+	//private MemberManagerWindow memberManagerWindow;
+	//private ManageCategory manageCaterogy;
+	//private ManageStock manageStock;
 	private JTextField textFieldSKName;
 	private JTextField txtTime;
 	private JPanel mainActivityPanel;
-	private final Timer updater = new Timer(1000, new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-	    	txtTime.setText(getSystemTime());
-	    }
-	});
+
 	/**
 	 * Launch the application.
 	 */
@@ -52,7 +51,6 @@ public class DashBoard extends JFrame
 	{
 
 		initialize(loginuser);
-		updater.start();
 	}
 
 	/**
@@ -105,9 +103,7 @@ public class DashBoard extends JFrame
 
 	private void initialize(String loginuser)
 	{
-		DashBoard dashBoard = this;
 		imageInitialize();
-		
 
 		this.setResizable(false);
 		this.setBounds(100, 100, 450, 300);
@@ -122,7 +118,7 @@ public class DashBoard extends JFrame
 		this.getContentPane().add(stroreKepperInfoPanel);
 		stroreKepperInfoPanel.setLayout(null);
 
-		JLabel lblFantasyTeam = new JLabel("PT Team 4 Souvenir Store");
+		JLabel lblFantasyTeam = new JLabel("Fantasy Team 4 Souvenir Store");
 		lblFantasyTeam.setFont(new Font("Zapfino", Font.BOLD, 24));
 		lblFantasyTeam.setBounds(350, 6, 460, 64);
 		stroreKepperInfoPanel.add(lblFantasyTeam);
@@ -140,7 +136,7 @@ public class DashBoard extends JFrame
 		textFieldSKName = new JTextField();
 		textFieldSKName.setText(loginuser);
 		textFieldSKName.setEditable(false);
-		textFieldSKName.setBounds(270, 82, 230, 35);
+		textFieldSKName.setBounds(270, 82, 200, 35);
 		stroreKepperInfoPanel.add(textFieldSKName);
 		textFieldSKName.setColumns(10);
 
@@ -152,18 +148,12 @@ public class DashBoard extends JFrame
 		txtTime = new JTextField();
 		txtTime.setEditable(false);
 		txtTime.setHorizontalAlignment(SwingConstants.CENTER);
-		txtTime.setText(this.getSystemTime());
-		txtTime.setBounds(676, 82, 230, 35);
+		txtTime.setText("Sun 20 Mar 23:07");
+		txtTime.setBounds(676, 82, 200, 35);
 		stroreKepperInfoPanel.add(txtTime);
 		txtTime.setColumns(10);
 
 		JButton btnLogout = new JButton("New button");
-		btnLogout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				updater.stop();
-				dispose();
-			}
-		});
 		btnLogout.setBounds(1040, 73, 49, 55);
 		btnLogout.setIcon(imgLogout);
 		stroreKepperInfoPanel.add(btnLogout);
@@ -204,11 +194,9 @@ public class DashBoard extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				ProductSelectionWindow productSelectionWindow = new ProductSelectionWindow(dashBoard);
-				activateMainPanel(productSelectionWindow);
 			}
 		});
-		btnNewButton.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnNewButton.setFont(new Font("Zapfino", Font.PLAIN, 13));
 		btnNewButton.setBounds(92, 22, 200, 50);
 		menuPanel.add(btnNewButton);
 
@@ -218,10 +206,10 @@ public class DashBoard extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				ManageCategory manageCaterogy = new ManageCategory();
-				activateMainPanel(manageCaterogy);
+				activateMainPanel(mainActivityPanel,manageCaterogy);
 			}
 		});
-		btnCategoryManagement.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnCategoryManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
 		btnCategoryManagement.setBounds(92, 212, 200, 50);
 		menuPanel.add(btnCategoryManagement);
 
@@ -231,20 +219,28 @@ public class DashBoard extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				ManageStock manageStock = new ManageStock();
-				activateMainPanel( manageStock);
+				activateMainPanel(mainActivityPanel,manageStock);
 			}
 		});
-		btnProductManagement.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnProductManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
 		btnProductManagement.setBounds(92, 308, 200, 50);
 		menuPanel.add(btnProductManagement);
 
-		JButton btnDiscount = new JButton("Discount Management");
-		btnDiscount.setFont(new Font("Zapfino", Font.BOLD, 13));
-		btnDiscount.setBounds(92, 403, 200, 50);
-		menuPanel.add(btnDiscount);
+		JButton btnNewButton_1 = new JButton("Discount Management");
+		btnNewButton_1.setFont(new Font("Zapfino", Font.PLAIN, 13));
+		btnNewButton_1.setBounds(92, 403, 200, 50);
+		menuPanel.add(btnNewButton_1);
 
-		JButton btnReport = new JButton("Report ");
-		btnReport.setFont(new Font("Zapfino", Font.BOLD, 13));
+		JButton btnReport = new JButton("Report");
+		btnReport.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ReportSummary reportSummary=new ReportSummary();
+				activateMainPanel(mainActivityPanel, reportSummary);	
+			}
+		});
+		btnReport.setFont(new Font("Zapfino", Font.PLAIN, 13));
 		btnReport.setBounds(92, 497, 200, 50);
 		menuPanel.add(btnReport);
 
@@ -279,7 +275,7 @@ public class DashBoard extends JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				MemberManagerWindow memberManagerWindow = new MemberManagerWindow();
-				activateMainPanel( memberManagerWindow);
+				activateMainPanel(mainActivityPanel, memberManagerWindow);
 			}
 		});
 
@@ -287,12 +283,22 @@ public class DashBoard extends JFrame
 		lblBackGround.setIcon(imgBackGround);
 		lblBackGround.setBounds(0, 0, 1280, 800);
 		this.getContentPane().add(lblBackGround);
-		
-
 	}
 
+	/*private void showWindow(Component component)
+	{
+		Component[] components = mainActivityPanel.getComponents();
+		if (components != null)
+		{
+			for (Component c : components)
+			{
+				c.setVisible(false);
+			}
+		}
+		component.setVisible(true);
+	}*/
 
-	public void activateMainPanel(JPanel memberManagerWindow){
+	private void activateMainPanel(JPanel mainActivityPanel, JPanel memberManagerWindow){
 		mainActivityPanel.removeAll();
 		memberManagerWindow.setBounds(6, 6, 854, 588);
 		memberManagerWindow.setVisible(false);
