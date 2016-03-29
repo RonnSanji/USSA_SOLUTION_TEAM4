@@ -39,7 +39,7 @@ public class ProductSelectionWindow extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	public ProductSelectionWindow() {
+	public ProductSelectionWindow(DashBoard dashBoard) {
 		order = FileDataWrapper.receipt;
 		ProductSelectionWindow productWin = this;
 		setSize(800,600);
@@ -180,8 +180,8 @@ public class ProductSelectionWindow extends JPanel {
 		btnCheckout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Checkout Item
-				PaymentWindow payWindow = new PaymentWindow();
-				payWindow.setVisible(true);
+				PaymentWindow payWindow = new PaymentWindow(dashBoard);
+				dashBoard.activateMainPanel(payWindow);
 
 			}
 		});

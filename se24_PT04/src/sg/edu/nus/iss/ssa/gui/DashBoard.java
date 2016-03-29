@@ -98,6 +98,7 @@ public class DashBoard extends JFrame
 
 	private void initialize(String loginuser)
 	{
+		DashBoard dashBoard = this;
 		imageInitialize();
 
 		this.setResizable(false);
@@ -189,8 +190,8 @@ public class DashBoard extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				ProductSelectionWindow productSelectionWindow = new ProductSelectionWindow();
-				activateMainPanel(mainActivityPanel,productSelectionWindow);
+				ProductSelectionWindow productSelectionWindow = new ProductSelectionWindow(dashBoard);
+				activateMainPanel(productSelectionWindow);
 			}
 		});
 		btnNewButton.setFont(new Font("Zapfino", Font.PLAIN, 13));
@@ -203,7 +204,7 @@ public class DashBoard extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				ManageCategory manageCaterogy = new ManageCategory();
-				activateMainPanel(mainActivityPanel,manageCaterogy);
+				activateMainPanel(manageCaterogy);
 			}
 		});
 		btnCategoryManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
@@ -216,7 +217,7 @@ public class DashBoard extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				ManageStock manageStock = new ManageStock();
-				activateMainPanel(mainActivityPanel, manageStock);
+				activateMainPanel( manageStock);
 			}
 		});
 		btnProductManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
@@ -264,7 +265,7 @@ public class DashBoard extends JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				MemberManagerWindow memberManagerWindow = new MemberManagerWindow();
-				activateMainPanel(mainActivityPanel, memberManagerWindow);
+				activateMainPanel( memberManagerWindow);
 			}
 		});
 
@@ -274,20 +275,8 @@ public class DashBoard extends JFrame
 		this.getContentPane().add(lblBackGround);
 	}
 
-	/*private void showWindow(Component component)
-	{
-		Component[] components = mainActivityPanel.getComponents();
-		if (components != null)
-		{
-			for (Component c : components)
-			{
-				c.setVisible(false);
-			}
-		}
-		component.setVisible(true);
-	}*/
 
-	private void activateMainPanel(JPanel mainActivityPanel, JPanel memberManagerWindow){
+	public void activateMainPanel(JPanel memberManagerWindow){
 		mainActivityPanel.removeAll();
 		memberManagerWindow.setBounds(6, 6, 854, 588);
 		memberManagerWindow.setVisible(false);
