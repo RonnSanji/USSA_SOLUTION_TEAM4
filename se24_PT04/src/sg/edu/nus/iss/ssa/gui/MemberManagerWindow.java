@@ -128,8 +128,14 @@ public class MemberManagerWindow extends JPanel {
 		for (int i = 0; i < members.length; i++) {
 			data[i] =   ((Member)members[i]).getMemeberArray();
 		}
-		model = new DefaultTableModel(data, columns);
+		model = new DefaultTableModel(data, columns){
+			public boolean isCellEditable(int row, int column){  
+		          return false;  
+		      }
+		};
+		model.isCellEditable(0, 0);
 		table =   new JTable(model);
+		
 		
 		scrollPane.setViewportView(table);
 

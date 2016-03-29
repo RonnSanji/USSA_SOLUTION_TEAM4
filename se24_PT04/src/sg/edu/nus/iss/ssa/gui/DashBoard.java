@@ -18,19 +18,25 @@ import javax.swing.border.TitledBorder;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 public class DashBoard extends JFrame
 {
 
 	private ImageIcon imgStoreKeeper, imgBackGround, imgPurchasing, imgMember, imgCategory, imgInventory, imgClock,
 			imgDiscount, imgReport, imgLogout;
-	//private MemberManagerWindow memberManagerWindow;
-	//private ManageCategory manageCaterogy;
-	//private ManageStock manageStock;
+
 	private JTextField textFieldSKName;
 	private JTextField txtTime;
 	private JPanel mainActivityPanel;
-
+	private final Timer updater = new Timer(1000, new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+	    	txtTime.setText(getSystemTime());
+	    }
+	});
 	/**
 	 * Launch the application.
 	 */
@@ -46,6 +52,7 @@ public class DashBoard extends JFrame
 	{
 
 		initialize(loginuser);
+		updater.start();
 	}
 
 	/**
@@ -100,6 +107,7 @@ public class DashBoard extends JFrame
 	{
 		DashBoard dashBoard = this;
 		imageInitialize();
+		
 
 		this.setResizable(false);
 		this.setBounds(100, 100, 450, 300);
@@ -132,7 +140,7 @@ public class DashBoard extends JFrame
 		textFieldSKName = new JTextField();
 		textFieldSKName.setText(loginuser);
 		textFieldSKName.setEditable(false);
-		textFieldSKName.setBounds(270, 82, 200, 35);
+		textFieldSKName.setBounds(270, 82, 230, 35);
 		stroreKepperInfoPanel.add(textFieldSKName);
 		textFieldSKName.setColumns(10);
 
@@ -144,14 +152,15 @@ public class DashBoard extends JFrame
 		txtTime = new JTextField();
 		txtTime.setEditable(false);
 		txtTime.setHorizontalAlignment(SwingConstants.CENTER);
-		txtTime.setText("Sun 20 Mar 23:07");
-		txtTime.setBounds(676, 82, 200, 35);
+		txtTime.setText(this.getSystemTime());
+		txtTime.setBounds(676, 82, 230, 35);
 		stroreKepperInfoPanel.add(txtTime);
 		txtTime.setColumns(10);
 
 		JButton btnLogout = new JButton("New button");
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				updater.stop();
 				dispose();
 			}
 		});
@@ -229,10 +238,10 @@ public class DashBoard extends JFrame
 		btnProductManagement.setBounds(92, 308, 200, 50);
 		menuPanel.add(btnProductManagement);
 
-		JButton btnNewButton_1 = new JButton("Discount Management");
-		btnNewButton_1.setFont(new Font("Zapfino", Font.BOLD, 13));
-		btnNewButton_1.setBounds(92, 403, 200, 50);
-		menuPanel.add(btnNewButton_1);
+		JButton btnDiscount = new JButton("Discount Management");
+		btnDiscount.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnDiscount.setBounds(92, 403, 200, 50);
+		menuPanel.add(btnDiscount);
 
 		JButton btnReport = new JButton("Report ");
 		btnReport.setFont(new Font("Zapfino", Font.BOLD, 13));
@@ -278,6 +287,8 @@ public class DashBoard extends JFrame
 		lblBackGround.setIcon(imgBackGround);
 		lblBackGround.setBounds(0, 0, 1280, 800);
 		this.getContentPane().add(lblBackGround);
+		
+
 	}
 
 
@@ -288,4 +299,13 @@ public class DashBoard extends JFrame
 		mainActivityPanel.add(memberManagerWindow);
 		memberManagerWindow.setVisible(true);
 	}
+	
+	private String getSystemTime(){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		System.out.println(date);
+		return date.toString();
+		
+	}
+	
 }
