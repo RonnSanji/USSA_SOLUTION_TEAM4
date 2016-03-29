@@ -73,9 +73,7 @@ public class MemberNumberScreen extends JDialog {
 								DisplayUtil.displayValidationError(buttonPane, StoreConstants.INVALID_MEMBER_NUMBER);
 							}else {
 								order.setUser(selectedItem);
-								productWin.dispose();
-								ProductSelectionWindow newWindow = new ProductSelectionWindow();
-								newWindow.setVisible(true);
+								productWin.updatedFieldValue(order);
 								dispose();
 							}
 						}

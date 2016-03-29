@@ -127,9 +127,8 @@ public class PurchaseProduct extends JDialog {
 									}else {
 										LineItem item = new LineItem(product, productQuantity);
 										order.addLineItem(item);
-										payWin.dispose();
-										ProductSelectionWindow newWindow = new ProductSelectionWindow();
-										newWindow.setVisible(true);
+										payWin.refreshTable(item.getItemsArray());
+										payWin.updatedTotal(order);
 										dispose();
 									}
 								}

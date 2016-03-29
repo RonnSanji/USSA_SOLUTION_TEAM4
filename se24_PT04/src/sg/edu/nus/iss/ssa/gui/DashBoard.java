@@ -189,6 +189,8 @@ public class DashBoard extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				ProductSelectionWindow productSelectionWindow = new ProductSelectionWindow();
+				activateMainPanel(mainActivityPanel,productSelectionWindow);
 			}
 		});
 		btnNewButton.setFont(new Font("Zapfino", Font.PLAIN, 13));
@@ -214,7 +216,7 @@ public class DashBoard extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				ManageStock manageStock = new ManageStock();
-				activateMainPanel(mainActivityPanel,manageStock);
+				activateMainPanel(mainActivityPanel, manageStock);
 			}
 		});
 		btnProductManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
