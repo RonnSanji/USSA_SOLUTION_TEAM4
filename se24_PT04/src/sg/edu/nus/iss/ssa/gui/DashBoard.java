@@ -83,7 +83,7 @@ public class DashBoard extends JFrame
 			 * = new ImageIcon(this.getClass().getResource("/logout.png"));
 			 */
 			String imgFolderPath = IOService.getImageFileLocation();
-			System.out.println(imgFolderPath);
+			//System.out.println(imgFolderPath);
 			imgBackGround = new ImageIcon(imgFolderPath + "/background1280.jpg");
 			imgStoreKeeper = new ImageIcon(imgFolderPath + "/storeKeeper.png");
 			imgPurchasing = new ImageIcon(imgFolderPath + "/purchasing.png");
@@ -303,7 +303,7 @@ public class DashBoard extends JFrame
 	private String getSystemTime(){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
-		System.out.println(date);
+		//System.out.println(date);
 		return date.toString();
 		
 	}
