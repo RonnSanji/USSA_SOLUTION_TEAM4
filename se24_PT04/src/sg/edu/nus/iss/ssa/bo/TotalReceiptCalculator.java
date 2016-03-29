@@ -65,6 +65,7 @@ public class TotalReceiptCalculator {
             try {
                 ioManager.writeToFile(productMap.values(),new Product());
                 ioManager.writeToFile(transactionList,new Transaction());
+                ioManager.writeToFile(FileDataWrapper.memberMap.values(),new Member());
             } catch (IOException e) {
                 e.printStackTrace();
             }

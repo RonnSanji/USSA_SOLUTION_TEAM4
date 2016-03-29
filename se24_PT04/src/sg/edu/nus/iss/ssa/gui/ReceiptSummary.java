@@ -13,6 +13,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.ssa.bo.DiscountOfferCalculator;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
@@ -30,6 +31,7 @@ import sg.edu.nus.iss.ssa.util.DisplayUtil;
 public class ReceiptSummary extends JPanel {
 
 	private JTable table;
+	private DefaultTableModel model;
 	private JTextField totalPrice;
 	private JTextField applicableDiscount;
 	private JTextField finalPrice;
@@ -81,7 +83,16 @@ public class ReceiptSummary extends JPanel {
 			data[i] = boughtProducts.get(i).getItemsArray();
 		}
 		
-		table =   new JTable(data, columns);
+		model = new DefaultTableModel(data, columns)
+		{
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
+
+		
+		table =   new JTable(model);
 		scrollPane.setViewportView(table);
 			
 		totalPrice = new JTextField();

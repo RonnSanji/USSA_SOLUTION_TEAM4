@@ -114,7 +114,7 @@ public class DashBoard extends JFrame
 		this.getContentPane().add(stroreKepperInfoPanel);
 		stroreKepperInfoPanel.setLayout(null);
 
-		JLabel lblFantasyTeam = new JLabel("Fantasy Team 4 Souvenir Store");
+		JLabel lblFantasyTeam = new JLabel("PT Team 4 Souvenir Store");
 		lblFantasyTeam.setFont(new Font("Zapfino", Font.BOLD, 24));
 		lblFantasyTeam.setBounds(350, 6, 460, 64);
 		stroreKepperInfoPanel.add(lblFantasyTeam);
@@ -150,6 +150,11 @@ public class DashBoard extends JFrame
 		txtTime.setColumns(10);
 
 		JButton btnLogout = new JButton("New button");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnLogout.setBounds(1040, 73, 49, 55);
 		btnLogout.setIcon(imgLogout);
 		stroreKepperInfoPanel.add(btnLogout);
@@ -194,7 +199,7 @@ public class DashBoard extends JFrame
 				activateMainPanel(productSelectionWindow);
 			}
 		});
-		btnNewButton.setFont(new Font("Zapfino", Font.PLAIN, 13));
+		btnNewButton.setFont(new Font("Zapfino", Font.BOLD, 13));
 		btnNewButton.setBounds(92, 22, 200, 50);
 		menuPanel.add(btnNewButton);
 
@@ -207,7 +212,7 @@ public class DashBoard extends JFrame
 				activateMainPanel(manageCaterogy);
 			}
 		});
-		btnCategoryManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
+		btnCategoryManagement.setFont(new Font("Zapfino", Font.BOLD, 13));
 		btnCategoryManagement.setBounds(92, 212, 200, 50);
 		menuPanel.add(btnCategoryManagement);
 
@@ -220,17 +225,17 @@ public class DashBoard extends JFrame
 				activateMainPanel( manageStock);
 			}
 		});
-		btnProductManagement.setFont(new Font("Zapfino", Font.PLAIN, 13));
+		btnProductManagement.setFont(new Font("Zapfino", Font.BOLD, 13));
 		btnProductManagement.setBounds(92, 308, 200, 50);
 		menuPanel.add(btnProductManagement);
 
 		JButton btnNewButton_1 = new JButton("Discount Management");
-		btnNewButton_1.setFont(new Font("Zapfino", Font.PLAIN, 13));
+		btnNewButton_1.setFont(new Font("Zapfino", Font.BOLD, 13));
 		btnNewButton_1.setBounds(92, 403, 200, 50);
 		menuPanel.add(btnNewButton_1);
 
 		JButton btnReport = new JButton("Report ");
-		btnReport.setFont(new Font("Zapfino", Font.PLAIN, 13));
+		btnReport.setFont(new Font("Zapfino", Font.BOLD, 13));
 		btnReport.setBounds(92, 497, 200, 50);
 		menuPanel.add(btnReport);
 
