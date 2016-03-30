@@ -146,7 +146,9 @@ public class PurchaseProduct extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						dispose();
+						order = new Order();
+
+
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
