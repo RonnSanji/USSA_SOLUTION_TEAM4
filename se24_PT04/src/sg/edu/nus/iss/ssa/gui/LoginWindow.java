@@ -27,8 +27,8 @@ public class LoginWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static final String LoginWindowName = "Store Keeper Login";
 	private static final String AppName = "Souvenir Store";
-	private static final int LoginWindowFrameSizeWidth = 500;
-	private static final int LoginWindowFrameSizeHeight = 340;
+	private static final int LoginWindowFrameSizeWidth = 450;
+	private static final int LoginWindowFrameSizeHeight = 320;
 	private static final int LoginWindowTextFieldWidth = 400;
 	private static final int LoginWindowLableHeight = 20;
 	private static final int LoginWindowTextFieldHeight = 40;
@@ -38,6 +38,7 @@ public class LoginWindow extends JFrame {
 	
 	private JPanel contentPane;
 	private JButton btnLogin;
+	private JButton btnExit;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
 	private JLabel lblError;
@@ -84,9 +85,13 @@ public class LoginWindow extends JFrame {
 		lblError.setFont(lblError.getFont().deriveFont(11.0f));
 		lblError.setBounds(lblUsername.getBounds().x, txtPassword.getBounds().y + txtPassword.getSize().height + LoginWindowElementVerticalMargin, LoginWindowTextFieldWidth, LoginWindowTextFieldHeight/2);
 		contentPane.add(lblError);
-
+		
+		btnExit = new JButton("Exit");
+		btnExit.setBounds(LoginWindowElementLayoutGuideLeft + LoginWindowTextFieldWidth * 3/4, lblError.getBounds().y + lblError.getSize().height + LoginWindowElementVerticalMargin, LoginWindowTextFieldWidth/4, LoginWindowTextFieldHeight);
+		contentPane.add(btnExit);
+		
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(lblUsername.getBounds().x, lblError.getBounds().y + lblError.getSize().height + LoginWindowElementVerticalMargin, LoginWindowTextFieldWidth, LoginWindowTextFieldHeight);
+		btnLogin.setBounds(btnExit.getBounds().x - btnExit.getSize().width, btnExit.getBounds().y, LoginWindowTextFieldWidth/4, LoginWindowTextFieldHeight);
 		contentPane.add(btnLogin);
 		
 		btnLogin.addActionListener(new ActionListener() {
@@ -110,5 +115,11 @@ public class LoginWindow extends JFrame {
 				}				
 			}
 		});	
+		
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 	}
 }

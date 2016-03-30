@@ -2,17 +2,18 @@ package sg.edu.nus.iss.ssa.validation;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import sg.edu.nus.iss.ssa.bo.AuthenticationManager;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.model.StoreKeeper;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
 
@@ -134,11 +135,25 @@ public class FormValidator {
 	}
 
 	public static String addStoreKeeperValidateForm(String name, char[] password) {
-		AuthenticationManager authManager = new AuthenticationManager();
-		Boolean isValidStoreKeeper = authManager.authenticateUser(name, password);
-		if (!isValidStoreKeeper) {
-			return authManager.getErrorMessage();
+		if (name == null || name.isEmpty()) {
+			return StoreConstants.STOREKEEPER_NOT_FOUND;
+		} 
+		
+		if (password == null || password.length == 0) {
+			return StoreConstants.STOREKEEPER_INCORRECT_PASSWORD;
 		}
+		System.out.println(FileDataWrapper.storeKeeperMap.values());
+		StoreKeeper storeKeeper = (StoreKeeper) FileDataWrapper.storeKeeperMap.get(name.toLowerCase());
+		if (storeKeeper == null) {
+			System.out.println("NONONONONO");
+			return StoreConstants.STOREKEEPER_NOT_FOUND;
+		}
+		
+		char[] desiredPassword = storeKeeper.getPassword().toCharArray();
+		if (desiredPassword.length != password.length || !Arrays.equals(password, desiredPassword)) {
+			return StoreConstants.STOREKEEPER_INCORRECT_PASSWORD;
+		}		
+		
 		return null;
 	}
 

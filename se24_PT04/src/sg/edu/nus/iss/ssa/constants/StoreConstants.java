@@ -64,5 +64,7 @@ public class StoreConstants {
 	public static final String NUMBER_REGEX = "[0-9]";
 	public static final String STRING_REGEX = "[a-zA-Z]";
 
-
+	// StoreKeeper validation message
+	public static final String STOREKEEPER_NOT_FOUND = "StoreKeeper not found.";
+	public static final String STOREKEEPER_INCORRECT_PASSWORD =  "Incorrect password.";
 }

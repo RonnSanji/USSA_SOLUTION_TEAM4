@@ -17,10 +17,66 @@ import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.model.StoreKeeper;
 import sg.edu.nus.iss.ssa.util.IOService;
 
 public class FormValidatorTest extends TestCase
 {
+	@Test
+	public void testStoreKeeperValidateForm()
+	{
+		IOService<?> ioManager = new IOService<>();
+		try
+		{
+			ioManager.readFromFile( FileDataWrapper.storeKeeperMap,null, new StoreKeeper());
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (FieldMismatchExcepion fieldMismatchExcepion)
+		{
+			fieldMismatchExcepion.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			ioManager = null;
+		}
+
+		String msg;
+		try
+		{
+			String emptyName = null;
+			char[] emptyPassword = {};
+			msg = FormValidator.addStoreKeeperValidateForm(emptyName, emptyPassword);
+			assertTrue(msg.contains(StoreConstants.STOREKEEPER_NOT_FOUND));
+
+			String upperCaseName = "Stacy";
+			msg = FormValidator.addStoreKeeperValidateForm(upperCaseName, emptyPassword);
+			assertTrue(msg.contains(StoreConstants.STOREKEEPER_INCORRECT_PASSWORD));
+			
+			char[] lowerCasePassword = {'d','e','a','n','5','6','s'};
+			msg = FormValidator.addStoreKeeperValidateForm(upperCaseName, lowerCasePassword);
+			assertTrue(msg.contains(StoreConstants.STOREKEEPER_INCORRECT_PASSWORD));
+			
+			char[] correctPassword = {'D','e','a','n','5','6','s'};
+			msg = FormValidator.addStoreKeeperValidateForm(upperCaseName, correctPassword);
+			assertTrue(msg == null);
+			
+			String lowerCassName = "stacy";
+			msg = FormValidator.addStoreKeeperValidateForm(lowerCassName, correctPassword);
+			assertTrue(msg == null);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
 	@Test
 	public void testAddCategoryValidateForm()
 	{
