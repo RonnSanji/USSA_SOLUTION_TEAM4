@@ -46,7 +46,7 @@ public class MemberAddingWindow extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		JLabel lblMemberName = new JLabel("Memeber Name :");
+		JLabel lblMemberName = new JLabel("Member Name :");
 		lblMemberName.setBounds(30, 47, 107, 16);
 		contentPanel.add(lblMemberName);
 		

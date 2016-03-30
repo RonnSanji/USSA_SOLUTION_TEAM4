@@ -120,7 +120,7 @@ public class MemberManagerWindow extends JPanel {
 		buttonPanel.add(btnRemoveMember);
 
 		// jTable Data Display
-		String[] columns = new String[] { "Member Name", "Member Number", "LoytyPoints" };
+		String[] columns = new String[] { "Member Name", "Member Number", "Loylty Points" };
 		Object[] members = FileDataWrapper.memberMap.values().toArray();
 		Object[][] data = new Object[members.length][];
 
