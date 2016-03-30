@@ -310,7 +310,7 @@ public class DashBoard extends JFrame
 		
 	}
 
-	private void showProductSelectionWindow(DashBoard dashBoard) {
+	public void showProductSelectionWindow(DashBoard dashBoard) {
 		ProductSelectionWindow productSelectionWindow = new ProductSelectionWindow(dashBoard);
 		activateMainPanel(productSelectionWindow);
 	}

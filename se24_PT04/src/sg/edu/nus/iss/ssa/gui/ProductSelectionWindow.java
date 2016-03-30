@@ -35,6 +35,7 @@ public class ProductSelectionWindow extends JPanel {
 	private JTextField memberNumber;
 	private JTextField loyaltyPoints;
 	private Order order;
+	private DashBoard dashBoard;
 
 	/**
 	 * Create the frame.
@@ -42,6 +43,7 @@ public class ProductSelectionWindow extends JPanel {
 	public ProductSelectionWindow(DashBoard dashBoard) {
 		order = FileDataWrapper.receipt;
 		ProductSelectionWindow productWin = this;
+		this.dashBoard = dashBoard;
 		setSize(800,600);
 
 		this.setOpaque(false);
@@ -184,9 +186,7 @@ public class ProductSelectionWindow extends JPanel {
 					JOptionPane.showMessageDialog(table, "Please add atleast one product to checkout. ", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				PaymentWindow payWindow = new PaymentWindow(dashBoard);
-				dashBoard.activateMainPanel(payWindow);
-
+				startNewPurchase();
 			}
 		});
 		btnCheckout.setHorizontalAlignment(SwingConstants.LEFT);
@@ -212,4 +212,8 @@ public class ProductSelectionWindow extends JPanel {
 		this.toalPrice.setText(String.valueOf(order.getTotalPrice()));
 	}
 
+	public void startNewPurchase() {
+		PaymentWindow payWindow = new PaymentWindow(dashBoard);
+		dashBoard.activateMainPanel(payWindow);
+	}
 }

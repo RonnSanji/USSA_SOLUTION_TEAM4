@@ -51,7 +51,7 @@ public class PaymentWindow extends JPanel {
 		offerCalculator.applyDiscount(order);
 		PaymentWindow payWin = this;
 		
-		setSize(800,600);
+		setSize(800, 600);
 
 		this.setOpaque(false);
 		setLayout(null);
@@ -185,7 +185,8 @@ public class PaymentWindow extends JPanel {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//dispose();
+				FileDataWrapper.receipt = new Order();
+				dashBoard.showProductSelectionWindow(dashBoard);
 			}
 		});
 		btnCancel.setBounds(259, 399, 115, 29);
