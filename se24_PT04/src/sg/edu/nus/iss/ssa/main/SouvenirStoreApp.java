@@ -46,11 +46,7 @@ public class SouvenirStoreApp {
 			System.out.println("SoreKeeper : " + FileDataWrapper.storeKeeperMap.keySet());
 			System.out.println("discounts : " + FileDataWrapper.discounts);
 			System.out.println(((PeriodDiscount)FileDataWrapper.discounts.get(4)).checkIfDiscountAvailable());
-			
-			//Launch Purchase Window 
-			//ProductSelectionWindow productWindow = new ProductSelectionWindow();
-			//productWindow.setVisible(true);
-			
+
 			LoginWindow login = new LoginWindow();	
 			login.setVisible(true);
 
@@ -59,34 +55,6 @@ public class SouvenirStoreApp {
 					.println("Error occurred while executing program, please resolve the error and continue again");
 			e.printStackTrace();
 		}
-
-	/*	// Launch Manage Category window, for testing
-		ManageCategory manageCategoryWindow = new ManageCategory();
-		manageCategoryWindow.setVisible(true);
-		
-		// Launch Manage Stock window, for testing
-		ManageStock manageStockWindow = new ManageStock();
-		manageStockWindow.setVisible(true);
-		
-		// Launch Login window, for testing
-		LoginWindow loginWindow = new LoginWindow();
-		loginWindow.setVisible(true);
-		
-		MemberManagerWindow memberManager = new MemberManagerWindow();
-		memberManager.setVisible(true);
-		
-		
-		//Launch Report for testing
-		try {
-			//CategoryReport cr=new CategoryReport();
-			//MemberReport mr=new MemberReport();
-			ProductReport pr=new ProductReport();
-			//TransactionReport tr=new TransactionReport();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
 	}
 
 }

@@ -180,6 +180,10 @@ public class ProductSelectionWindow extends JPanel {
 		btnCheckout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Checkout Item
+				if(order.getItems() == null || order.getItems().size() == 0 ){
+					JOptionPane.showMessageDialog(table, "Please add atleast one product to checkout. ", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				PaymentWindow payWindow = new PaymentWindow(dashBoard);
 				dashBoard.activateMainPanel(payWindow);
 
