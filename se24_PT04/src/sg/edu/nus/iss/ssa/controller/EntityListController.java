@@ -68,7 +68,7 @@ public class EntityListController {
 
 	}
 	
-	// for add category
+	// for manage category
 	public void reloadCategoryData() {
 		FileDataWrapper.categoryMap.clear();
 		if (ioManager == null) {
@@ -112,7 +112,7 @@ public class EntityListController {
 		return null;
 	}
 
-	// for replenish stock
+	// for manage stock
 	public void reloadProductData() {
 		FileDataWrapper.productMap.clear();
 		if (ioManager == null) {
@@ -132,6 +132,25 @@ public class EntityListController {
 		}
 	}
 
+	// for manage discount
+		public void reloadDiscountData() {
+			FileDataWrapper.discountMap.clear();
+			if (ioManager == null) {
+				ioManager = new IOService<>();
+			}
+			try {
+				ioManager.readFromFile(FileDataWrapper.discountMap, null, new sg.edu.nus.iss.ssa.model.Discount());
+				System.out.println("discount : " + FileDataWrapper.discountMap.keySet());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+				fieldMismatchExcepion.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				ioManager = null;
+			}
+		}
 	// For add product
 	public String addProduct(Product product) {
 		try {

@@ -36,7 +36,7 @@ public class ProductReport extends JFrame {
 
 	public ProductReport() throws FieldMismatchExcepion {
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(800, 400);
 		setTitle("Product Report");
 		setVisible(true);

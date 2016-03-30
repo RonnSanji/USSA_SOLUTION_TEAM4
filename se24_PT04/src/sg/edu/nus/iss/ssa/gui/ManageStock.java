@@ -41,11 +41,11 @@ public class ManageStock extends JPanel {
 	// private JPanel contentPane;
 	private JTextField txtSearchText;
 	private JTable TbResult;
-	JComboBox<String> comboBoxSearchBy;
-	JScrollPane scrollPane;
-	JLabel lblNoResult;
-	JButton btnReplenish;
-	JButton btnShowBelowThreshold;
+	private JComboBox<String> comboBoxSearchBy;
+	private JScrollPane scrollPane;
+	private JLabel lblNoResult;
+	private JButton btnReplenish;
+	private JButton btnShowBelowThreshold;
 
 	private String[] comboBoxSearchByItem = new String[] { "Name", "Description" };
 	private EntityListController controller = new EntityListController();
@@ -57,13 +57,13 @@ public class ManageStock extends JPanel {
 	private List<Product> productListResult;
 	int selectedRow;
 	// 1 for search, 2 for show all below threshold
-	int searchType = 0;
+	private int searchType = 0;
 
-	String[] columns = new String[] { "Product Name", "Product Description", "Bar Code", "Price", "Current Quantity",
-			"Reorder Threshold", "Reorder Quantity" };
-	String[][] data;
+	private String[] columns = new String[] { "Product Name", "Product Description", "Bar Code", "Price",
+			"Current Quantity", "Reorder Threshold", "Reorder Quantity" };
+	private String[][] data;
 
-	TableModel model;
+	private TableModel model;
 	private JButton btnClear;
 
 	public ManageStock() {
@@ -152,6 +152,8 @@ public class ManageStock extends JPanel {
 		this.add(btnClear);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
+
+		search();
 	}
 
 	private void clearKeyWordTextBox() {

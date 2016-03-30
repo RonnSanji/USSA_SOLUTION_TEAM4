@@ -9,7 +9,9 @@ public class StoreConstants {
 	public static final int CATEGORY_ID_MAX_LENGTH = 3;
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String PUBLIC_USER = "PUBLIC";
-
+	public static final String[] FIXED_DISCOUNT = new String[]{"MEMBER_FIRST","MEMBER_SUBSEQ"};
+	
+	
 	public static final String INVALID_PRODUCT = "Please Select a valid product.";
 	public static final String INVALID_DATE = "Please Select a valid date.";
 	public static final String BLANK_INPUT_FOR_PRODUCT_PURCHASE = "Please enter BarCode and Quantity to purchase the product.";
@@ -67,4 +69,9 @@ public class StoreConstants {
 	// StoreKeeper validation message
 	public static final String STOREKEEPER_NOT_FOUND = "StoreKeeper not found.";
 	public static final String STOREKEEPER_INCORRECT_PASSWORD =  "Incorrect password.";
+
+
+	// Manage discount message
+	public static final String SELECT_DISCOUNT = "Please select a discount";
+
 }

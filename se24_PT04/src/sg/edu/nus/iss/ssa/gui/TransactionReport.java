@@ -62,7 +62,7 @@ public class TransactionReport extends JFrame {
 	public TransactionReport() throws FileNotFoundException,
 			FieldMismatchExcepion {
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(750, 400);
 		setVisible(true);
 		setTitle("Transaction Report");

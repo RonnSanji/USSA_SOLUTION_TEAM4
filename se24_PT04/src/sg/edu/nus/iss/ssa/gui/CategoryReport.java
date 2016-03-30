@@ -34,7 +34,7 @@ public class CategoryReport extends JFrame {
 	private Object[][] data;
 	public CategoryReport() throws FieldMismatchExcepion {
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(600, 400);
 		setVisible(true);
 		setLocationRelativeTo(null);
