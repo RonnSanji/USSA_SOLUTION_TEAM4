@@ -199,8 +199,7 @@ public class DashBoard extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				ProductSelectionWindow productSelectionWindow = new ProductSelectionWindow(dashBoard);
-				activateMainPanel(productSelectionWindow);
+				showProductSelectionWindow(dashBoard);
 			}
 		});
 		btnNewButton.setFont(new Font("Zapfino", Font.BOLD, 13));
@@ -291,7 +290,7 @@ public class DashBoard extends JFrame
 		lblBackGround.setBounds(0, 0, 1280, 800);
 		this.getContentPane().add(lblBackGround);
 
-
+		showProductSelectionWindow(dashBoard);
 	}
 
 
@@ -309,6 +308,11 @@ public class DashBoard extends JFrame
 		//System.out.println(date);
 		return date.toString();
 		
+	}
+
+	private void showProductSelectionWindow(DashBoard dashBoard) {
+		ProductSelectionWindow productSelectionWindow = new ProductSelectionWindow(dashBoard);
+		activateMainPanel(productSelectionWindow);
 	}
 	
 }
