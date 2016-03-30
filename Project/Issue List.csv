@@ -12,3 +12,4 @@ SN,Form,Function,Description,Category,Remark,,,,,,Category,Bug,Missing,Enhanceme
 11,Login,anthentication logic,To ignore case for store keeper name,Missing,,,,,,,,,,,
 12,All,All,"To add test cases for controller, calculator, validator and all other important biz logic classes, and for all methods in there",TBC,,,,,,,,,,,
 13,All,All,To standardize font and size,Enhancement,,,,,,,,,,,
+14,All,All,To standardize naming convention,"To standardize naming convention. E.g. Add Member, Add Category, Remove Member, Remove Category. Ect",,,,,,,,,,,
