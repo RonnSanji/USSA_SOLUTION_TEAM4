@@ -43,6 +43,7 @@ public class EditDiscount extends JDialog
 	private JScrollPane scrollPane;
 	private JTextArea txtDiscountDescription;
 	private JComboBox<String> comboApplicableTo;
+	private DateSelector dateSelector; 
 
 	// 0 for add, 1 for edit
 	private int mode = 0;
@@ -120,7 +121,9 @@ public class EditDiscount extends JDialog
 		txtDiscountDescription.setBounds(scrollPane.getBounds());
 		contentPanel.add(scrollPane);
 
-	
+		dateSelector = new DateSelector();
+		dateSelector.setBounds(186, 170, 217, 29);
+		contentPanel.add(dateSelector);
 
 		txtPeriod = new JTextField();
 		txtPeriod.setBounds(186, 210, 100, 20);
@@ -202,7 +205,7 @@ public class EditDiscount extends JDialog
 	{
 		txtDiscountCode.setText("");
 		txtDiscountDescription.setText("");
- 
+		
 		txtPeriod.setText("");
 		txtPercentage.setText("");
 		comboApplicableTo.setSelectedIndex(0);
