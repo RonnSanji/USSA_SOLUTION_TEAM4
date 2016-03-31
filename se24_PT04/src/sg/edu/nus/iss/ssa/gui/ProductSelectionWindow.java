@@ -142,6 +142,7 @@ public class ProductSelectionWindow extends JPanel {
 		btnEnterMemberNumber.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				MemberNumberScreen member = new MemberNumberScreen(productWin);
+				member.setModal(true);
 				member.setVisible(true);
 			}
 		});
