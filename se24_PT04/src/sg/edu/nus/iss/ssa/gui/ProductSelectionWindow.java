@@ -21,6 +21,8 @@ import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.model.LineItem;
 import sg.edu.nus.iss.ssa.model.Member;
 import sg.edu.nus.iss.ssa.model.Order;
+import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
 /**
  *Creates screen to capture product selection. This will constitute Order.
@@ -54,6 +56,7 @@ public class ProductSelectionWindow extends JPanel {
 		btnAddProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				PurchaseProduct dialog = new PurchaseProduct(productWin);
+				dialog.setModal(true);
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 				
@@ -69,7 +72,7 @@ public class ProductSelectionWindow extends JPanel {
 		this.add(tblScrollPane);
 		
 		// jTable Data Display
-		String[] columns = new String[] { "Product Name", "Price", "Quantity",
+		String[] columns = new String[] { "Product Id", "Product Name", "Price", "Quantity",
 				"Total Price" };
 
 		List<LineItem> boughtProducts = order.getItems();
@@ -151,10 +154,21 @@ public class ProductSelectionWindow extends JPanel {
 		btnRemoveProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
-				String selectedRowKey = null;
+				String productKey ;
+				Long buyQuantity ;
+				double productPrice;
+				LineItem item = null;
 				try
 				{
-				 selectedRowKey = table.getValueAt(selectedRow, 1).toString();
+					productKey = table.getValueAt(selectedRow, 0).toString();
+					productPrice = Double.parseDouble(table.getValueAt(selectedRow,2).toString());
+					buyQuantity = Long.parseLong(table.getValueAt(selectedRow,3).toString());
+					Product product = new Product();
+					product.setProductId(productKey);
+					item = new LineItem();
+					item.setBuyQuantity(buyQuantity);
+					item.setTotalProductPrice(DisplayUtil.roundOffTwoDecimalPlaces( productPrice * buyQuantity));
+					item.setProduct(product);
 				}
 				catch( Exception es)
 				{
@@ -167,8 +181,9 @@ public class ProductSelectionWindow extends JPanel {
 					System.out.println(option);
 					if(option==0){
 						// Confirm Remove
-					//	model.removeRow(selectedRow);
-					//	FileDataWrapper.memberMap.remove(selectedRowKey);
+						model.removeRow(selectedRow);
+						order.removeLineItem(item);
+						updatedTotal(order);
 					}
 				}
 			}

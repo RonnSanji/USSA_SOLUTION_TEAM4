@@ -72,7 +72,7 @@ public class ReceiptSummary extends JPanel {
 		this.add(scrollPane);
 		
 		// jTable Data Display
-		String[] columns = new String[] { "Product Name", "Price", "Quantity",
+		String[] columns = new String[] { "Product Id", "Product Name", "Price", "Quantity",
 				"Total Price" };
 
 		List<LineItem> boughtProducts = FileDataWrapper.receipt.getItems();

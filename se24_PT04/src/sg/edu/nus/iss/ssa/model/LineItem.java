@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.ssa.model;
 
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
+
 /**
  * @author Amarjeet B Singh
  *
@@ -22,7 +24,7 @@ public class LineItem {
 		super();
 		this.product = product;
 		this.buyQuantity = buyQuantity;
-		this.totalProductPrice = (product.getPrice()*buyQuantity);
+		this.totalProductPrice = DisplayUtil.roundOffTwoDecimalPlaces(product.getPrice() * buyQuantity);
 	}
 
 	/**
@@ -30,11 +32,12 @@ public class LineItem {
 	 * @return
 	 */
     public String[] getItemsArray() {
-    	String[] items = new String[4];
-    	items[0] = this.product.getProductName();
-    	items[1] = String.valueOf(this.product.getPrice());
-    	items[2] = String.valueOf(buyQuantity);
-    	items[3] = String.valueOf(totalProductPrice);
+    	String[] items = new String[5];
+		items[0] = String.valueOf(this.product.getProductId());
+    	items[1] = this.product.getProductName();
+    	items[2] = String.valueOf(this.product.getPrice());
+    	items[3] = String.valueOf(buyQuantity);
+    	items[4] = String.valueOf(totalProductPrice);
     	return items;
     	
     }
@@ -70,7 +73,7 @@ public class LineItem {
 			return false;
 		}
 		LineItem item = (LineItem)obj;
-		if((this.product.getBarCode() == item.getProduct().getBarCode()) &&(this.product.getProductId().equalsIgnoreCase(item.getProduct().getProductId()))
+		if((this.product.getProductId().equalsIgnoreCase(item.getProduct().getProductId()))
 				&& (this.buyQuantity == item.getBuyQuantity()) ){
 			return true;
 		}

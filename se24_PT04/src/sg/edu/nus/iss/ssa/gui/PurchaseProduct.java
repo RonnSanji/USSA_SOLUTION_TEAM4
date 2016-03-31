@@ -132,7 +132,7 @@ public class PurchaseProduct extends JDialog {
 										dispose();
 									}
 								}
-							}catch(Exception ne){
+							}catch(NumberFormatException ne){
 								DisplayUtil.displayValidationError(buttonPane, StoreConstants.PRODUCT_QUANTITY_NON_NUMERIC);
 							}
 						}

@@ -48,6 +48,9 @@ public class Order {
 	 * @param item
 	 */
 	public void removeLineItem(LineItem item){
+		if(item == null){
+			return;
+		}
 		this.items.remove(item);
 		this.totalPrice -= item.getTotalProductPrice();
 	}

@@ -27,7 +27,7 @@ public class OrderValidator {
 
     public String validateProductPurchaseInput(final String productBarCode, final String quantity){
         String errorMessage = null;
-        if(productBarCode.equals("") || quantity.equals("")){
+        if(productBarCode.equals("") || quantity.equals("") ){
             return StoreConstants.BLANK_INPUT_FOR_PRODUCT_PURCHASE;
         }
         return errorMessage;

@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.ssa.bo;
 
 import sg.edu.nus.iss.ssa.model.*;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class TotalReceiptCalculator {
         }
 
         double totalCashIncludingPoints = offerCalculator.getTotalCashIncludingPoints(order.getAmountTendered(),order.getPointsRedeemed());
-        double amountToReturn = totalCashIncludingPoints - order.getFinalPrice();
+        double amountToReturn = DisplayUtil.roundOffTwoDecimalPlaces(totalCashIncludingPoints - order.getFinalPrice());
         order.setReturnAmount(amountToReturn);
 
         long transactionId = getLatestTransactionId();

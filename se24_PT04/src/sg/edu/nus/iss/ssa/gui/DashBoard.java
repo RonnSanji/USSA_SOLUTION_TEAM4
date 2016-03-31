@@ -157,6 +157,7 @@ public class DashBoard extends JFrame
 			public void actionPerformed(ActionEvent e) {
 				updater.stop();
 				dispose();
+				System.exit(0);
 			}
 		});
 		btnLogout.setBounds(1040, 73, 49, 55);

@@ -63,7 +63,7 @@ public class DiscountOfferCalculator {
 	public void applyDiscount(Order order){
 		float discountPerc = getMaximumDiscountOnOffer(order);
 		Double totalPrice = order.getTotalPrice();
-		double discountAmount = totalPrice*discountPerc/100;
+		double discountAmount = DisplayUtil.roundOffTwoDecimalPlaces(totalPrice*discountPerc/100);
 		double finalPrice = totalPrice - discountAmount;
 		order.setApplicableDiscountPerc(discountPerc);
 		order.setApplicableDiscountAmount(discountAmount);
