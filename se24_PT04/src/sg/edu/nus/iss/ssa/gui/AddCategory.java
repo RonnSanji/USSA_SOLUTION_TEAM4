@@ -66,7 +66,7 @@ public class AddCategory extends JDialog {
 							}
 						}
 
-						reloadData();
+						
 					} else {
 						dialogResult = DisplayUtil.displayConfirmationMessage(contentPane, msg);
 						if (dialogResult == 0) {
@@ -141,11 +141,7 @@ public class AddCategory extends JDialog {
 		}
 		return true;
 	}
-
-	private void reloadData() {
-		controller.reloadCategoryData();
-	}
-
+ 
 	private void clearFields() {
 		txtCatogeryID.setText("");
 		txtaCategoryName.setText("");

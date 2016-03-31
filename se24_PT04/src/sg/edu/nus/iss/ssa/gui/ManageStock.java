@@ -317,23 +317,7 @@ public class ManageStock extends JPanel {
 			}
 		});
 	}
-
-	public void reloadData() {
-		if (controller == null) {
-			controller = new EntityListController();
-		}
-		controller.reloadProductData();
-		controller = null;
-	}
-
-	public void bindData() {
-		if (searchType == 1) {
-			search();
-		} else if (searchType == 2) {
-			showAllBelowThreshold();
-		}
-	}
-
+ 
 	class model extends AbstractTableModel {
 
 		private static final long serialVersionUID = 8539059160246223660L;

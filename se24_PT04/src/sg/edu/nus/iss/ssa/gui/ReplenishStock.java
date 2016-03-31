@@ -79,7 +79,7 @@ public class ReplenishStock extends JDialog {
 					return;
 				}
 				replenishStock();
-				reloadData();
+				
 				dispose();
 			}
 		});
@@ -169,10 +169,6 @@ public class ReplenishStock extends JDialog {
 		}
 
 		DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.STOCK_UPDATED_SUCCESSFULLY);
-	}
-
-	private void reloadData() {
-		controller.reloadProductData();
 	}
 
 	class MyWindowListener implements WindowListener {

@@ -59,9 +59,9 @@ public class ManageDiscount extends JPanel {
 
 	// for testing
 	public static void main(String[] args) {
+		EntityListController controller = new EntityListController();
+		controller.reloadDiscountData();
 		ManageDiscount manageDiscount = new ManageDiscount();
-	//	manageDiscount.reloadData();
-		manageDiscount = new ManageDiscount();
 		manageDiscount.setVisible(true);
 
 		JFrame frame = new JFrame();
@@ -227,10 +227,10 @@ public class ManageDiscount extends JPanel {
 			return;
 		}
 		selectedDiscount = discountListResult.get(selectedRow);
-		showReplenishWindow();
+		showEditWindow();
 	}
 
-	private void showReplenishWindow() {
+	private void showEditWindow() {
 		EditDiscount editDiscountWindow = new EditDiscount(selectedDiscount);
 		editDiscountWindow.setLocation(this.getLocationOnScreen());
 		editDiscountWindow.setModal(true);
@@ -267,14 +267,6 @@ public class ManageDiscount extends JPanel {
 			public void windowActivated(WindowEvent e) {
 			}
 		});
-	}
-
-	public void reloadData() {
-		if (controller == null) {
-			controller = new EntityListController();
-		}
-	///	controller.reloadDiscountData();
-		controller = null;
 	}
 
 	class model extends AbstractTableModel {

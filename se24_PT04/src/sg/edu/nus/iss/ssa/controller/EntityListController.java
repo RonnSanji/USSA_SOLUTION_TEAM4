@@ -2,12 +2,14 @@ package sg.edu.nus.iss.ssa.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Entity;
+import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
@@ -27,6 +29,7 @@ public class EntityListController {
 		try {
 			FileDataWrapper.categoryMap.put(categoryID, category);
 		} catch (Exception ex) {
+			reloadCategoryData();
 			return StoreConstants.ERROR + " creating new category";
 		}
 		if (ioManager == null) {
@@ -35,6 +38,7 @@ public class EntityListController {
 		try {
 			ioManager.writeToFile(FileDataWrapper.categoryMap.values(), new sg.edu.nus.iss.ssa.model.Category());
 		} catch (Exception ex) {
+			reloadCategoryData();
 			return StoreConstants.ERROR + " saving new category";
 		} finally {
 			ioManager = null;
@@ -42,17 +46,18 @@ public class EntityListController {
 		return null;
 
 	}
-// For remove category
+
+	// For remove category
 	public String RemoveCategory(String categoryID) {
-		if(categoryID == null || categoryID.isEmpty())
-		{
+		if (categoryID == null || categoryID.isEmpty()) {
 			return StoreConstants.SELECT_CATEGORY;
 		}
 
 		try {
 			FileDataWrapper.categoryMap.remove(categoryID);
 		} catch (Exception ex) {
-			return StoreConstants.ERROR + " removing category " + categoryID ;
+			reloadCategoryData();
+			return StoreConstants.ERROR + " removing category " + categoryID;
 		}
 		if (ioManager == null) {
 			ioManager = new IOService<>();
@@ -60,14 +65,15 @@ public class EntityListController {
 		try {
 			ioManager.writeToFile(FileDataWrapper.categoryMap.values(), new sg.edu.nus.iss.ssa.model.Category());
 		} catch (Exception ex) {
-			return StoreConstants.ERROR + " removing category " + categoryID ;
+			reloadCategoryData();
+			return StoreConstants.ERROR + " removing category " + categoryID;
 		} finally {
 			ioManager = null;
 		}
 		return null;
 
 	}
-	
+
 	// for manage category
 	public void reloadCategoryData() {
 		FileDataWrapper.categoryMap.clear();
@@ -104,7 +110,9 @@ public class EntityListController {
 		}
 		try {
 			ioManager.writeToFile(FileDataWrapper.productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
+			reloadProductData();
 		} catch (Exception ex) {
+			reloadProductData();
 			return StoreConstants.ERROR + " saving product";
 		} finally {
 			ioManager = null;
@@ -133,28 +141,28 @@ public class EntityListController {
 	}
 
 	// for manage discount
-	/*	public void reloadDiscountData() {
-			FileDataWrapper.discountMap.clear();
-			if (ioManager == null) {
-				ioManager = new IOService<>();
-			}
-			try {
-				ioManager.readFromFile(FileDataWrapper.discountMap, null, new sg.edu.nus.iss.ssa.model.Discount());
-				System.out.println("discount : " + FileDataWrapper.discountMap.keySet());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (FieldMismatchExcepion fieldMismatchExcepion) {
-				fieldMismatchExcepion.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				ioManager = null;
-			}
+	public void reloadDiscountData() {
+		FileDataWrapper.discounts.clear();
+		if (ioManager == null) {
+			ioManager = new IOService<>();
 		}
-*/	// For add product
+		try {
+			ioManager.readFromFile(null, FileDataWrapper.discounts, new PeriodDiscount());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ioManager = null;
+		}
+	}
+
+	// For add product
 	public String addProduct(Product product) {
 		try {
-			FileDataWrapper.productMap.put(product.getBarCode(),product);
+			FileDataWrapper.productMap.put(product.getBarCode(), product);
 		} catch (Exception ex) {
 			return StoreConstants.ERROR + " creating new product";
 		}

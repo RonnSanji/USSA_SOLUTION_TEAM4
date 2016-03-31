@@ -185,25 +185,14 @@ public class ManageCategory extends JPanel {
 		msg = controller.RemoveCategory(selectedCategory.getCategoryId());
 		if (msg != null) {
 			DisplayUtil.displayValidationError(this, msg);
-			controller = null;
 			return;
 		}
-		reloadData();
+		
 		controller = null;
 
 		DisplayUtil.displayAcknowledgeMessage(this, StoreConstants.CATEGORY_REMOVED_SUCCESSFULLY);
 
-		////
 	}
-
-	public void reloadData() {
-		if (controller == null) {
-			controller = new EntityListController();
-		}
-		controller.reloadCategoryData();
-		controller = null;
-	}
-
 	private void clearKeyWordTextBox() {
 		txtSearchText.setText("");
 	}
