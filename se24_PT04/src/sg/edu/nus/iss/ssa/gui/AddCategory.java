@@ -1,20 +1,13 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
-import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
-import sg.edu.nus.iss.ssa.model.*;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
-import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
@@ -23,12 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
-import java.io.FileNotFoundException;
-
 import javax.swing.text.*;
 import javax.swing.JScrollPane;
-import java.io.IOException;
-import java.util.*;
 
 public class AddCategory extends JDialog {
 
@@ -68,12 +57,6 @@ public class AddCategory extends JDialog {
 					String msg = validateData();
 					if (msg == null) {
 						if (addCategory()) {
-							// dialogResult =
-							// JOptionPane.showConfirmDialog(contentPane,"Category
-							// has been added successfully. Would like to add
-							// another one ?", "Message",
-							// JOptionPane.YES_NO_OPTION,
-							// JOptionPane.INFORMATION_MESSAGE);
 							dialogResult = DisplayUtil.displayConfirmationMessage(contentPane,
 									StoreConstants.CATEGORY_ADDED_SUCCESSFULLY);
 							if (dialogResult == 0) {
@@ -85,12 +68,6 @@ public class AddCategory extends JDialog {
 
 						reloadData();
 					} else {
-						// dialogResult =
-						// JOptionPane.showConfirmDialog(contentPane, "Category
-						// ID: " + categoryID + " already exists. Would you like
-						// to add another one ?", "Warning",
-						// JOptionPane.YES_NO_OPTION,
-						// JOptionPane.WARNING_MESSAGE);
 						dialogResult = DisplayUtil.displayConfirmationMessage(contentPane, msg);
 						if (dialogResult == 0) {
 							clearFields();

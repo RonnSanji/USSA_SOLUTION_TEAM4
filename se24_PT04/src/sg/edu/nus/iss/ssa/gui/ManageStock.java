@@ -153,7 +153,7 @@ public class ManageStock extends JPanel {
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
 
-		search();
+		showAllBelowThreshold();
 	}
 
 	private void clearKeyWordTextBox() {
