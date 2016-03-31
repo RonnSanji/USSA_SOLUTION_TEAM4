@@ -133,7 +133,7 @@ public class EntityListController {
 	}
 
 	// for manage discount
-		public void reloadDiscountData() {
+	/*	public void reloadDiscountData() {
 			FileDataWrapper.discountMap.clear();
 			if (ioManager == null) {
 				ioManager = new IOService<>();
@@ -151,7 +151,7 @@ public class EntityListController {
 				ioManager = null;
 			}
 		}
-	// For add product
+*/	// For add product
 	public String addProduct(Product product) {
 		try {
 			FileDataWrapper.productMap.put(product.getBarCode(),product);

@@ -236,6 +236,13 @@ public class DashBoard extends JFrame
 		btnDiscount.setFont(new Font("Zapfino", Font.BOLD, 13));
 		btnDiscount.setBounds(92, 403, 200, 50);
 		menuPanel.add(btnDiscount);
+		btnDiscount.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ManageDiscount discount = new ManageDiscount();
+				activateMainPanel(discount);
+			}
+		});
 
 		JButton btnReport = new JButton("Report");
 		btnReport.addActionListener(new ActionListener() {

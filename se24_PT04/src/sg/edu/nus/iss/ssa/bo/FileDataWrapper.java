@@ -21,5 +21,5 @@ public class FileDataWrapper {
 	public static final Map<String, StoreKeeper> storeKeeperMap = new HashMap<String, StoreKeeper>();
 	public static final List<? extends Discount> discounts = new ArrayList<PeriodDiscount>();
 	public static Order receipt = new Order();
-	public static final Map<String, Discount> discountMap = new HashMap<String, Discount>();
+
 }

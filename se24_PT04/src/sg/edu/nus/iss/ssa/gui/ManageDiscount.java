@@ -25,6 +25,7 @@ import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.model.Discount;
+import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
 public class ManageDiscount extends JPanel {
@@ -45,7 +46,7 @@ public class ManageDiscount extends JPanel {
 	private String searchBy;
 	private String searchText;
 	private Discount selectedDiscount;
-	private Collection<Discount> discountList;
+	private List<PeriodDiscount> discountList;
 	private List<Discount> discountListResult;
 	int selectedRow;
 
@@ -59,7 +60,7 @@ public class ManageDiscount extends JPanel {
 	// for testing
 	public static void main(String[] args) {
 		ManageDiscount manageDiscount = new ManageDiscount();
-		manageDiscount.reloadData();
+	//	manageDiscount.reloadData();
 		manageDiscount = new ManageDiscount();
 		manageDiscount.setVisible(true);
 
@@ -151,11 +152,11 @@ public class ManageDiscount extends JPanel {
 	}
 
 	private void search() {
-		discountList = (Collection<Discount>) FileDataWrapper.discountMap.values();
+		discountList = (List<PeriodDiscount>) FileDataWrapper.discounts;
 		discountListResult = new ArrayList<Discount>();
 		if (comboBoxSearchBy.getSelectedItem() != null) {
 			searchBy = comboBoxSearchBy.getSelectedItem().toString();
-			for (Discount discount : discountList) {
+			for (PeriodDiscount discount : discountList) {
 				// Name
 				if (searchBy == comboBoxSearchByItem[0]) {
 					if (discount.getDiscountCode().toUpperCase().contains(txtSearchText.getText().toUpperCase())) {
@@ -186,12 +187,13 @@ public class ManageDiscount extends JPanel {
 		data = new String[discountListResult.size()][];
 		for (int i = 0; i < discountListResult.size(); i++) {
 			String[] values = new String[columns.length];
-			values[0] = discountListResult.get(i).getDiscountCode();
-			values[1] = discountListResult.get(i).getDiscountDesc();
-			values[2] = discountListResult.get(i).getStarDate();
-			values[3] = discountListResult.get(i).getDiscountPeriod();
-			values[4] = String.valueOf(discountListResult.get(i).getDiscountPerc());
-			values[5] = discountListResult.get(i).getApplicableTo();
+			PeriodDiscount discount = (PeriodDiscount)discountListResult.get(i);
+			values[0] = discount.getDiscountCode();
+			values[1] = discount.getDiscountDesc();
+			values[2] = discount.getStarDate();
+			values[3] = discount.getDiscountPeriod();
+			values[4] = String.valueOf(discount.getDiscountPerc());
+			values[5] = discount.getApplicableTo();
 			data[i] = values;
 		}
 	}
@@ -271,7 +273,7 @@ public class ManageDiscount extends JPanel {
 		if (controller == null) {
 			controller = new EntityListController();
 		}
-		controller.reloadDiscountData();
+	///	controller.reloadDiscountData();
 		controller = null;
 	}
 
