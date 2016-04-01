@@ -10,6 +10,11 @@ SN,Form,Function,Description,Category,Remark,,,,,,Category,Bug,Missing,Enhanceme
 9,Discount management,"list, add, edit, remove discount","list, add, edit, remove discount to be implemented",Missing,CH - 160330 - in progress,,,,,,,,,,
 10,Transaction report,date filter,To implement calendar,Enhancement,,,,,,,,,,,
 11,Login,anthentication logic,To ignore case for store keeper name,Missing,,,,,,,,,,,
-12,All,All,"To add test cases for controller, calculator, validator and all other important biz logic classes, and for all methods in there",TBC,,,,,,,,,,,
-13,All,All,To standardize font and size,Enhancement,,,,,,,,,,,
-14,All,All,To standardize naming convention,"To standardize naming convention. E.g. Add Member, Add Category, Remove Member, Remove Category. Ect",,,,,,,,,,,
+12,Payment,Show product under threshold after payment,Show product under threshold after payment,Missing,,,,,,,,,,,
+13,Stock management,Generate purchase order,"The store keeper should be given an option to generate a purchase order for all items
+below their thresholds.",Missing - Resolved,CH - 160401- Completed. Add print button on manage stock window,,,,,,,,,,
+14,Stock management,Configure threshold,"The threshold for each product is configured in the Products data
+file",Missing - Resolved,CH - 160401- Completed. Add print button on manage stock window,,,,,,,,,,
+15,All,All,"To add test cases for controller, calculator, validator and all other important biz logic classes, and for all methods in there",TBC,,,,,,,,,,,
+16,All,All,To standardize font and size,Enhancement,,,,,,,,,,,
+17,All,All,To standardize naming convention,"To standardize naming convention. E.g. Add Member, Add Category, Remove Member, Remove Category. Ect",,,,,,,,,,,
