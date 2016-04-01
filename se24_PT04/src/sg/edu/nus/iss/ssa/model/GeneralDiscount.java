@@ -1,8 +1,10 @@
 package sg.edu.nus.iss.ssa.model;
 
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
+
 /**
- * General Discount is always Applicable
- * Created by Amarjeet B Singh on 3/20/2016.
+ * General Discount is always Applicable Created by Amarjeet B Singh on
+ * 3/20/2016.
  */
 public abstract class GeneralDiscount extends Discount {
 
@@ -40,6 +42,20 @@ public abstract class GeneralDiscount extends Discount {
 
 	public String getApplicableTo() {
 		return applicableTo;
+	}
+
+	public String getApplicableToName() {
+		if (applicableTo == null || applicableTo.isEmpty()) {
+			return "";
+		}
+
+		if (applicableTo.equalsIgnoreCase(StoreConstants.MEMBER_DICSOUNT_CODE)) {
+			return StoreConstants.MEMBER_DICSOUNT_NAME;
+		} else if (applicableTo.equalsIgnoreCase(StoreConstants.PUBLIC_DICSOUNT_CODE)) {
+			return StoreConstants.PUBLIC_DICSOUNT_NAME;
+		}
+
+		return "";
 	}
 
 	public void setApplicableTo(String applicableTo) {

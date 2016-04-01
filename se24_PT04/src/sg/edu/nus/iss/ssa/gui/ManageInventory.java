@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
+import java.awt.print.PrinterException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -35,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class ManageStock extends JPanel {
+public class ManageInventory extends JPanel {
 
 	private static final long serialVersionUID = 5485764052645713039L;
 	// private JPanel contentPane;
@@ -65,8 +66,9 @@ public class ManageStock extends JPanel {
 
 	private TableModel model;
 	private JButton btnClear;
+	private JButton btnConfigureThreshold;
 
-	public ManageStock() {
+	public ManageInventory() {
 		// setResizable(false);
 		// setTitle("Manage Stock Page");
 		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,11 +108,11 @@ public class ManageStock extends JPanel {
 		this.add(lblNoResult);
 
 		btnReplenish = new JButton("Replenish");
-		btnReplenish.setBounds(334, 525, 139, 60);
+		btnReplenish.setBounds(311, 525, 150, 60);
 		btnReplenish.setEnabled(false);
 		btnReplenish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				replenish();
+				showEditInventoryWindow(1);
 
 			}
 		});
@@ -150,6 +152,29 @@ public class ManageStock extends JPanel {
 		});
 		btnClear.setBounds(471, 26, 89, 23);
 		this.add(btnClear);
+		
+		JButton btnGeneratePurchaseOrder = new JButton("Generate Order");
+		btnGeneratePurchaseOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					TbResult.print();
+				} catch (PrinterException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnGeneratePurchaseOrder.setBounds(551, 525, 150, 60);
+		add(btnGeneratePurchaseOrder);
+		
+		btnConfigureThreshold = new JButton("Configure Threshold");
+		btnConfigureThreshold.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showEditInventoryWindow(0);
+			}
+		});
+		btnConfigureThreshold.setBounds(75, 525, 150, 60);
+		add(btnConfigureThreshold);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
 
@@ -262,20 +287,17 @@ public class ManageStock extends JPanel {
 
 	}
 
-	private void replenish() {
+	private void showEditInventoryWindow(int mode) {
+		
 		selectedRow = TbResult.getSelectedRow();
 		if (selectedRow == -1) {
-			// JOptionPane.showMessageDialog(contentPane, "Please select a
-			// product", "Warning",JOptionPane.WARNING_MESSAGE);
 			DisplayUtil.displayValidationError(scrollPane, StoreConstants.SELECT_PRODUCT);
 			return;
 		}
 		selectedProduct = productListResult.get(selectedRow);
-		showReplenishWindow();
-	}
-
-	private void showReplenishWindow() {
-		ReplenishStock replenishStockWindow = new ReplenishStock(selectedProduct);
+		
+		
+		EditInventory replenishStockWindow = new EditInventory(selectedProduct, mode);
 		replenishStockWindow.setLocation(this.getLocationOnScreen());
 		replenishStockWindow.setModal(true);
 		replenishStockWindow.setVisible(true);

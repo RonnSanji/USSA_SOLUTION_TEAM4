@@ -376,11 +376,11 @@ public class FormValidatorTest extends TestCase
 	public void testReplenishStockValidateData()
 	{
 		int barcode = 0;
-		String msg = FormValidator.replenishStockValidateData(barcode);
+		String msg = FormValidator.replenishStockConfigureThresholdValidateData(barcode);
 		assertTrue(msg.contains(StoreConstants.INVALID_PRODUCT_BAR_CODE));
 
 		barcode = -1;
-		msg = FormValidator.replenishStockValidateData(barcode);
+		msg = FormValidator.replenishStockConfigureThresholdValidateData(barcode);
 		assertTrue(msg.contains(StoreConstants.INVALID_PRODUCT_BAR_CODE));
 
 		Random ran = new Random();
@@ -422,7 +422,7 @@ public class FormValidatorTest extends TestCase
 
 		barcode = barcodes.get(ran.nextInt(barcodes.size()));
 
-		msg = FormValidator.replenishStockValidateData(barcode);
+		msg = FormValidator.replenishStockConfigureThresholdValidateData(barcode);
 		assertTrue(msg == null);
 	}
 }

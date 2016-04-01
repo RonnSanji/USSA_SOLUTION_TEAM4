@@ -6,6 +6,8 @@ import sg.edu.nus.iss.ssa.model.Product;
 
 import javax.swing.*;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Calendar;
 import java.util.Map;
 
 /**
@@ -43,5 +45,52 @@ public class DisplayUtil {
 
 	public static double roundOffTwoDecimalPlaces(double number){
 		return new BigDecimal(number).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
+	public static int findIndex(JComboBox comboBox, String str) {
+		if (comboBox != null && comboBox.getItemCount() > 0) {
+			for (int i = 0; i < comboBox.getItemCount(); i++) {
+				if (comboBox.getItemAt(i).toString().equals(str)) {
+					return i;
+				}
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * String parameter format yyyy-MM-DD. E.g. 1 Jan 2016, pass in "2016-1-1"
+	 * 
+	 * @return
+	 */
+	public static Date getDateByString(String str) {
+		if (str == null | str.isEmpty()) {
+			return null;
+		}
+		String[] s = str.split("-");
+		if (s.length != 3) {
+			return null;
+		}
+		int year = -1;
+		try {
+			year = Integer.parseInt(s[0]);
+		} catch (Exception ex) {
+			return null;
+		}
+		int month = -1;
+		try {
+			month = Integer.parseInt(s[1]) - 1;
+		} catch (Exception ex) {
+			return null;
+		}
+		int day = -1;
+		try {
+			day = Integer.parseInt(s[2]);
+		} catch (Exception ex) {
+			return null;
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(year, month, day);
+
+		return calendar.getTime();
 	}
 }

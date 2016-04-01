@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.ssa.constants;
 
-public class StoreConstants {
+public class StoreConstants
+{
 
 	public static final String PROJECT_NAME = "se24_PT04";
 	public static final String FIELD_DELIMITER = ",";
@@ -10,9 +11,17 @@ public class StoreConstants {
 	public static final int CATEGORY_ID_MAX_LENGTH = 3;
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String PUBLIC_USER = "PUBLIC";
-	public static final String[] FIXED_DISCOUNT = new String[] { "MEMBER_FIRST", "MEMBER_SUBSEQ" };
-	public static final int PERIOD_BACKWARD_YEAR = 0;
+	public static final String MEMBER_FIRST_DISCOUNT_CODE = "MEMBER_FIRST";
+	public static final String MEMBER_SUBSEQ_CODE = "MEMBER_SUBSEQ";
+	public static final int PERIOD_BACKWARD_YEAR = 10;
 	public static final int PERIOD_FORWARD_YEAR = 10;
+	public static final String PERMANENT_DSCOUNT_START_DATE = "ALWAYS";
+	public static final String PERIOD_DSCOUNT_START_DATE = "Period";
+	public static final String PERMANENT_DSCOUNT_START_PERIOD = "ALWAYS";
+	public static final String MEMBER_DICSOUNT_CODE = "M";
+	public static final String MEMBER_DICSOUNT_NAME = "Member";
+	public static final String PUBLIC_DICSOUNT_CODE = "A";
+	public static final String PUBLIC_DICSOUNT_NAME = "All";
 
 	public static final String INVALID_PRODUCT = "Please Select a valid product.";
 	public static final String INVALID_DATE = "Please Select a valid date.";
@@ -59,7 +68,10 @@ public class StoreConstants {
 	public static final String INVALID_PRODUCT_BAR_CODE = "is not a valid bar code !";
 	public static final String INVALID_REPLENISH_QUANTITY = "Please enter a valid replenish quantity";
 	public static final String BAR_CODE_NOT_EXIST = "does not exist";
-
+	public static final String ENTER_NEW_THRESHOLD = "Please enter new threshold quantity";
+	public static final String INVALID_THRESHOLD_QUANTITY = "Please enter a valid threshold quantity";
+	public static final String THRESHOLD_UPDATED_SUCCESSFULLY = "Threshold has been updated successfully !";
+	
 	// Add Product Message
 	public static final String EMPTY_QUANTITY = "Please Enter the Quantity greater than 0";
 	public static final String EMPTY_PRICE = "Please Enter the Price greater than 0";
@@ -73,4 +85,16 @@ public class StoreConstants {
 
 	// Manage discount message
 	public static final String SELECT_DISCOUNT = "Please select a discount";
+	public static final String ENTER_DISCOUNT_CODE = "Please enter discount code";
+	public static final String ENTER_DISCOUNT_DESCRIPTION = "Please enter discount description";
+	public static final String SELECT_DISCOUNT_START_DATE = "Please select discount start date";
+	public static final String ENTER_DISCOUNT_PERIOD = "Please enter discount period";
+	public static final String ENTER_DISCOUNT_PERCENTAGE = "Please enter discount percentage";
+	public static final String SELECT_DISCOUNT_APPLICABLE_TO = "Please select Applicable To";
+	public static final String INVALID_DISCOUNT_START_DATE = "Discount start date is invalid";
+	public static final String INVALID_DISCOUNT_PERIOD = "Discount period is invalid";
+	public static final String INVALID_DISCOUNT_PERCENTAGE = "Discount percentage is invalid";
+	public static final String INVALID_APPLICABLE_TO = "Applicable To is invalid";
+	public static final String DISCOUNT_UPDATED_SUCCESSFULLY = "Discount has been updated successfully !";
+	public static final String DISCOUNT_ADDED_SUCCESSFULLY = "Discount has been added successfully !";
 }

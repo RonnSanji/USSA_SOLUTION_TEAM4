@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class ReplenishStock extends JDialog {
+public class EditInventory extends JDialog {
 	private static final long serialVersionUID = 4069437661115880594L;
 	private final JPanel contentPanel = new JPanel();
 	public Product selectedProduct;
@@ -28,18 +28,24 @@ public class ReplenishStock extends JDialog {
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
+	private JLabel lblAddQuantity_NewThreshold;
 	private JLabel lblProductDescription;
 	private JLabel lblCurrentQuantity;
-	private JTextField txtAddQuantity;
+	private JTextField txtAddQuantity_NewThreshold;
 	private JLabel lblProductName;
 	private JPanel buttonPane;
 	private JLabel lblNewLabel_4;
 	private JLabel lblBarCode;
+	private JLabel lblThresholdLable;
+	private JLabel lblThreshold;
 
 	private EntityListController controller = new EntityListController();
 
-	public ReplenishStock(Product selectedProduct) {
+	// 0 for configure threshold
+	// 1 for replenish stock
+	private int mode = 0;
+
+	public EditInventory(Product selectedProduct, int mode) {
 		this.addWindowListener(new MyWindowListener());
 
 		if (selectedProduct == null) {
@@ -47,14 +53,25 @@ public class ReplenishStock extends JDialog {
 			return;
 		}
 		this.selectedProduct = selectedProduct;
+		this.mode = mode;
 		setResizable(false);
-		setTitle("Replenish Stock");
-		setBounds(100, 100, 450, 337);
+		if (mode == 0) {
+			setTitle("Configure Threshold");
+			lblAddQuantity_NewThreshold = new JLabel("New Threshold:");
+			lblThresholdLable = new JLabel("Current Threshold:");
+
+		} else if (mode == 1) {
+			setTitle("Replenish Stock");
+			lblAddQuantity_NewThreshold = new JLabel("Add quantity:");
+			lblThresholdLable = new JLabel("Threshold:");
+
+		}
+		setBounds(100, 100, 450, 348);
 		contentPanel.setLayout(null);
 		getContentPane().setLayout(null);
 
 		buttonPane = new JPanel();
-		buttonPane.setBounds(0, 231, 444, 50);
+		buttonPane.setBounds(0, 256, 444, 50);
 		getContentPane().add(buttonPane);
 		buttonPane.setLayout(null);
 
@@ -79,7 +96,7 @@ public class ReplenishStock extends JDialog {
 					return;
 				}
 				replenishStock();
-				
+
 				dispose();
 			}
 		});
@@ -98,9 +115,15 @@ public class ReplenishStock extends JDialog {
 		lblNewLabel_2.setBounds(75, 132, 131, 14);
 		getContentPane().add(lblNewLabel_2);
 
-		lblNewLabel_3 = new JLabel("Add quantity:");
-		lblNewLabel_3.setBounds(75, 171, 130, 14);
-		getContentPane().add(lblNewLabel_3);
+		lblThresholdLable.setBounds(75, 172, 130, 14);
+		getContentPane().add(lblThresholdLable);
+
+		lblThreshold = new JLabel("");
+		lblThreshold.setBounds(223, 172, 46, 14);
+		getContentPane().add(lblThreshold);
+
+		lblAddQuantity_NewThreshold.setBounds(75, 214, 131, 14);
+		getContentPane().add(lblAddQuantity_NewThreshold);
 
 		lblProductName = new JLabel("");
 		lblProductName.setBounds(223, 24, 211, 14);
@@ -114,16 +137,16 @@ public class ReplenishStock extends JDialog {
 		lblCurrentQuantity.setBounds(223, 132, 211, 14);
 		getContentPane().add(lblCurrentQuantity);
 
-		txtAddQuantity = new JTextField();
-		txtAddQuantity.setDocument(new PlainDocument() {
+		txtAddQuantity_NewThreshold = new JTextField();
+		txtAddQuantity_NewThreshold.setDocument(new PlainDocument() {
 			@Override
 			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 				if (str.matches("[0-9]"))
 					super.insertString(offs, str, a);
 			}
 		});
-		txtAddQuantity.setBounds(223, 168, 46, 20);
-		getContentPane().add(txtAddQuantity);
+		txtAddQuantity_NewThreshold.setBounds(223, 211, 46, 20);
+		getContentPane().add(txtAddQuantity_NewThreshold);
 
 		lblNewLabel_4 = new JLabel("Bar Code:");
 		lblNewLabel_4.setBounds(75, 96, 95, 14);
@@ -142,11 +165,18 @@ public class ReplenishStock extends JDialog {
 		lblProductDescription.setText(selectedProduct.getProductDesc());
 		lblBarCode.setText(String.valueOf(selectedProduct.getBarCode()));
 		lblCurrentQuantity.setText(String.valueOf(selectedProduct.getQuantity()));
+		lblThreshold.setText(String.valueOf(selectedProduct.getThresholdQuantity()));
 	}
 
 	private boolean validateForm() {
-		String stockTxt = txtAddQuantity.getText();
-		String msg = FormValidator.replenishStockValidateForm(stockTxt);
+		String addQuantity_NewThreshold = txtAddQuantity_NewThreshold.getText();
+		String msg = null;
+		if (mode == 0) {
+			msg = FormValidator.configureThresholdValidateForm(addQuantity_NewThreshold);
+		} else if (mode == 1) {
+			msg = FormValidator.replenishStockValidateForm(addQuantity_NewThreshold);
+		}
+
 		if (msg != null) {
 			DisplayUtil.displayValidationError(buttonPane, msg);
 			return false;
@@ -156,19 +186,28 @@ public class ReplenishStock extends JDialog {
 	}
 
 	private void replenishStock() {
-		String msg = FormValidator.replenishStockValidateData(selectedProduct.getBarCode());
+		String msg = FormValidator.replenishStockConfigureThresholdValidateData(selectedProduct.getBarCode());
 		if (msg != null) {
 			DisplayUtil.displayValidationError(buttonPane, msg);
 			return;
 		}
-		long stockAdd = Long.parseLong(txtAddQuantity.getText());
-		msg = controller.addStock(selectedProduct, stockAdd);
-		if (msg != null) {
-			DisplayUtil.displayValidationError(buttonPane, msg);
-			return;
+		long stockAdd_newThreshold = Long.parseLong(txtAddQuantity_NewThreshold.getText());
+		if (mode == 0) {
+			msg = controller.updateThreshold(selectedProduct, stockAdd_newThreshold);
+		} else if (mode == 1) {
+			msg = controller.addStock(selectedProduct, stockAdd_newThreshold);
 		}
 
-		DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.STOCK_UPDATED_SUCCESSFULLY);
+		if (msg != null) {
+			DisplayUtil.displayValidationError(buttonPane, msg);
+			return;
+		}
+		if (mode == 0) {
+			DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.THRESHOLD_UPDATED_SUCCESSFULLY);
+		} else if (mode == 1) {
+			DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.STOCK_UPDATED_SUCCESSFULLY);
+		}
+
 	}
 
 	class MyWindowListener implements WindowListener {
