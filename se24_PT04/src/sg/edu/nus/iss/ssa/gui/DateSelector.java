@@ -1,14 +1,10 @@
 package sg.edu.nus.iss.ssa.gui;
 
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Date;
@@ -17,7 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 
-public class DateSelector extends JPanel {
+public class DateSelector extends JPanel
+{
 
 	private Date date;
 	private Calendar calendar;
@@ -37,69 +34,54 @@ public class DateSelector extends JPanel {
 	private JComboBox<String> comboBoxDay;
 
 	// test
-	public static void main(String[] args) {
-
-		DateSelector dateSelector = new DateSelector();
-		// dateSelector.setBounds(10, 10, 250, 50);
-		JFrame frame = new JFrame();
-		frame.getContentPane().setLayout(null);
-		frame.setSize(800, 600);
-		frame.getContentPane().add(dateSelector);
-		frame.setVisible(true);
-
-		JButton btn1 = new JButton();
-		btn1.setText("go");
-		btn1.setBounds(10, 100, 50, 50);
-		frame.getContentPane().add(btn1);
-
-		btn1.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(dateSelector.getDate());
-			}
-		});
-
-		JTextField txtYear = new JTextField();
-		txtYear.setBounds(10, 200, 50, 50);
-		frame.getContentPane().add(txtYear);
-
-		JTextField txtMonth = new JTextField();
-		txtMonth.setBounds(10, 260, 100, 50);
-		frame.getContentPane().add(txtMonth);
-
-		JTextField txtDay = new JTextField();
-		txtDay.setBounds(10, 320, 100, 50);
-		frame.getContentPane().add(txtDay);
-
-		JButton btn2 = new JButton();
-		btn2.setText("bind date");
-		btn2.setBounds(10, 380, 100, 50);
-		frame.getContentPane().add(btn2);
-
-		btn2.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Calendar cal = Calendar.getInstance();
-				try {
-					cal.set(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()),
-							Integer.parseInt(txtDay.getText()));
-					dateSelector.setDate(cal.getTime());
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-
-			}
-		});
-	}
-
-	public DateSelector() {
+	/*
+	 * public static void main(String[] args) {
+	 * 
+	 * DateSelector dateSelector = new DateSelector(); //
+	 * dateSelector.setBounds(10, 10, 250, 50); JFrame frame = new JFrame();
+	 * frame.getContentPane().setLayout(null); frame.setSize(800, 600);
+	 * frame.getContentPane().add(dateSelector); frame.setVisible(true);
+	 * 
+	 * JButton btn1 = new JButton(); btn1.setText("go"); btn1.setBounds(10, 100,
+	 * 50, 50); frame.getContentPane().add(btn1);
+	 * 
+	 * btn1.addActionListener(new ActionListener() {
+	 * 
+	 * @Override public void actionPerformed(ActionEvent e) {
+	 * System.out.println(dateSelector.getDate()); } });
+	 * 
+	 * JTextField txtYear = new JTextField(); txtYear.setBounds(10, 200, 50,
+	 * 50); frame.getContentPane().add(txtYear);
+	 * 
+	 * JTextField txtMonth = new JTextField(); txtMonth.setBounds(10, 260, 100,
+	 * 50); frame.getContentPane().add(txtMonth);
+	 * 
+	 * JTextField txtDay = new JTextField(); txtDay.setBounds(10, 320, 100, 50);
+	 * frame.getContentPane().add(txtDay);
+	 * 
+	 * JButton btn2 = new JButton(); btn2.setText("bind date");
+	 * btn2.setBounds(10, 380, 100, 50); frame.getContentPane().add(btn2);
+	 * 
+	 * btn2.addActionListener(new ActionListener() {
+	 * 
+	 * @Override public void actionPerformed(ActionEvent e) { Calendar cal =
+	 * Calendar.getInstance(); try {
+	 * cal.set(Integer.parseInt(txtYear.getText()),
+	 * Integer.parseInt(txtMonth.getText()) - 1,
+	 * Integer.parseInt(txtDay.getText())); dateSelector.setDate(cal.getTime());
+	 * } catch (Exception ex) { ex.printStackTrace(); }
+	 * 
+	 * } }); }
+	 */
+	public DateSelector()
+	{
 		setLayout(null);
 		setSize(330, 20);
-		addFocusListener(new FocusAdapter() {
+		addFocusListener(new FocusAdapter()
+		{
 			@Override
-			public void focusLost(FocusEvent arg0) {
+			public void focusLost(FocusEvent arg0)
+			{
 			}
 		});
 		JLabel lblYear = new JLabel("Year: ");
@@ -108,8 +90,10 @@ public class DateSelector extends JPanel {
 
 		comboBoxYear = new JComboBox<String>();
 		comboBoxYear.setBounds(lblYear.getX() + lblYear.getWidth() + 2, 0, 70, 20);
-		comboBoxYear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		comboBoxYear.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				getSelectedYear();
 				getSelectedMonth();
 				initiateDay();
@@ -124,8 +108,10 @@ public class DateSelector extends JPanel {
 
 		comboBoxMonth = new JComboBox<String>();
 		comboBoxMonth.setBounds(lblMonth.getX() + lblMonth.getWidth() + 2, 0, 70, 20);
-		comboBoxMonth.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		comboBoxMonth.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
 				getSelectedYear();
 				getSelectedMonth();
 				initiateDay();
@@ -145,7 +131,8 @@ public class DateSelector extends JPanel {
 
 	}
 
-	private void initiate() {
+	private void initiate()
+	{
 		calendar = Calendar.getInstance();
 		currentYear = calendar.get(calendar.YEAR);
 		yearList = new int[StoreConstants.PERIOD_BACKWARD_YEAR + StoreConstants.PERIOD_FORWARD_YEAR];
@@ -153,7 +140,8 @@ public class DateSelector extends JPanel {
 
 		comboBoxYear.removeAllItems();
 		comboBoxYear.addItem("-Select-");
-		for (int i = 0; i < yearList.length; i++) {
+		for (int i = 0; i < yearList.length; i++)
+		{
 			comboBoxYear.addItem(String.valueOf(startYear + i));
 			yearList[0] = startYear + i;
 		}
@@ -161,7 +149,8 @@ public class DateSelector extends JPanel {
 		comboBoxMonth.removeAllItems();
 		comboBoxMonth.addItem("-Select-");
 		monthList = new int[12];
-		for (int i = 0; i < monthList.length; i++) {
+		for (int i = 0; i < monthList.length; i++)
+		{
 			comboBoxMonth.addItem(String.valueOf(i + 1));
 			monthList[0] = i + 1;
 		}
@@ -170,38 +159,53 @@ public class DateSelector extends JPanel {
 		comboBoxDay.addItem("-Select-");
 	}
 
-	private void getSelectedYear() {
-		try {
+	private void getSelectedYear()
+	{
+		try
+		{
 			selectedYear = Integer.parseInt(comboBoxYear.getSelectedItem().toString());
-		} catch (Exception ex) {
+		}
+		catch (Exception ex)
+		{
 			selectedYear = -1;
 		}
 
 	}
 
-	private void getSelectedMonth() {
-		try {
+	private void getSelectedMonth()
+	{
+		try
+		{
 			selectedMonth = Integer.parseInt(comboBoxMonth.getSelectedItem().toString());
-		} catch (Exception ex) {
+		}
+		catch (Exception ex)
+		{
 			selectedMonth = -1;
 		}
 	}
 
-	private void getSelectedDay() {
-		try {
+	private void getSelectedDay()
+	{
+		try
+		{
 			selectedDay = Integer.parseInt(comboBoxDay.getSelectedItem().toString());
-		} catch (Exception ex) {
+		}
+		catch (Exception ex)
+		{
 			selectedDay = -1;
 		}
 	}
 
-	private void initiateDay() {
+	private void initiateDay()
+	{
 
-		if (selectedYear == -1 || selectedMonth == -1) {
+		if (selectedYear == -1 || selectedMonth == -1)
+		{
 			return;
 		}
 
-		switch (selectedMonth) {
+		switch (selectedMonth)
+		{
 		case 1:
 		case 3:
 		case 5:
@@ -212,9 +216,12 @@ public class DateSelector extends JPanel {
 			dayList = new int[31];
 			break;
 		case 2:
-			if (selectedYear % 4 == 0) {
+			if (selectedYear % 4 == 0)
+			{
 				dayList = new int[29];
-			} else {
+			}
+			else
+			{
 				dayList = new int[28];
 			}
 			break;
@@ -228,67 +235,79 @@ public class DateSelector extends JPanel {
 
 		comboBoxDay.removeAllItems();
 		comboBoxDay.addItem("-Select-");
-		for (int i = 0; i < dayList.length; i++) {
+		for (int i = 0; i < dayList.length; i++)
+		{
 			comboBoxDay.addItem(String.valueOf(i + 1));
 			dayList[0] = i + 1;
 		}
 
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Date date)
+	{
 		this.date = date;
 		bindDate();
 	}
 
-	public Date getDate() {
+	public Date getDate()
+	{
 		getSelectedYear();
 		getSelectedMonth();
 		getSelectedDay();
 
-		if (selectedYear == -1 || selectedMonth == -1 || selectedDay == -1) {
+		if (selectedYear == -1 || selectedMonth == -1 || selectedDay == -1)
+		{
 			date = null;
 
-		} else {
-			try {
+		}
+		else
+		{
+			try
+			{
 				calendar.set(selectedYear, selectedMonth - 1, selectedDay);
 				date = calendar.getTime();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				date = null;
 			}
 		}
 		return date;
 	}
 
-	private void bindDate() {
-		if (date == null) {
+	private void bindDate()
+	{
+		if (date == null)
+		{
+			comboBoxYear.setSelectedIndex(0);
+			comboBoxMonth.setSelectedIndex(0);
+			comboBoxDay.setSelectedIndex(0);
 			return;
-		} else {
+		}
+		else
+		{
 			calendar.setTime(date);
 			selectedYear = calendar.get(Calendar.YEAR);
-			comboBoxYear.setSelectedIndex(findIndex(comboBoxYear, String.valueOf(selectedYear)));
+			comboBoxYear.setSelectedIndex(DisplayUtil.findIndex(comboBoxYear, String.valueOf(selectedYear)));
 
-			selectedMonth = calendar.get(Calendar.MONTH);
-			comboBoxMonth.setSelectedIndex(findIndex(comboBoxMonth, String.valueOf(selectedMonth)));
-
-			System.out.println(selectedMonth);
+			selectedMonth = calendar.get(Calendar.MONTH) + 1;
+			comboBoxMonth.setSelectedIndex(DisplayUtil.findIndex(comboBoxMonth, String.valueOf(selectedMonth)));
 
 			selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
 
 			initiateDay();
 
-			comboBoxDay.setSelectedIndex(findIndex(comboBoxDay, String.valueOf(selectedDay)));
+			comboBoxDay.setSelectedIndex(DisplayUtil.findIndex(comboBoxDay, String.valueOf(selectedDay)));
 
 		}
 	}
 
-	private int findIndex(JComboBox comboBox, String str) {
-		if (comboBox != null && comboBox.getItemCount() > 0) {
-			for (int i = 0; i < comboBox.getItemCount(); i++) {
-				if (comboBox.getItemAt(i).toString().equals(str)) {
-					return i;
-				}
-			}
-		}
-		return 0;
+	@Override
+	public void setEnabled(boolean bool)
+	{
+		comboBoxYear.setEnabled(bool);
+		comboBoxMonth.setEnabled(bool);
+		comboBoxDay.setEnabled(bool);
 	}
+
 }
