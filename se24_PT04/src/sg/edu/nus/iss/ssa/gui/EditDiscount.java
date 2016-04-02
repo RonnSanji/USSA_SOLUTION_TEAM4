@@ -263,6 +263,27 @@ public class EditDiscount extends JDialog {
 	}
 
 	private void editDiscount() {
+		selectedDiscount.setDiscountCode(txtDiscountCode.getText().trim());
+		selectedDiscount.setDiscountDesc(txtDiscountDescription.getText().trim());
+		selectedDiscount.setDiscountPerc(Float.parseFloat(txtPercentage.getText().trim()));
+		// member
+		if (comboApplicableTo.getSelectedItem().toString().equalsIgnoreCase(StoreConstants.MEMBER_DICSOUNT_NAME)) {
+			selectedDiscount.setApplicableTo(StoreConstants.MEMBER_DICSOUNT_CODE);
+		}
+		// all
+		else if (comboApplicableTo.getSelectedItem().toString().equalsIgnoreCase(StoreConstants.PUBLIC_DICSOUNT_NAME)) {
+			selectedDiscount.setApplicableTo(StoreConstants.PUBLIC_DICSOUNT_CODE);
+		}
+		// period
+		if (comboPeriodType.getSelectedIndex() == 1) {
+			selectedDiscount.setStarDate(dateSelector.getDateString());
+		}
+		// always
+		else if (comboPeriodType.getSelectedIndex() == 2) {
+			selectedDiscount.setStarDate(StoreConstants.PERMANENT_DSCOUNT_START_PERIOD);
+		}
+		selectedDiscount.setDiscountPeriod(txtPeriod.getText().trim());
+
 		String msg = controller.saveDiscount(selectedDiscount);
 		if (msg != null) {
 			DisplayUtil.displayValidationError(contentPanel, msg);
@@ -276,6 +297,7 @@ public class EditDiscount extends JDialog {
 		else if (mode == 1) {
 			DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.DISCOUNT_UPDATED_SUCCESSFULLY);
 		}
+		dispose();
 	}
 
 	private void clearFields() {

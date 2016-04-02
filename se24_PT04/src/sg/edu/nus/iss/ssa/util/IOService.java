@@ -148,66 +148,89 @@ public class IOService<E> {
         }
     }
 
-    public void writeToFile(Collection entityList, Entity entityToCreate) throws IOException, IllegalAccessException, NoSuchFieldException{
-        String dataFilePathPrefix = getInputDataFileLocation();
-        String fileName = entityToCreate.getFileName();
-        String[] fields = entityToCreate.getProperties();
-        File outputFile = new File(dataFilePathPrefix + fileName);
-        if (outputFile == null || !outputFile.exists()) {
-            throw new FileNotFoundException(fileName + " file is not available. Please make sure file is present " +
-                    "	under \"data\" folder and same is added in classpath. ");
-        }
-        StringBuilder sb = new StringBuilder();
-        try {
-            for (Object o : entityList) {
-                Class<?> clazz = o.getClass();
-                for (String field : fields) {
-                    Field f = clazz.getDeclaredField(field);
-                    f.setAccessible(true);
-                    Object value = f.get(o);
-                    sb.append(value.toString()).append(StoreConstants.FIELD_DELIMITER);
-                }
-                sb.deleteCharAt(sb.length() - 1);
-                sb.append(System.lineSeparator());
-            }
-            PrintWriter pw = new PrintWriter(outputFile);
+	public void writeToFile(Collection entityList, Entity entityToCreate)
+			throws IOException, IllegalAccessException, NoSuchFieldException {
+		String dataFilePathPrefix = getInputDataFileLocation();
+		String fileName = entityToCreate.getFileName();
+		String[] fields = entityToCreate.getProperties();
+		File outputFile = new File(dataFilePathPrefix + fileName);
+		if (outputFile == null || !outputFile.exists()) {
+			throw new FileNotFoundException(fileName + " file is not available. Please make sure file is present "
+					+ "	under \"data\" folder and same is added in classpath. ");
+		}
+		StringBuilder sb = new StringBuilder();
+		try {
+			for (Object o : entityList) {
+				Class<?> clazz = o.getClass();
+				for (String field : fields) {
+					Field f = null;
+					try {
+						f = clazz.getDeclaredField(field);
+					} catch (NoSuchFieldException e) {
+						f = findFieldInSuperclass(clazz, field);
+						if (f == null) {
+							throw new NoSuchFieldException("Field: " + field + " cannot be found");
+						}
+					}
+					f.setAccessible(true);
+					Object value = f.get(o);
+					sb.append(value.toString()).append(StoreConstants.FIELD_DELIMITER);
+				}
+				sb.deleteCharAt(sb.length() - 1);
+				sb.append(System.lineSeparator());
+			}
+			PrintWriter pw = new PrintWriter(outputFile);
 
-            pw.print(sb.toString());
-            pw.close();
-        }catch (IllegalAccessException e) {
-            throw e;
-        } catch (NoSuchFieldException e) {
-            throw e;
-        }
+			pw.print(sb.toString());
+			pw.close();
+		} catch (IllegalAccessException | NoSuchFieldException e) {
+			throw e;
 
+		}
+	}
 
-    }
+	private Field findFieldInSuperclass(Class<?> clazz, String fieldName) {
+		Field field = null;
+		Class superClass = clazz.getSuperclass();
+		while (superClass != null) {
+			try {
+				field = superClass.getDeclaredField(fieldName);
+			} catch (NoSuchFieldException | SecurityException e) {
+				// e.printStackTrace();
+				field = null;
+				superClass = clazz.getSuperclass();
+			}
+			if (field != null) {
+				break;
+			}
+		}
+		return field;
+	}
 
+	public String getInputDataFileLocation() throws IOException {
+		String currentDirectory = null;
+		currentDirectory = System.getProperty("user.dir");
+		if (currentDirectory == null || currentDirectory.equals("")) {
+			File currentDir = new File(".");
+			currentDirectory = currentDir.getAbsolutePath();
+		}
+		if (!currentDirectory.contains(StoreConstants.PROJECT_NAME)) {
+			currentDirectory += "/" + StoreConstants.PROJECT_NAME;
+		}
+		return currentDirectory + "/data/";
+	}
 
-    public String getInputDataFileLocation() throws IOException {
-        String currentDirectory = null;
-        currentDirectory = System.getProperty("user.dir");
-        if (currentDirectory == null || currentDirectory.equals("")) {
-            File currentDir = new File(".");
-            currentDirectory = currentDir.getAbsolutePath();
-        }
-        if(!currentDirectory.contains(StoreConstants.PROJECT_NAME)){
-            currentDirectory += "/"+StoreConstants.PROJECT_NAME;
-        }
-        return currentDirectory + "/data/";
-    }
-    
-    public static String getImageFileLocation() throws IOException {
-        String currentDirectory = null;
-        currentDirectory = System.getProperty("user.dir");
-        if (currentDirectory == null || currentDirectory.equals("")) {
-            File currentDir = new File(".");
-            currentDirectory = currentDir.getAbsolutePath();
-        }
-        if(!currentDirectory.contains(StoreConstants.PROJECT_NAME)){
-            currentDirectory += "/"+StoreConstants.PROJECT_NAME;
-        }
-        return currentDirectory + "/src/img";
-    }
+	public static String getImageFileLocation() throws IOException {
+		String currentDirectory = null;
+		currentDirectory = System.getProperty("user.dir");
+		if (currentDirectory == null || currentDirectory.equals("")) {
+			File currentDir = new File(".");
+			currentDirectory = currentDir.getAbsolutePath();
+		}
+		if (!currentDirectory.contains(StoreConstants.PROJECT_NAME)) {
+			currentDirectory += "/" + StoreConstants.PROJECT_NAME;
+		}
+		return currentDirectory + "/src/img";
+	}
 
 }
