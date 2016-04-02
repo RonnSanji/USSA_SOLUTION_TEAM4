@@ -194,7 +194,7 @@ public class DashBoard extends JFrame
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				ManageStock manageStock = new ManageStock();
+				ManageInventory manageStock = new ManageInventory();
 				activateMainPanel( manageStock);
 			}
 		});

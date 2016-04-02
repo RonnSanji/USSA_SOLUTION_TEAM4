@@ -68,7 +68,7 @@ public class TotalReceiptCalculator {
                 ioManager.writeToFile(transactionList,new Transaction());
                 ioManager.writeToFile(FileDataWrapper.memberMap.values(),new Member());
                 order = new Order();
-            } catch (IOException e) {
+            } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
                 e.printStackTrace();
             }
         }

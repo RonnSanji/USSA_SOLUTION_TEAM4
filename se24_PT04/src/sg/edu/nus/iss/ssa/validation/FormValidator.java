@@ -3,6 +3,7 @@ package sg.edu.nus.iss.ssa.validation;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Set;
 
 import javax.swing.JPanel;
@@ -104,7 +105,24 @@ public class FormValidator {
 		return null;
 	}
 
-	public static String replenishStockValidateData(int barCode) {
+	public static String configureThresholdValidateForm(String threshold) {
+
+		if (threshold == null || threshold.isEmpty()) {
+			return StoreConstants.ENTER_NEW_THRESHOLD;
+		}
+		try {
+			long l = Long.parseLong(threshold);
+			if (l <= 0) {
+				return StoreConstants.INVALID_THRESHOLD_QUANTITY;
+			}
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return StoreConstants.INVALID_THRESHOLD_QUANTITY;
+		}
+		return null;
+	}
+
+	public static String replenishStockConfigureThresholdValidateData(int barCode) {
 		if (barCode <= 0) {
 			return StoreConstants.INVALID_PRODUCT_BAR_CODE;
 		}
@@ -124,6 +142,64 @@ public class FormValidator {
 		return barCode + " " + StoreConstants.BAR_CODE_NOT_EXIST;
 	}
 
+	public static String editDscountValidateForm(String discountCode, String discountDescription, String startDateType,
+			Date startDate, String period, String percentage, String applicableTo) {
+		if (discountCode == null || discountCode.isEmpty()) {
+			return StoreConstants.ENTER_DISCOUNT_CODE;
+		}
+		if (discountDescription == null || discountDescription.isEmpty()) {
+			return StoreConstants.ENTER_DISCOUNT_DESCRIPTION;
+		}
+		if (startDateType == null || startDateType.isEmpty()) {
+			return StoreConstants.SELECT_DISCOUNT_START_DATE;
+		}
+		if (!startDateType.equalsIgnoreCase(StoreConstants.PERMANENT_DSCOUNT_START_DATE)
+				&& !startDateType.equalsIgnoreCase(StoreConstants.PERIOD_DSCOUNT_START_DATE)) {
+			return StoreConstants.SELECT_DISCOUNT_START_DATE;
+		}
+		if (startDateType.equalsIgnoreCase(StoreConstants.PERIOD_DSCOUNT_START_DATE)) {
+			if (startDate == null) {
+				return StoreConstants.SELECT_DISCOUNT_START_DATE;
+			}
+		}
+		if (period == null || period.isEmpty()) {
+			return StoreConstants.ENTER_DISCOUNT_PERIOD;
+		}
+		if (startDateType.equalsIgnoreCase(StoreConstants.PERMANENT_DSCOUNT_START_DATE)) {
+			if (!period.equalsIgnoreCase(StoreConstants.PERMANENT_DSCOUNT_START_PERIOD)) {
+				return StoreConstants.INVALID_DISCOUNT_PERIOD;
+			}
+		} else if (startDateType.equalsIgnoreCase(StoreConstants.PERIOD_DSCOUNT_START_DATE)) {
+			try {
+				Integer tempPeriod = Integer.parseInt(period);
+			} catch (Exception ex) {
+				// ex.printStackTrace();
+				return StoreConstants.INVALID_DISCOUNT_PERIOD;
+			}
+		}
+		if (percentage == null || percentage.isEmpty()) {
+			return StoreConstants.ENTER_DISCOUNT_PERCENTAGE;
+		}
+		if (applicableTo == null || applicableTo.isEmpty()) {
+			return StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO;
+		}
+		if (applicableTo.equalsIgnoreCase("-select-")) {
+			return StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO;
+		}
+
+		try {
+			float tempPercentage = Float.parseFloat(percentage);
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return StoreConstants.INVALID_DISCOUNT_PERCENTAGE;
+		}
+		if (!applicableTo.equalsIgnoreCase(StoreConstants.MEMBER_DICSOUNT_NAME)
+				&& !applicableTo.equalsIgnoreCase(StoreConstants.PUBLIC_DICSOUNT_NAME)) {
+			return StoreConstants.INVALID_APPLICABLE_TO;
+		}
+		return null;
+	}
+
 	public static String addMemberValidateForm(String memberName, String memberNumber) {
 		if (memberName == null || memberNumber.isEmpty()) {
 			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
@@ -137,23 +213,23 @@ public class FormValidator {
 	public static String addStoreKeeperValidateForm(String name, char[] password) {
 		if (name == null || name.isEmpty()) {
 			return StoreConstants.STOREKEEPER_NOT_FOUND;
-		} 
-		
+		}
+
 		if (password == null || password.length == 0) {
 			return StoreConstants.STOREKEEPER_INCORRECT_PASSWORD;
 		}
 		System.out.println(FileDataWrapper.storeKeeperMap.values());
 		StoreKeeper storeKeeper = (StoreKeeper) FileDataWrapper.storeKeeperMap.get(name.toLowerCase());
 		if (storeKeeper == null) {
-			System.out.println("NONONONONO");
+			// System.out.println("NONONONONO");
 			return StoreConstants.STOREKEEPER_NOT_FOUND;
 		}
-		
+
 		char[] desiredPassword = storeKeeper.getPassword().toCharArray();
 		if (desiredPassword.length != password.length || !Arrays.equals(password, desiredPassword)) {
 			return StoreConstants.STOREKEEPER_INCORRECT_PASSWORD;
-		}		
-		
+		}
+
 		return null;
 	}
 

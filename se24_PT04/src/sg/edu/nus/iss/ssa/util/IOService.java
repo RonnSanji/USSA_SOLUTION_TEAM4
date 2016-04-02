@@ -148,7 +148,7 @@ public class IOService<E> {
         }
     }
 
-    public void writeToFile(Collection entityList, Entity entityToCreate) throws IOException{
+    public void writeToFile(Collection entityList, Entity entityToCreate) throws IOException, IllegalAccessException, NoSuchFieldException{
         String dataFilePathPrefix = getInputDataFileLocation();
         String fileName = entityToCreate.getFileName();
         String[] fields = entityToCreate.getProperties();
@@ -175,9 +175,9 @@ public class IOService<E> {
             pw.print(sb.toString());
             pw.close();
         }catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw e;
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            throw e;
         }
 
 
