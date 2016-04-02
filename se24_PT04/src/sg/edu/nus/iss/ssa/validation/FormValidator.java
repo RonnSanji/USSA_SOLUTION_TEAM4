@@ -189,6 +189,10 @@ public class FormValidator {
 
 		try {
 			float tempPercentage = Float.parseFloat(percentage);
+			if(tempPercentage <=0 || tempPercentage >=100)
+			{
+				return StoreConstants.INVALID_DISCOUNT_PERCENTAGE;
+			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return StoreConstants.INVALID_DISCOUNT_PERCENTAGE;
