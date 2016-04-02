@@ -22,9 +22,7 @@ public class DashBoard extends JFrame
 
 	private ImageIcon imgStoreKeeper, imgBackGround, imgPurchasing, imgMember, imgCategory, imgInventory, imgClock,
 			imgDiscount, imgReport, imgLogout;
-	//private MemberManagerWindow memberManagerWindow;
-	//private ManageCategory manageCaterogy;
-	//private ManageStock manageStock;
+
 	private JTextField textFieldSKName;
 	private JTextField txtTime;
 	private JPanel mainActivityPanel;
@@ -33,17 +31,7 @@ public class DashBoard extends JFrame
 	    	txtTime.setText(getSystemTime());
 	    }
 	});
-	/**
-	 * Launch the application.
-	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { DashBoard window = new
-	 * DashBoard(); window.frame.setVisible(true); } catch (Exception e) {
-	 * e.printStackTrace(); } } }); }/*
-	 * 
-	 * /** Create the application.
-	 */
+
 	public DashBoard(String loginuser)
 	{
 
@@ -58,29 +46,10 @@ public class DashBoard extends JFrame
 	{
 		try
 		{
-			/*
-			 * imgBackGround = new
-			 * ImageIcon(this.getClass().getResource("/background1280.jpg"));
-			 * imgStoreKeeper = new
-			 * ImageIcon(this.getClass().getResource("/storeKeeper.png"));
-			 * imgPurchasing = new
-			 * ImageIcon(this.getClass().getResource("/purchasing.png"));
-			 * imgMember = new
-			 * ImageIcon(this.getClass().getResource("/member.png"));
-			 * imgCategory = new
-			 * ImageIcon(this.getClass().getResource("/category.png"));
-			 * imgInventory = new
-			 * ImageIcon(this.getClass().getResource("/inventory.png"));
-			 * imgClock = new
-			 * ImageIcon(this.getClass().getResource("/clock.png")); imgDiscount
-			 * = new ImageIcon(this.getClass().getResource("/discount.png"));
-			 * imgReport = new
-			 * ImageIcon(this.getClass().getResource("/report.png")); imgLogout
-			 * = new ImageIcon(this.getClass().getResource("/logout.png"));
-			 */
+
 			String imgFolderPath = IOService.getImageFileLocation();
 			//System.out.println(imgFolderPath);
-			imgBackGround = new ImageIcon(imgFolderPath + "/background1280.jpg");
+			imgBackGround = new ImageIcon(imgFolderPath + "/background1280.png");
 			imgStoreKeeper = new ImageIcon(imgFolderPath + "/storeKeeper.png");
 			imgPurchasing = new ImageIcon(imgFolderPath + "/purchasing.png");
 			imgMember = new ImageIcon(imgFolderPath + "/member.png");
@@ -118,8 +87,8 @@ public class DashBoard extends JFrame
 		stroreKepperInfoPanel.setLayout(null);
 
 		JLabel lblFantasyTeam = new JLabel("PT Team 4 Souvenir Store");
-		lblFantasyTeam.setFont(new Font("Zapfino", Font.BOLD, 24));
-		lblFantasyTeam.setBounds(350, 6, 460, 64);
+		lblFantasyTeam.setFont(new Font("AppleGothic", Font.BOLD, 32));
+		lblFantasyTeam.setBounds(387, 6, 460, 64);
 		stroreKepperInfoPanel.add(lblFantasyTeam);
 
 		JLabel lblStoreKeeper = new JLabel("New label");
@@ -186,7 +155,7 @@ public class DashBoard extends JFrame
 		menuPanel.setOpaque(false);
 
 		JButton btnMemberManage = new JButton("Memeber Management");
-		btnMemberManage.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnMemberManage.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnMemberManage.setBounds(92, 120, 200, 50);
 		menuPanel.add(btnMemberManage);
 
@@ -203,7 +172,7 @@ public class DashBoard extends JFrame
 				showProductSelectionWindow(dashBoard);
 			}
 		});
-		btnNewButton.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnNewButton.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnNewButton.setBounds(92, 22, 200, 50);
 		menuPanel.add(btnNewButton);
 
@@ -216,7 +185,7 @@ public class DashBoard extends JFrame
 				activateMainPanel(manageCaterogy);
 			}
 		});
-		btnCategoryManagement.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnCategoryManagement.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnCategoryManagement.setBounds(92, 212, 200, 50);
 		menuPanel.add(btnCategoryManagement);
 
@@ -229,12 +198,12 @@ public class DashBoard extends JFrame
 				activateMainPanel( manageStock);
 			}
 		});
-		btnProductManagement.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnProductManagement.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnProductManagement.setBounds(92, 308, 200, 50);
 		menuPanel.add(btnProductManagement);
 
 		JButton btnDiscount = new JButton("Discount Management");
-		btnDiscount.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnDiscount.setBounds(92, 403, 200, 50);
 		menuPanel.add(btnDiscount);
 		btnDiscount.addActionListener(new ActionListener() {
@@ -254,7 +223,7 @@ public class DashBoard extends JFrame
 				activateMainPanel(reportSummary);
 			}
 		});
-		btnReport.setFont(new Font("Zapfino", Font.BOLD, 13));
+		btnReport.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnReport.setBounds(92, 497, 200, 50);
 		menuPanel.add(btnReport);
 

@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.ssa.gui;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.model.Category;
+import sg.edu.nus.iss.ssa.model.Discount;
 import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.LineItem;
 
@@ -25,6 +28,7 @@ import javax.swing.SwingConstants;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.model.Member;
+import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
 
@@ -32,6 +36,10 @@ import sg.edu.nus.iss.ssa.util.IOService;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
 
 public class MemberManagerWindow extends JPanel {
 
@@ -41,9 +49,14 @@ public class MemberManagerWindow extends JPanel {
 	private JButton btnAddNewMember;
 	private JButton btnRemoveMember;
 	private DefaultTableModel model;
-
-
-
+	private JTextField txtMemberSearch;
+	private Collection<Member> memberList;
+	private List<Member> memberListResult;
+	JComboBox comboBoxMemberSearch;
+	private String[] comboBoxSearchByItem = new String[] { "Member Name", "Member ID" };
+	private String[] columns = new String[] { "Member Name", "Member Number", "Loylty Points" };
+	private String searchBy;
+	
 	/**
 	 * Create the application.
 	 */
@@ -57,15 +70,15 @@ public class MemberManagerWindow extends JPanel {
 		this.setOpaque(false);
 		setLayout(null);
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 46, 782, 405);
+		scrollPane.setBounds(12, 87, 782, 364);
 		this.add(scrollPane);
 		buttonPanel = new JPanel();
-		buttonPanel.setBounds(154, 483, 492, 66);
+		buttonPanel.setBounds(12, 481, 782, 66);
 		this.add(buttonPanel);
 		buttonPanel.setOpaque(false);
 
 		btnAddNewMember = new JButton("Add New Memeber");
-		btnAddNewMember.setBounds(5, 5, 161, 55);
+		btnAddNewMember.setBounds(20, 5, 160, 55);
 		btnAddNewMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MemberAddingWindow memberAddWindow = new MemberAddingWindow(FileDataWrapper.memberMap,memberManagerWindow);
@@ -76,7 +89,7 @@ public class MemberManagerWindow extends JPanel {
 		buttonPanel.add(btnAddNewMember);
 
 		btnRemoveMember = new JButton("Remove Member");
-		btnRemoveMember.setBounds(328, 5, 147, 55);
+		btnRemoveMember.setBounds(603, 5, 160, 55);
 		btnRemoveMember.addActionListener(new ActionListener() {
 			
 			
@@ -118,9 +131,17 @@ public class MemberManagerWindow extends JPanel {
 			}
 		});
 		buttonPanel.add(btnRemoveMember);
+		
+		JButton btnEditMember = new JButton("Edit Member");
+		btnEditMember.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEditMember.setBounds(316, 5, 160, 55);
+		buttonPanel.add(btnEditMember);
 
 		// jTable Data Display
-		String[] columns = new String[] { "Member Name", "Member Number", "Loylty Points" };
+		
 		Object[] members = FileDataWrapper.memberMap.values().toArray();
 		Object[][] data = new Object[members.length][];
 
@@ -138,10 +159,84 @@ public class MemberManagerWindow extends JPanel {
 		
 		
 		scrollPane.setViewportView(table);
+		
+		JLabel lblSearchBy = new JLabel("Search by:");
+		lblSearchBy.setBounds(12, 33, 73, 16);
+		add(lblSearchBy);
+		
+	    comboBoxMemberSearch = new JComboBox();
+		comboBoxMemberSearch.setModel(new DefaultComboBoxModel(comboBoxSearchByItem));
+		comboBoxMemberSearch.setBounds(109, 29, 146, 27);
+		add(comboBoxMemberSearch);
+		
+		txtMemberSearch = new JTextField();
+		txtMemberSearch.setBounds(290, 27, 228, 28);
+		add(txtMemberSearch);
+		txtMemberSearch.setColumns(10);
+		
+		JButton btnMemberSearch = new JButton("Search");
+		btnMemberSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				memberSearch();
+			}
+		});
+		btnMemberSearch.setBounds(543, 28, 117, 29);
+		add(btnMemberSearch);
+		
+		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				table.setModel(model);
+			}
+		});
+		btnClear.setBounds(677, 28, 117, 29);
+		add(btnClear);
 
 	}
 	public void refreshTable(String[] memberProperty){
 		this.model.addRow(memberProperty);
 	}
-
+	private void memberSearch(){
+		memberList = (Collection<Member>) FileDataWrapper.memberMap.values();
+		memberListResult = new ArrayList<Member>();
+		if (comboBoxMemberSearch.getSelectedItem() != null) {
+			searchBy = comboBoxMemberSearch.getSelectedItem().toString();
+			for (Member member : memberList) {
+				// member Name
+				if (searchBy == comboBoxSearchByItem[0]) {
+					if (member.getMemberName().toUpperCase().contains(txtMemberSearch.getText().toUpperCase())) {
+						memberListResult.add(member);
+					}
+				}
+				// member ID
+				else if (searchBy == comboBoxSearchByItem[1]) {
+					if (member.getMemberId().toUpperCase().contains(txtMemberSearch.getText().toUpperCase())) {
+						memberListResult.add(member);
+					}
+				}
+			}
+		}
+		//System.out.println(memberListResult.toArray());
+		showSearchResult(memberListResult.toArray());
+	}
+	
+	private void showSearchResult(Object[] members){
+	
+		
+		Object[][] data = new Object[members.length][];
+		for (int i = 0; i < members.length; i++) {
+			data[i] =   ((Member)members[i]).getMemeberArray();
+		}	
+		DefaultTableModel modelResult = new DefaultTableModel(data, columns){
+			public boolean isCellEditable(int row, int column){  
+		          return false;  
+		      }
+		};
+		modelResult.isCellEditable(0, 0);
+		 
+		table.setModel(modelResult);
+		
+	}
+	
+	
 }
