@@ -108,7 +108,7 @@ public class ManageInventory extends JPanel {
 		this.add(lblNoResult);
 
 		btnReplenish = new JButton("Replenish");
-		btnReplenish.setBounds(311, 525, 150, 60);
+		btnReplenish.setBounds(326, 525, 150, 60);
 		btnReplenish.setEnabled(false);
 		btnReplenish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -139,7 +139,6 @@ public class ManageInventory extends JPanel {
 		TbResult = new JTable(new model());
 		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TbResult.setFillsViewportHeight(true);
-
 		scrollPane = new JScrollPane(TbResult);
 		scrollPane.setBounds(10, 100, 780, 420);
 		this.add(scrollPane);
@@ -152,7 +151,7 @@ public class ManageInventory extends JPanel {
 		});
 		btnClear.setBounds(471, 26, 89, 23);
 		this.add(btnClear);
-		
+
 		JButton btnGeneratePurchaseOrder = new JButton("Generate Order");
 		btnGeneratePurchaseOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -164,16 +163,16 @@ public class ManageInventory extends JPanel {
 				}
 			}
 		});
-		btnGeneratePurchaseOrder.setBounds(551, 525, 150, 60);
+		btnGeneratePurchaseOrder.setBounds(561, 525, 150, 60);
 		add(btnGeneratePurchaseOrder);
-		
+
 		btnConfigureThreshold = new JButton("Configure Threshold");
 		btnConfigureThreshold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showEditInventoryWindow(0);
 			}
 		});
-		btnConfigureThreshold.setBounds(75, 525, 150, 60);
+		btnConfigureThreshold.setBounds(98, 525, 150, 60);
 		add(btnConfigureThreshold);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
@@ -287,16 +286,26 @@ public class ManageInventory extends JPanel {
 
 	}
 
+	public boolean hasBelowThreshold() {
+		if (searchType == 2 && productListResult != null && productListResult.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public JTable getResulTable()
+	{
+		return TbResult;
+	}
 	private void showEditInventoryWindow(int mode) {
-		
+
 		selectedRow = TbResult.getSelectedRow();
 		if (selectedRow == -1) {
 			DisplayUtil.displayValidationError(scrollPane, StoreConstants.SELECT_PRODUCT);
 			return;
 		}
 		selectedProduct = productListResult.get(selectedRow);
-		
-		
+
 		EditInventory replenishStockWindow = new EditInventory(selectedProduct, mode);
 		replenishStockWindow.setLocation(this.getLocationOnScreen());
 		replenishStockWindow.setModal(true);
@@ -339,7 +348,7 @@ public class ManageInventory extends JPanel {
 			}
 		});
 	}
- 
+
 	class model extends AbstractTableModel {
 
 		private static final long serialVersionUID = 8539059160246223660L;
