@@ -20,7 +20,7 @@ import java.util.Date;
 public class DashBoard extends JFrame
 {
 
-	private ImageIcon imgStoreKeeper, imgBackGround, imgPurchasing, imgMember, imgCategory, imgInventory, imgClock,
+	private ImageIcon imgStoreKeeper, imgBackGround, imgPurchasing,imgProduct, imgMember, imgCategory, imgInventory, imgClock,
 			imgDiscount, imgReport, imgLogout;
 
 	private JTextField textFieldSKName;
@@ -52,6 +52,7 @@ public class DashBoard extends JFrame
 			imgBackGround = new ImageIcon(imgFolderPath + "/background1280.png");
 			imgStoreKeeper = new ImageIcon(imgFolderPath + "/storeKeeper.png");
 			imgPurchasing = new ImageIcon(imgFolderPath + "/purchasing.png");
+			imgProduct = new ImageIcon(imgFolderPath + "/product.png");
 			imgMember = new ImageIcon(imgFolderPath + "/member.png");
 			imgCategory = new ImageIcon(imgFolderPath + "/category.png");
 			imgInventory = new ImageIcon(imgFolderPath + "/inventory.png");
@@ -226,6 +227,11 @@ public class DashBoard extends JFrame
 		btnReport.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnReport.setBounds(70, 500, 220, 50);
 		menuPanel.add(btnReport);
+		
+		JLabel lblProduct = new JLabel("");
+		lblProduct.setBounds(10, 99, 60, 50);
+		lblProduct.setIcon(imgProduct);
+		menuPanel.add(lblProduct);
 
 		JLabel lblMember = new JLabel("");
 		lblMember.setBounds(10, 180, 60, 50);
@@ -255,7 +261,7 @@ public class DashBoard extends JFrame
 		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
 
 		JButton buttonProductManagement = new JButton("Product Management");
-		buttonProductManagement.setFont(new Font("Dialog", Font.BOLD, 16));
+		buttonProductManagement.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		buttonProductManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -264,6 +270,8 @@ public class DashBoard extends JFrame
 		});
 		buttonProductManagement.setBounds(70, 100, 220, 50);
 		menuPanel.add(buttonProductManagement);
+		
+	
 
 		btnMemberManage.addActionListener(new ActionListener()
 		{

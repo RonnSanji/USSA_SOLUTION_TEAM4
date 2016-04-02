@@ -155,9 +155,7 @@ public class MemberManagerWindow extends JPanel {
 		      }
 		};
 		model.isCellEditable(0, 0);
-		table =   new JTable(model);
-		
-		
+		table =   new JTable(model);	
 		scrollPane.setViewportView(table);
 		
 		JLabel lblSearchBy = new JLabel("Search by:");
