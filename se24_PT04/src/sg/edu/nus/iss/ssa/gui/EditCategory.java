@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.text.*;
 import javax.swing.JScrollPane;
 
-public class AddCategory extends JDialog {
+public class EditCategory extends JDialog {
 
 	private static final long serialVersionUID = -1420940689801074313L;
 	private JPanel contentPane;
@@ -30,10 +30,12 @@ public class AddCategory extends JDialog {
 	private String categoryName;
 	private EntityListController controller = new EntityListController();
 
-	public AddCategory() {
+	// 0 for add, 1 for edit
+	private int mode = 0;
+	
+	public EditCategory() {
 		this.addWindowListener(new MyWindowListener());
 		setResizable(false);
-		setTitle("Add Category Page");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 453, 330);
 		contentPane = new JPanel();
@@ -65,9 +67,7 @@ public class AddCategory extends JDialog {
 								dispose();
 							}
 						}
-
-						
-					} else {
+				} else {
 						dialogResult = DisplayUtil.displayConfirmationMessage(contentPane, msg);
 						if (dialogResult == 0) {
 							clearFields();

@@ -59,6 +59,7 @@ public class ManageCategory extends JPanel {
 	TableModel model;
 
 	private int selectedRow;
+	private JButton btnEditCategory;
 
 	public ManageCategory() {
 		// setResizable(false);
@@ -102,7 +103,7 @@ public class ManageCategory extends JPanel {
 		this.add(lblNoResult);
 
 		btnAddCategory = new JButton("Add Category");
-		btnAddCategory.setBounds(192, 525, 150, 60);
+		btnAddCategory.setBounds(98, 525, 150, 60);
 		btnAddCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addCategory();
@@ -146,8 +147,18 @@ public class ManageCategory extends JPanel {
 				}
 			}
 		});
-		btnRemoveCategory.setBounds(460, 525, 150, 60);
+		btnRemoveCategory.setBounds(561, 525, 150, 60);
 		add(btnRemoveCategory);
+		
+		btnEditCategory = new JButton("Edit Category");
+		btnEditCategory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		btnEditCategory.setBounds(326, 525, 150, 60);
+		add(btnEditCategory);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
 
@@ -268,7 +279,7 @@ public class ManageCategory extends JPanel {
 	}
 
 	private void showAddCategoryWindow() {
-		AddCategory addCategoryWindow = new AddCategory();
+		EditCategory addCategoryWindow = new EditCategory();
 
 		addCategoryWindow.setLocation(scrollPane.getLocationOnScreen());
 

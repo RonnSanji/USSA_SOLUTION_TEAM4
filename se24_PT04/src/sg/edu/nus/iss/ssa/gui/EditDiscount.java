@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
-import sg.edu.nus.iss.ssa.gui.AddCategory.MyWindowListener;
+import sg.edu.nus.iss.ssa.gui.EditCategory.MyWindowListener;
 import sg.edu.nus.iss.ssa.model.Discount;
 import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
@@ -262,7 +262,7 @@ public class EditDiscount extends JDialog {
 	}
 
 	private boolean validateData() {
-		
+
 		if (mode == 0) {
 			selectedDiscount = new PeriodDiscount();
 		}
@@ -287,7 +287,7 @@ public class EditDiscount extends JDialog {
 			selectedDiscount.setStarDate(StoreConstants.PERMANENT_DSCOUNT_START_PERIOD);
 		}
 		selectedDiscount.setDiscountPeriod(txtPeriod.getText().trim());
-		
+
 		String msg = null;
 		// add
 		if (mode == 0) {
@@ -306,7 +306,7 @@ public class EditDiscount extends JDialog {
 	}
 
 	private void saveDiscount() {
-		
+
 		String msg = controller.saveDiscount(selectedDiscount, mode);
 		if (msg != null) {
 			DisplayUtil.displayValidationError(contentPanel, msg);
@@ -314,19 +314,27 @@ public class EditDiscount extends JDialog {
 		}
 		// add
 		if (mode == 0) {
-			DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.DISCOUNT_ADDED_SUCCESSFULLY);
+			int dialogResult = DisplayUtil.displayConfirmationMessage(contentPanel,
+					StoreConstants.DISCOUNT_ADDED_SUCCESSFULLY);
+			if (dialogResult == 0) {
+				selectedDiscount = null;
+				clearFields();
+			} else if (dialogResult == 1) {
+				dispose();
+			}
 		}
 		// edit
 		else if (mode == 1) {
 			DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.DISCOUNT_UPDATED_SUCCESSFULLY);
+			dispose();
 		}
-		dispose();
 	}
 
 	private void clearFields() {
 		txtDiscountCode.setText("");
 		txtDiscountDescription.setText("");
-
+		comboPeriodType.setSelectedIndex(0);
+		dateSelector.setDate(null);
 		txtPeriod.setText("");
 		txtPercentage.setText("");
 		comboApplicableTo.setSelectedIndex(0);

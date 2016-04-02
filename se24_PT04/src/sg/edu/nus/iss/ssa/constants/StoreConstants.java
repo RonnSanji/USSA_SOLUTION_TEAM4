@@ -96,7 +96,7 @@ public class StoreConstants
 	public static final String INVALID_DISCOUNT_PERCENTAGE = "Discount percentage is invalid";
 	public static final String INVALID_APPLICABLE_TO = "Applicable To is invalid";
 	public static final String DISCOUNT_UPDATED_SUCCESSFULLY = "Discount has been updated successfully !";
-	public static final String DISCOUNT_ADDED_SUCCESSFULLY = "Discount has been added successfully !";
+	public static final String DISCOUNT_ADDED_SUCCESSFULLY = "Discount has been added successfully. Would like to add another one ?";
 	public static final String DISCOUNT_REMOVED_SUCCESSFULLY = "Discount has been removed successfully !";
 	public static final String EMPTY_DISCOUNT = "Empty discount !";
 	public static final String DISCOUNT_NOT_EXIST = "does not exist";
