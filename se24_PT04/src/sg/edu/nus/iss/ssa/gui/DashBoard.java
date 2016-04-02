@@ -156,11 +156,11 @@ public class DashBoard extends JFrame
 
 		JButton btnMemberManage = new JButton("Memeber Management");
 		btnMemberManage.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnMemberManage.setBounds(92, 168, 200, 50);
+		btnMemberManage.setBounds(70, 180, 220, 50);
 		menuPanel.add(btnMemberManage);
 
 		JLabel lblPurchasing = new JLabel("");
-		lblPurchasing.setBounds(18, 22, 60, 50);
+		lblPurchasing.setBounds(10, 20, 60, 50);
 		lblPurchasing.setIcon(imgPurchasing);
 		menuPanel.add(lblPurchasing);
 
@@ -173,7 +173,7 @@ public class DashBoard extends JFrame
 			}
 		});
 		btnNewButton.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnNewButton.setBounds(92, 22, 200, 50);
+		btnNewButton.setBounds(70, 20, 220, 50);
 		menuPanel.add(btnNewButton);
 
 		JButton btnCategoryManagement = new JButton("Category Management");
@@ -186,25 +186,25 @@ public class DashBoard extends JFrame
 			}
 		});
 		btnCategoryManagement.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnCategoryManagement.setBounds(98, 250, 200, 50);
+		btnCategoryManagement.setBounds(70, 260, 220, 50);
 		menuPanel.add(btnCategoryManagement);
 
-		JButton btnProductManagement = new JButton("Inventory Management");
-		btnProductManagement.addActionListener(new ActionListener()
+		JButton btnInvetoryManagement = new JButton("Inventory Management");
+		btnInvetoryManagement.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				AddProduct addProduct = new AddProduct();
-				activateMainPanel( addProduct);
+				ManageInventory manageInventory = new ManageInventory();
+				activateMainPanel( manageInventory);
 			}
 		});
-		btnProductManagement.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnProductManagement.setBounds(92, 347, 200, 50);
-		menuPanel.add(btnProductManagement);
+		btnInvetoryManagement.setFont(new Font("AppleGothic", Font.BOLD, 16));
+		btnInvetoryManagement.setBounds(70, 340, 220, 50);
+		menuPanel.add(btnInvetoryManagement);
 
 		JButton btnDiscount = new JButton("Discount Management");
 		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnDiscount.setBounds(92, 430, 200, 50);
+		btnDiscount.setBounds(70, 420, 220, 50);
 		menuPanel.add(btnDiscount);
 		btnDiscount.addActionListener(new ActionListener() {
 			@Override
@@ -224,44 +224,45 @@ public class DashBoard extends JFrame
 			}
 		});
 		btnReport.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnReport.setBounds(92, 513, 200, 50);
+		btnReport.setBounds(70, 500, 220, 50);
 		menuPanel.add(btnReport);
 
 		JLabel lblMember = new JLabel("");
-		lblMember.setBounds(18, 120, 60, 50);
+		lblMember.setBounds(10, 180, 60, 50);
 		lblMember.setIcon(imgMember);
 		menuPanel.add(lblMember);
 
 		JLabel lblCategory = new JLabel("");
-		lblCategory.setBounds(18, 212, 65, 50);
+		lblCategory.setBounds(10, 260, 60, 50);
 		lblCategory.setIcon(imgCategory);
 		menuPanel.add(lblCategory);
 
 		JLabel lblInventory = new JLabel("");
-		lblInventory.setBounds(18, 308, 65, 50);
+		lblInventory.setBounds(10, 340, 60, 50);
 		lblInventory.setIcon(imgInventory);
 		menuPanel.add(lblInventory);
 
 		JLabel lblDiscount = new JLabel("");
-		lblDiscount.setBounds(18, 403, 65, 67);
+		lblDiscount.setBounds(10, 420, 60, 50);
 		lblDiscount.setIcon(imgDiscount);
 		menuPanel.add(lblDiscount);
 
 		JLabel lblReport = new JLabel("");
-		lblReport.setBounds(15, 494, 65, 50);
+		lblReport.setBounds(10, 500, 60, 50);
 		lblReport.setIcon(imgReport);
 		;
 		menuPanel.add(lblReport);
 		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
 
 		JButton buttonProductManagement = new JButton("Product Management");
+		buttonProductManagement.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		buttonProductManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showProductSelectionWindow(dashBoard);
 			}
 		});
-		buttonProductManagement.setBounds(92, 95, 200, 50);
+		buttonProductManagement.setBounds(70, 100, 220, 50);
 		menuPanel.add(buttonProductManagement);
 
 		btnMemberManage.addActionListener(new ActionListener()
