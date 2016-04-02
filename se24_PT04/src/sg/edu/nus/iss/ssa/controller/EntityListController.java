@@ -2,6 +2,8 @@ package sg.edu.nus.iss.ssa.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
@@ -81,7 +83,8 @@ public class EntityListController {
 		}
 		try {
 			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
-			//System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
+			// System.out.println("categories : " +
+			// FileDataWrapper.categoryMap.keySet());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
@@ -118,31 +121,33 @@ public class EntityListController {
 		}
 		return null;
 	}
-	// For configure threshold
-		public String updateThreshold(Product selectedProduct, long newThreshold) {
-			selectedProduct.setThresholdQuantity(newThreshold);
 
-			for (Product p : FileDataWrapper.productMap.values()) {
-				int barcode = p.getBarCode();
-				if (barcode == selectedProduct.getBarCode()) {
-					p = selectedProduct;
-					break;
-				}
+	// For configure threshold
+	public String updateThreshold(Product selectedProduct, long newThreshold) {
+		selectedProduct.setThresholdQuantity(newThreshold);
+
+		for (Product p : FileDataWrapper.productMap.values()) {
+			int barcode = p.getBarCode();
+			if (barcode == selectedProduct.getBarCode()) {
+				p = selectedProduct;
+				break;
 			}
-			if (ioManager == null) {
-				ioManager = new IOService<>();
-			}
-			try {
-				ioManager.writeToFile(FileDataWrapper.productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
-			} catch (Exception ex) {
-				reloadProductData();
-				ex.printStackTrace();
-				return StoreConstants.ERROR + " updating threshold";
-			} finally {
-				ioManager = null;
-			}
-			return null;
 		}
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.writeToFile(FileDataWrapper.productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
+		} catch (Exception ex) {
+			reloadProductData();
+			ex.printStackTrace();
+			return StoreConstants.ERROR + " updating threshold";
+		} finally {
+			ioManager = null;
+		}
+		return null;
+	}
+
 	// for manage stock
 	public void reloadProductData() {
 		FileDataWrapper.productMap.clear();
@@ -151,7 +156,8 @@ public class EntityListController {
 		}
 		try {
 			ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
-			//System.out.println("products : " + FileDataWrapper.productMap.keySet());
+			// System.out.println("products : " +
+			// FileDataWrapper.productMap.keySet());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
@@ -162,8 +168,15 @@ public class EntityListController {
 			ioManager = null;
 		}
 	}
+
 	// For manage discount
-		public String saveDiscount(PeriodDiscount discount) {
+	public String saveDiscount(PeriodDiscount discount, int mode) {
+		// add
+		if (mode == 0) {
+			((List<PeriodDiscount>) FileDataWrapper.discounts).add(discount);
+		}
+		// edit
+		else if (mode == 1) {
 			for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
 				PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
 				if (tempDiscount.getDiscountCode().equalsIgnoreCase(discount.getDiscountCode())) {
@@ -175,21 +188,27 @@ public class EntityListController {
 					tempDiscount.setApplicableTo(discount.getApplicableTo());
 				}
 			}
-			if (ioManager == null) {
-				ioManager = new IOService<>();
-			}
-			try {
-				ioManager.writeToFile(FileDataWrapper.discounts, new PeriodDiscount());
-			} catch (Exception ex) {
-				reloadDiscountData();
-				ex.printStackTrace();
-				return StoreConstants.ERROR + " saving Discount";
-			} finally {
-				ioManager = null;
-			}
-			return null;
 		}
-		
+		// remove
+		else if(mode == 2)
+		{
+			((List<PeriodDiscount>) FileDataWrapper.discounts).remove(discount);
+		}
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.writeToFile(FileDataWrapper.discounts, new PeriodDiscount());
+		} catch (Exception ex) {
+			reloadDiscountData();
+			ex.printStackTrace();
+			return StoreConstants.ERROR + " saving Discount";
+		} finally {
+			ioManager = null;
+		}
+		return null;
+	}
+
 	// for manage discount
 	public void reloadDiscountData() {
 		FileDataWrapper.discounts.clear();
@@ -228,7 +247,5 @@ public class EntityListController {
 		}
 		return null;
 	}
-
-	
 
 }

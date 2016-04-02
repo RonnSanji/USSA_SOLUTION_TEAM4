@@ -1,55 +1,23 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
-
-import sg.edu.nus.iss.ssa.controller.EntityListController;
-import sg.edu.nus.iss.ssa.gui.AddCategory.MyWindowListener;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
 public class LowStockAlert extends JFrame {
 
+	private static final long serialVersionUID = 5964739831257277828L;
 	private JPanel contentPane;
 	ManageInventory manageInventory = new ManageInventory();
 	private boolean hasBelowThreshold;
 	private JTable tbResult;
 	private JScrollPane scrollPane;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EntityListController controller = new EntityListController();
-					controller.reloadProductData();
-					LowStockAlert frame = new LowStockAlert();
-					if (frame.hasBelowThreshold()) {
-						frame.setVisible(true);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
 	public LowStockAlert() {
 		setResizable(false);
 		setTitle("Low Stock Alert !");
@@ -67,9 +35,6 @@ public class LowStockAlert extends JFrame {
 		});
 		btnClose.setBounds(298, 435, 150, 60);
 		contentPane.add(btnClose);
-
-		
-
 	}
 
 	public boolean hasBelowThreshold() {

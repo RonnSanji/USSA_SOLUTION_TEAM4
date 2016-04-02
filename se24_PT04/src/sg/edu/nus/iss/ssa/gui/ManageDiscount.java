@@ -27,11 +27,11 @@ import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.model.Discount;
 import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.validation.FormValidator;
 
-public class ManageDiscount extends JPanel
-{
+public class ManageDiscount extends JPanel {
 	private static final long serialVersionUID = -5197841819210766744L;
-	private EntityListController controller = new EntityListController();
+	private EntityListController controller;
 
 	private JTextField txtSearchText;
 	private JTable TbResult;
@@ -42,8 +42,7 @@ public class ManageDiscount extends JPanel
 	private JButton btnAddDiscount;
 	private JButton btnRemoveDiscount;
 
-	private String[] comboBoxSearchByItem = new String[]
-	{ "Code", "Description" };
+	private String[] comboBoxSearchByItem = new String[] { "Code", "Description" };
 
 	private String searchBy;
 	private String searchText;
@@ -52,33 +51,14 @@ public class ManageDiscount extends JPanel
 	private List<PeriodDiscount> discountListResult;
 	int selectedRow;
 
-	String[] columns = new String[]
-	{ "Discount Code", "Discount Description", "Star Date", "Period(Days)", "Percentage", "Applicable To" };
+	String[] columns = new String[] { "Discount Code", "Discount Description", "Star Date", "Period(Days)",
+			"Percentage", "Applicable To" };
 	String[][] data;
 
 	private TableModel model;
 	private JButton btnClear;
 
-	// for testing
-	public static void main(String[] args)
-	{
-		EntityListController controller = new EntityListController();
-		controller.reloadDiscountData();
-		ManageDiscount manageDiscount = new ManageDiscount();
-		manageDiscount.setVisible(true);
-
-		JFrame frame = new JFrame();
-		frame.setSize(900, 700);
-		frame.setVisible(true);
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBounds(0, 0, 800, 600);
-		frame.getContentPane().add(panel);
-		panel.add(manageDiscount);
-	}
-
-	public ManageDiscount()
-	{
+	public ManageDiscount() {
 		this.setSize(800, 600);
 		this.setOpaque(false);
 		setLayout(null);
@@ -100,10 +80,8 @@ public class ManageDiscount extends JPanel
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setBounds(560, 26, 79, 23);
 		this.add(btnSearch);
-		btnSearch.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent arg0)
-			{
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				search();
 			}
 		});
@@ -115,10 +93,8 @@ public class ManageDiscount extends JPanel
 		btnEdit = new JButton("Edit Discount");
 		btnEdit.setBounds(326, 525, 150, 60);
 		btnEdit.setEnabled(false);
-		btnEdit.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				editDiscount();
 
 			}
@@ -134,10 +110,8 @@ public class ManageDiscount extends JPanel
 		this.add(scrollPane);
 
 		btnClear = new JButton("Clear");
-		btnClear.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				clearKeyWordTextBox();
 			}
 		});
@@ -145,10 +119,28 @@ public class ManageDiscount extends JPanel
 		this.add(btnClear);
 
 		btnAddDiscount = new JButton("Add Discount");
+		btnAddDiscount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addDiscount();
+			}
+		});
 		btnAddDiscount.setBounds(98, 525, 150, 60);
 		add(btnAddDiscount);
 
 		btnRemoveDiscount = new JButton("Remove Discount");
+		btnRemoveDiscount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int dialogResult = -1;
+				if (validateForm() && validateData()) {
+					dialogResult = DisplayUtil.displayConfirmationMessage(scrollPane,
+							StoreConstants.CONFIRM_TO_REMOVE_CATEROGY);
+					if (dialogResult == 0) {
+						removeDiscount();
+					}
+					search();
+				}
+			}
+		});
 		btnRemoveDiscount.setBounds(561, 525, 150, 60);
 		add(btnRemoveDiscount);
 		scrollPane.setVisible(true);
@@ -157,41 +149,69 @@ public class ManageDiscount extends JPanel
 		search();
 	}
 
-	private void clearKeyWordTextBox()
-	{
+	private boolean validateForm() {
+		selectedRow = TbResult.getSelectedRow();
+		if (selectedRow == -1) {
+			DisplayUtil.displayValidationError(this, StoreConstants.SELECT_DISCOUNT);
+			return false;
+		}
+		selectedDiscount = discountListResult.get(selectedRow);
+		if (selectedDiscount == null) {
+			DisplayUtil.displayValidationError(this, StoreConstants.SELECT_DISCOUNT);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateData() {
+		String msg = FormValidator.editRemoveDiscountValidateData(selectedDiscount);
+		if (msg != null) {
+			DisplayUtil.displayValidationError(this, msg);
+			return false;
+		}
+		return true;
+	}
+
+	private void removeDiscount() {
+		if (controller == null) {
+			controller = new EntityListController();
+		}
+		String msg = controller.saveDiscount(selectedDiscount, 2);
+		if (msg != null) {
+			DisplayUtil.displayValidationError(this, msg);
+			return;
+		}
+
+		controller = null;
+
+		DisplayUtil.displayAcknowledgeMessage(this, StoreConstants.DISCOUNT_REMOVED_SUCCESSFULLY);
+	}
+
+	private void clearKeyWordTextBox() {
 		txtSearchText.setText("");
 	}
 
-	private void search()
-	{
+	private void search() {
 		discountList = (List<PeriodDiscount>) FileDataWrapper.discounts;
 		discountListResult = new ArrayList<PeriodDiscount>();
-		if (comboBoxSearchBy.getSelectedItem() != null)
-		{
+		if (comboBoxSearchBy.getSelectedItem() != null) {
 			searchBy = comboBoxSearchBy.getSelectedItem().toString();
-			for (PeriodDiscount discount : discountList)
-			{
+			for (PeriodDiscount discount : discountList) {
 				// Name
-				if (searchBy == comboBoxSearchByItem[0])
-				{
-					if (discount.getDiscountCode().toUpperCase().contains(txtSearchText.getText().toUpperCase()))
-					{
+				if (searchBy == comboBoxSearchByItem[0]) {
+					if (discount.getDiscountCode().toUpperCase().contains(txtSearchText.getText().toUpperCase())) {
 						discountListResult.add(discount);
 					}
 				}
 				// Description
-				else if (searchBy == comboBoxSearchByItem[1])
-				{
-					if (discount.getDiscountDesc().toUpperCase().contains(txtSearchText.getText().toUpperCase()))
-					{
+				else if (searchBy == comboBoxSearchByItem[1]) {
+					if (discount.getDiscountDesc().toUpperCase().contains(txtSearchText.getText().toUpperCase())) {
 						discountListResult.add(discount);
 					}
 				}
-
 			}
 
-			if (discountListResult.size() == 0)
-			{
+			if (discountListResult.size() == 0) {
 				showNoresult();
 				return;
 			}
@@ -202,11 +222,9 @@ public class ManageDiscount extends JPanel
 
 	}
 
-	private void prepareTableData()
-	{
+	private void prepareTableData() {
 		data = new String[discountListResult.size()][];
-		for (int i = 0; i < discountListResult.size(); i++)
-		{
+		for (int i = 0; i < discountListResult.size(); i++) {
 			String[] values = new String[columns.length];
 			PeriodDiscount discount = (PeriodDiscount) discountListResult.get(i);
 			values[0] = discount.getDiscountCode();
@@ -219,8 +237,7 @@ public class ManageDiscount extends JPanel
 		}
 	}
 
-	private void showNoresult()
-	{
+	private void showNoresult() {
 		// scrollPane.setVisible(false);
 		btnEdit.setEnabled(false);
 		btnRemoveDiscount.setEnabled(false);
@@ -228,8 +245,7 @@ public class ManageDiscount extends JPanel
 		lblNoResult.setText("No result found");
 	}
 
-	private void showResultTable()
-	{
+	private void showResultTable() {
 		lblNoResult.setText("");
 		btnEdit.setEnabled(true);
 		btnRemoveDiscount.setEnabled(true);
@@ -241,11 +257,9 @@ public class ManageDiscount extends JPanel
 
 	}
 
-	private void editDiscount()
-	{
+	private void editDiscount() {
 		selectedRow = TbResult.getSelectedRow();
-		if (selectedRow == -1)
-		{
+		if (selectedRow == -1) {
 			// JOptionPane.showMessageDialog(contentPane, "Please select a
 			// product", "Warning",JOptionPane.WARNING_MESSAGE);
 			DisplayUtil.displayValidationError(scrollPane, StoreConstants.SELECT_DISCOUNT);
@@ -255,94 +269,81 @@ public class ManageDiscount extends JPanel
 		showEditWindow();
 	}
 
-	private void showEditWindow()
-	{
+	private void addDiscount() {
+		selectedDiscount = null;
+		showEditWindow();
+	}
+
+	private void showEditWindow() {
 		EditDiscount editDiscountWindow = new EditDiscount(selectedDiscount);
 		editDiscountWindow.setLocation(this.getLocationOnScreen());
 		editDiscountWindow.setModal(true);
 		editDiscountWindow.setVisible(true);
-		editDiscountWindow.addWindowListener(new WindowListener()
-		{
+		editDiscountWindow.addWindowListener(new WindowListener() {
 
 			@Override
-			public void windowClosed(WindowEvent e)
-			{
-
+			public void windowClosed(WindowEvent e) {
 				search();
 			}
 
 			@Override
-			public void windowOpened(WindowEvent e)
-			{
+			public void windowOpened(WindowEvent e) {
 			}
 
 			@Override
-			public void windowIconified(WindowEvent e)
-			{
+			public void windowIconified(WindowEvent e) {
 			}
 
 			@Override
-			public void windowDeiconified(WindowEvent e)
-			{
+			public void windowDeiconified(WindowEvent e) {
 			}
 
 			@Override
-			public void windowDeactivated(WindowEvent e)
-			{
+			public void windowDeactivated(WindowEvent e) {
 			}
 
 			@Override
-			public void windowClosing(WindowEvent e)
-			{
+			public void windowClosing(WindowEvent e) {
 			}
 
 			@Override
-			public void windowActivated(WindowEvent e)
-			{
+			public void windowActivated(WindowEvent e) {
 			}
 		});
 	}
 
-	class model extends AbstractTableModel
-	{
+	class model extends AbstractTableModel {
 
 		private static final long serialVersionUID = 8539059160246223660L;
 
 		@Override
-		public int getColumnCount()
-		{
+		public int getColumnCount() {
 			return columns.length;
 		}
 
 		@Override
-		public int getRowCount()
-		{
+		public int getRowCount() {
 			// TODO Auto-generated method stub
-			if (data == null)
-			{
+			if (data == null) {
 				return 0;
 			}
 			return data.length;
 		}
 
 		@Override
-		public Object getValueAt(int arg0, int arg1)
-		{
+		public Object getValueAt(int arg0, int arg1) {
 			// TODO Auto-generated method stub
-			if (data == null)
-			{
+			if (data == null) {
 				return null;
 			}
-			if (data[arg0] == null)
-			{
+			if (data[arg0] == null) {
 				return null;
 			}
 			return data[arg0][arg1];
 		}
 
 		@Override
-		public String getColumnName(int col)
-		{
+		public String getColumnName(int col) {
 			return columns[col];
 		}
 	}

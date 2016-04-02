@@ -69,8 +69,8 @@ public class EditDiscount extends JDialog {
 		okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (validateForm()) {
-					editDiscount();
+				if (validateForm() && validateData()) {
+					saveDiscount();
 				}
 			}
 		});
@@ -249,9 +249,8 @@ public class EditDiscount extends JDialog {
 		}
 	}
 
-	private Boolean validateForm() {
-
-		String msg = FormValidator.editDscountValidateForm(txtDiscountCode.getText().trim(),
+	private boolean validateForm() {
+		String msg = FormValidator.addEditDiscountValidateForm(txtDiscountCode.getText().trim(),
 				txtDiscountDescription.getText().trim(), comboPeriodType.getSelectedItem().toString().trim(),
 				dateSelector.getDate(), txtPeriod.getText().trim(), txtPercentage.getText().trim(),
 				comboApplicableTo.getSelectedItem().toString().trim());
@@ -262,7 +261,12 @@ public class EditDiscount extends JDialog {
 		return true;
 	}
 
-	private void editDiscount() {
+	private boolean validateData() {
+		
+		if (mode == 0) {
+			selectedDiscount = new PeriodDiscount();
+		}
+
 		selectedDiscount.setDiscountCode(txtDiscountCode.getText().trim());
 		selectedDiscount.setDiscountDesc(txtDiscountDescription.getText().trim());
 		selectedDiscount.setDiscountPerc(Float.parseFloat(txtPercentage.getText().trim()));
@@ -283,8 +287,27 @@ public class EditDiscount extends JDialog {
 			selectedDiscount.setStarDate(StoreConstants.PERMANENT_DSCOUNT_START_PERIOD);
 		}
 		selectedDiscount.setDiscountPeriod(txtPeriod.getText().trim());
+		
+		String msg = null;
+		// add
+		if (mode == 0) {
+			msg = FormValidator.addDiscountValidateData(selectedDiscount);
+		}
+		// edit
+		else if (mode == 1) {
+			msg = FormValidator.editRemoveDiscountValidateData(selectedDiscount);
+		}
 
-		String msg = controller.saveDiscount(selectedDiscount);
+		if (msg != null) {
+			DisplayUtil.displayValidationError(contentPanel, msg);
+			return false;
+		}
+		return true;
+	}
+
+	private void saveDiscount() {
+		
+		String msg = controller.saveDiscount(selectedDiscount, mode);
 		if (msg != null) {
 			DisplayUtil.displayValidationError(contentPanel, msg);
 			return;

@@ -1,22 +1,15 @@
 package sg.edu.nus.iss.ssa.validation;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
-import sg.edu.nus.iss.ssa.controller.EntityListController;
+import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.model.StoreKeeper;
-import sg.edu.nus.iss.ssa.util.DisplayUtil;
-import sg.edu.nus.iss.ssa.util.IOService;
 
 public class FormValidator {
 
@@ -72,18 +65,10 @@ public class FormValidator {
 		if (categoryID == null || categoryID.isEmpty()) {
 			return StoreConstants.SELECT_CATEGORY;
 		}
-		try {
-			EntityListController controller = new EntityListController();
-			controller.reloadCategoryData();
-			controller = null;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return StoreConstants.ERROR + "reloading category";
-		}
 		categoryID = categoryID.trim();
 		Set<String> keys = FileDataWrapper.categoryMap.keySet();
 		if (!keys.contains(categoryID)) {
-			return categoryID + " " + StoreConstants.CATEGORYID_NOT_EXIST;
+			return "Category ID: " + categoryID + " " + StoreConstants.CATEGORYID_NOT_EXIST;
 		}
 		return null;
 	}
@@ -126,24 +111,16 @@ public class FormValidator {
 		if (barCode <= 0) {
 			return StoreConstants.INVALID_PRODUCT_BAR_CODE;
 		}
-		try {
-			EntityListController controller = new EntityListController();
-			controller.reloadCategoryData();
-			controller = null;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return StoreConstants.ERROR + "reloading product";
-		}
 		for (Product product : FileDataWrapper.productMap.values()) {
 			if (product.getBarCode() == barCode) {
 				return null;
 			}
 		}
-		return barCode + " " + StoreConstants.BAR_CODE_NOT_EXIST;
+		return "Bar code: " + barCode + " " + StoreConstants.BAR_CODE_NOT_EXIST;
 	}
 
-	public static String editDscountValidateForm(String discountCode, String discountDescription, String startDateType,
-			Date startDate, String period, String percentage, String applicableTo) {
+	public static String addEditDiscountValidateForm(String discountCode, String discountDescription,
+			String startDateType, Date startDate, String period, String percentage, String applicableTo) {
 		if (discountCode == null || discountCode.isEmpty()) {
 			return StoreConstants.ENTER_DISCOUNT_CODE;
 		}
@@ -180,28 +157,52 @@ public class FormValidator {
 		if (percentage == null || percentage.isEmpty()) {
 			return StoreConstants.ENTER_DISCOUNT_PERCENTAGE;
 		}
-		if (applicableTo == null || applicableTo.isEmpty()) {
-			return StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO;
-		}
-		if (applicableTo.equalsIgnoreCase("-select-")) {
-			return StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO;
-		}
-
 		try {
 			float tempPercentage = Float.parseFloat(percentage);
-			if(tempPercentage <=0 || tempPercentage >=100)
-			{
+			if (tempPercentage <= 0 || tempPercentage >= 100) {
 				return StoreConstants.INVALID_DISCOUNT_PERCENTAGE;
 			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return StoreConstants.INVALID_DISCOUNT_PERCENTAGE;
 		}
+		if (applicableTo == null || applicableTo.isEmpty()) {
+			return StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO;
+		}
+		if (applicableTo.equalsIgnoreCase("-select-")) {
+			return StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO;
+		}
 		if (!applicableTo.equalsIgnoreCase(StoreConstants.MEMBER_DICSOUNT_NAME)
 				&& !applicableTo.equalsIgnoreCase(StoreConstants.PUBLIC_DICSOUNT_NAME)) {
 			return StoreConstants.INVALID_APPLICABLE_TO;
 		}
 		return null;
+	}
+
+	public static String addDiscountValidateData(PeriodDiscount selectedDiscount) {
+		if (selectedDiscount == null) {
+			return StoreConstants.EMPTY_DISCOUNT;
+		}
+		for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+			PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+			if (tempDiscount.getDiscountCode().equalsIgnoreCase(selectedDiscount.getDiscountCode())) {
+				return "Discount: " + selectedDiscount.getDiscountCode() + " " + StoreConstants.DISCOUNT_EXIST;
+			}
+		}
+		return null;
+	}
+
+	public static String editRemoveDiscountValidateData(PeriodDiscount selectedDiscount) {
+		if (selectedDiscount == null) {
+			return StoreConstants.EMPTY_DISCOUNT;
+		}
+		for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+			PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+			if (tempDiscount.getDiscountCode().equalsIgnoreCase(selectedDiscount.getDiscountCode())) {
+				return null;
+			}
+		}
+		return "Discount: " + selectedDiscount.getDiscountCode() + " " + StoreConstants.DISCOUNT_NOT_EXIST;
 	}
 
 	public static String addMemberValidateForm(String memberName, String memberNumber) {

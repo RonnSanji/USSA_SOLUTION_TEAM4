@@ -136,7 +136,7 @@ public class ManageCategory extends JPanel {
 		btnRemoveCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int dialogResult = -1;
-				if (validateForm()) {
+				if (validateForm() && validateData()) {
 					dialogResult = DisplayUtil.displayConfirmationMessage(scrollPane,
 							StoreConstants.CONFIRM_TO_REMOVE_CATEROGY);
 					if (dialogResult == 0) {
@@ -165,34 +165,42 @@ public class ManageCategory extends JPanel {
 			DisplayUtil.displayValidationError(this, StoreConstants.SELECT_CATEGORY);
 			return false;
 		}
+		String msg = FormValidator.removeCategoryValidateForm(selectedCategory.getCategoryId());
+		if (msg != null) {
+			DisplayUtil.displayValidationError(this, msg);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validateData() {
+		String msg = FormValidator.removeCategoryValidateData(selectedCategory.getCategoryId());
+		if (msg != null) {
+			DisplayUtil.displayValidationError(this, msg);
+			return false;
+		}
+
 		return true;
 	}
 
 	protected void removeCategory() {
-		String msg = FormValidator.removeCategoryValidateForm(selectedCategory.getCategoryId());
-		if (msg != null) {
-			DisplayUtil.displayValidationError(this, msg);
-			return;
-		}
-		msg = FormValidator.removeCategoryValidateData(selectedCategory.getCategoryId());
-		if (msg != null) {
-			DisplayUtil.displayValidationError(this, msg);
-			return;
-		}
+
 		if (controller == null) {
 			controller = new EntityListController();
 		}
-		msg = controller.RemoveCategory(selectedCategory.getCategoryId());
+		String msg = controller.RemoveCategory(selectedCategory.getCategoryId());
 		if (msg != null) {
 			DisplayUtil.displayValidationError(this, msg);
 			return;
 		}
-		
+
 		controller = null;
 
 		DisplayUtil.displayAcknowledgeMessage(this, StoreConstants.CATEGORY_REMOVED_SUCCESSFULLY);
 
 	}
+
 	private void clearKeyWordTextBox() {
 		txtSearchText.setText("");
 	}
