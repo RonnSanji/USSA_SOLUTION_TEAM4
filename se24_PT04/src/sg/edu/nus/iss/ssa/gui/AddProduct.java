@@ -3,8 +3,6 @@ package sg.edu.nus.iss.ssa.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
@@ -12,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
@@ -26,9 +23,8 @@ import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.util.ProductIdGenerator;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
 
-public class AddProduct extends JDialog{
-
-	private JPanel frame;
+public class AddProduct extends JPanel{
+	
 	private JTextField txtProductName;
 	private JTextField txtProductDescription;
 	private JTextField txtQuantityAvailable;
@@ -54,7 +50,7 @@ public class AddProduct extends JDialog{
 			public void run() {
 				try {
 					AddProduct window = new AddProduct();
-					window.frame.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -66,25 +62,31 @@ public class AddProduct extends JDialog{
 	 * Create the application.
 	 */
 	public AddProduct() {
-		initialize();
+		initialize1();
 	}
 
+
+	public void initialize1(){
+			AddProduct addProduct = this;
+			setSize(800,600);
+
+			this.setOpaque(false);
+			setLayout(null);
+
+		}
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the this.
 	 */
 	private void initialize() {
-		//this.addWindowListener(new MyWindowListener());
-		setResizable(false);
-		setTitle("Add Product Page");
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 453, 330);
-		frame = new JPanel();
-		frame.setBorder(new EmptyBorder(5, 5, 5, 5));
-		frame.setLayout(null);
+		AddProduct addProduct = this;
+		setSize(800,600);
+
+		this.setOpaque(false);
+		setLayout(null);
 
 		JLabel lblProductCategory = new JLabel("Product Category");
 		lblProductCategory.setBounds(20, 32, 108, 60);
-		frame.add(lblProductCategory);
+		this.add(lblProductCategory);
 		try{
 			ioService.readFromFile(FileDataWrapper.categoryMap,null,new Category());
 		} catch(FileNotFoundException | FieldMismatchExcepion e){
@@ -99,60 +101,60 @@ public class AddProduct extends JDialog{
 			txtProductCategory.addItem(c);
 		}
 		txtProductCategory.setBounds(164, 55, 120,16);
-		frame.add(txtProductCategory);
+		this.add(txtProductCategory);
 
 		JLabel lblProductTitle = new JLabel("Product Name");
 		lblProductTitle.setBounds(20, 90, 98, 16);
-		frame.add(lblProductTitle);
+		this.add(lblProductTitle);
 
 		txtProductName = new JTextField();
 		txtProductName.setBounds(154, 85, 130, 26);
-		frame.add(txtProductName);
+		this.add(txtProductName);
 		txtProductName.setColumns(10);
 
 		JLabel lblProductDescription = new JLabel("Product Description");
 		lblProductDescription.setBounds(20, 132, 130, 16);
-		frame.add(lblProductDescription);
+		this.add(lblProductDescription);
 
 		txtProductDescription = new JTextField();
 		txtProductDescription.setBounds(154, 127, 130, 26);
-		frame.add(txtProductDescription);
+		this.add(txtProductDescription);
 		txtProductDescription.setColumns(10);
 
 		JLabel lblQuantityAvailable = new JLabel("Quantity Available");
 		lblQuantityAvailable.setBounds(20, 172, 130, 16);
-		frame.add(lblQuantityAvailable);
+		this.add(lblQuantityAvailable);
 
 		txtQuantityAvailable = new JTextField();
 		txtQuantityAvailable.setBounds(154, 167, 130, 26);
-		frame.add(txtQuantityAvailable);
+		this.add(txtQuantityAvailable);
 		txtQuantityAvailable.setColumns(10);
 
 		JLabel lblPrice = new JLabel("Price");
 		lblPrice.setBounds(20, 200, 61, 16);
-		frame.add(lblPrice);
+		this.add(lblPrice);
 
 		txtPrice = new JTextField();
 		txtPrice.setBounds(154, 195, 130, 26);
-		frame.add(txtPrice);
+		this.add(txtPrice);
 		txtPrice.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("ReOrder Quantity");
 		lblNewLabel.setBounds(20, 283, 119, 16);
-		frame.add(lblNewLabel);
+		this.add(lblNewLabel);
 
 		txtReorderQuantity = new JTextField();
 		txtReorderQuantity.setBounds(154, 277, 130, 26);
-		frame.add(txtReorderQuantity);
+		this.add(txtReorderQuantity);
 		txtReorderQuantity.setColumns(10);
 
 		JLabel lblOrderQuantity = new JLabel("Order Quantity");
 		lblOrderQuantity.setBounds(20, 332, 108, 16);
-		frame.add(lblOrderQuantity);
+		this.add(lblOrderQuantity);
 
 		txtOrderQuantity = new JTextField();
 		txtOrderQuantity.setBounds(154, 327, 130, 26);
-		frame.add(txtOrderQuantity);
+		this.add(txtOrderQuantity);
 		txtOrderQuantity.setColumns(10);
 
 
@@ -165,13 +167,12 @@ public class AddProduct extends JDialog{
 					if(isValid){
            boolean isAdditionSuccesfull = addProduct();
 						if (isAdditionSuccesfull) {
-							dialogResult = DisplayUtil.displayConfirmationMessage(frame,
+							dialogResult = DisplayUtil.displayConfirmationMessage(addProduct,
 									StoreConstants.CATEGORY_ADDED_SUCCESSFULLY);
 							if (dialogResult == 0) {
 								clearFields();
 							}
 							else if (dialogResult == 1) {
-								dispose();
 							}
 						}
 						reloadData();
@@ -182,27 +183,26 @@ public class AddProduct extends JDialog{
 				}
 			}
 		});
-		btnAddProduct.setBounds(98,240,89,23);
-		frame.add(btnAddProduct);
+		btnAddProduct.setBounds(54,369,89,23);
+		this.add(btnAddProduct);
 
 		JButton btnClose = new JButton("Cancel");
 		btnClose.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				dispose();
 			}
 		});
-		btnClose.setBounds(249, 240, 89, 23);
-		frame.add(btnClose);
-    frame.setVisible(true);
+		btnClose.setBounds(209, 369, 89, 23);
+		this.add(btnClose);
+    this.setVisible(true);
 	}
 
 	private boolean doValidation() throws FieldMismatchExcepion,IOException{
 		fetchValuesFromTextFields();
 		String validatorMessage = FormValidator.addProductValidateForm(productCategory,productName,quantityAvailable,price,reorderQuantity);
 		if(validatorMessage!=null){
-			DisplayUtil.displayValidationError(frame,validatorMessage);
+			DisplayUtil.displayValidationError(this,validatorMessage);
 			return false;
 		}
 		return true;
@@ -231,7 +231,7 @@ public class AddProduct extends JDialog{
 				Long.valueOf(orderQuantity));
 		String isProductAdded = entityListController.addProduct(product);
 		if(isProductAdded!=null){
-			DisplayUtil.displayValidationError(frame,isProductAdded);
+			DisplayUtil.displayValidationError(this,isProductAdded);
 			return false;
 		}
 		return true;
@@ -248,59 +248,5 @@ public class AddProduct extends JDialog{
 
 	private void reloadData() {
     entityListController.reloadProductData();
-	}
-
-	class MyWindowListener implements WindowListener
-	{
-
-		@Override
-		public void windowActivated(WindowEvent arg0)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void windowClosed(WindowEvent arg0)
-		{
-			// TODO Auto-generated method stub
-			entityListController = null;
-		}
-
-		@Override
-		public void windowClosing(WindowEvent arg0)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void windowDeactivated(WindowEvent arg0)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void windowDeiconified(WindowEvent arg0)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void windowIconified(WindowEvent arg0)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void windowOpened(WindowEvent arg0)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
 	}
 }

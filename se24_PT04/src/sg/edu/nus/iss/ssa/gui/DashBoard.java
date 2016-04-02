@@ -27,9 +27,9 @@ public class DashBoard extends JFrame
 	private JTextField txtTime;
 	private JPanel mainActivityPanel;
 	private final Timer updater = new Timer(1000, new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-	    	txtTime.setText(getSystemTime());
-	    }
+		public void actionPerformed(ActionEvent e) {
+			txtTime.setText(getSystemTime());
+		}
 	});
 
 	public DashBoard(String loginuser)
@@ -156,7 +156,7 @@ public class DashBoard extends JFrame
 
 		JButton btnMemberManage = new JButton("Memeber Management");
 		btnMemberManage.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnMemberManage.setBounds(92, 120, 200, 50);
+		btnMemberManage.setBounds(92, 168, 200, 50);
 		menuPanel.add(btnMemberManage);
 
 		JLabel lblPurchasing = new JLabel("");
@@ -186,7 +186,7 @@ public class DashBoard extends JFrame
 			}
 		});
 		btnCategoryManagement.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnCategoryManagement.setBounds(92, 212, 200, 50);
+		btnCategoryManagement.setBounds(98, 250, 200, 50);
 		menuPanel.add(btnCategoryManagement);
 
 		JButton btnProductManagement = new JButton("Inventory Management");
@@ -194,17 +194,17 @@ public class DashBoard extends JFrame
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				ManageInventory manageStock = new ManageInventory();
-				activateMainPanel( manageStock);
+				AddProduct addProduct = new AddProduct();
+				activateMainPanel( addProduct);
 			}
 		});
 		btnProductManagement.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnProductManagement.setBounds(92, 308, 200, 50);
+		btnProductManagement.setBounds(92, 347, 200, 50);
 		menuPanel.add(btnProductManagement);
 
 		JButton btnDiscount = new JButton("Discount Management");
 		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnDiscount.setBounds(92, 403, 200, 50);
+		btnDiscount.setBounds(92, 430, 200, 50);
 		menuPanel.add(btnDiscount);
 		btnDiscount.addActionListener(new ActionListener() {
 			@Override
@@ -216,7 +216,7 @@ public class DashBoard extends JFrame
 
 		JButton btnReport = new JButton("Report");
 		btnReport.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ReportSummary reportSummary=new ReportSummary();
@@ -224,7 +224,7 @@ public class DashBoard extends JFrame
 			}
 		});
 		btnReport.setFont(new Font("AppleGothic", Font.BOLD, 16));
-		btnReport.setBounds(92, 497, 200, 50);
+		btnReport.setBounds(92, 513, 200, 50);
 		menuPanel.add(btnReport);
 
 		JLabel lblMember = new JLabel("");
@@ -252,6 +252,17 @@ public class DashBoard extends JFrame
 		lblReport.setIcon(imgReport);
 		;
 		menuPanel.add(lblReport);
+		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
+
+		JButton buttonProductManagement = new JButton("Product Management");
+		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
+		buttonProductManagement.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showProductSelectionWindow(dashBoard);
+			}
+		});
+		buttonProductManagement.setBounds(92, 95, 200, 50);
+		menuPanel.add(buttonProductManagement);
 
 		btnMemberManage.addActionListener(new ActionListener()
 		{
@@ -278,18 +289,18 @@ public class DashBoard extends JFrame
 		mainActivityPanel.add(panelToActivate);
 		panelToActivate.setVisible(true);
 	}
-	
+
 	private String getSystemTime(){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		//System.out.println(date);
 		return date.toString();
-		
+
 	}
 
 	public void showProductSelectionWindow(DashBoard dashBoard) {
 		ProductSelectionWindow productSelectionWindow = new ProductSelectionWindow(dashBoard);
 		activateMainPanel(productSelectionWindow);
 	}
-	
+
 }
