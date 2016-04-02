@@ -177,7 +177,8 @@ public class ReceiptSummary extends JPanel {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FileDataWrapper.receipt = new Order();
-				dashBoard.showProductSelectionWindow(dashBoard);
+				ManageInventory manageStock = new ManageInventory();
+				dashBoard.activateMainPanel(manageStock);
 			}
 		});
 		btnOk.setBounds(522, 565, 115, 29);
