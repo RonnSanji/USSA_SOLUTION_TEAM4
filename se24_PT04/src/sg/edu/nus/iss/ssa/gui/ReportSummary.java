@@ -2,13 +2,11 @@ package sg.edu.nus.iss.ssa.gui;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
-import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Member;
 import sg.edu.nus.iss.ssa.model.Product;
@@ -19,7 +17,6 @@ import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,7 +32,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import javax.swing.JSpinner;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
@@ -46,12 +42,19 @@ public class ReportSummary extends JPanel {
 
 	// private JFrame frame;
 
-	private DefaultTableModel modelCategory,modelProduct,modelMember,modelTransction;
-	private String[] columnCategoryName =  new String[] {"Category Id", "Category Name"};
-	private String[] columnProductName = new String[] { "ProductId", "ProductName","ProductDescription", "Quantity", "Price", "BarCode","ThresholdQuantity", "OrderQuantity" };
-	private String[] columnMemberName = new String[]{ "Member Id", "Member Name", "Loyalty Points" };
-	private String[] columnNameTransaction = new String[] { "TransId", "MemberId", "Quantity", "Date","Product Id", "Product Name", "Product Description" };
-	
+	private DefaultTableModel modelCategory, modelProduct, modelMember,
+			modelTransction;
+	private String[] columnCategoryName = new String[] { "Category Id",
+			"Category Name" };
+	private String[] columnProductName = new String[] { "ProductId",
+			"ProductName", "ProductDescription", "Quantity", "Price",
+			"BarCode", "ThresholdQuantity", "OrderQuantity" };
+	private String[] columnMemberName = new String[] { "Member Id",
+			"Member Name", "Loyalty Points" };
+	private String[] columnNameTransaction = new String[] { "TransId",
+			"MemberId", "Quantity", "Date", "Product Id", "Product Name",
+			"Product Description" };
+
 	private List<Category> listCategory;
 	private List<Product> listProduct;
 	private List<Member> listMember;
@@ -61,10 +64,12 @@ public class ReportSummary extends JPanel {
 	List<String[]> reportEntryList;
 	private ReportValidator rv = new ReportValidator();
 	private JTable table;
+	private JTable transTable;
 	private JTextField fromText;
 	private JTextField toText;
 	private JButton filterBtn;
-	private JPanel panelFilter ;
+	private JPanel panelFilter;
+
 	/**
 	 * Create the application.
 	 */
@@ -74,13 +79,13 @@ public class ReportSummary extends JPanel {
 		setOpaque(false);
 		prepareData();
 		this.setBounds(6, 6, 854, 588);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 173, 809, 347);
 		add(scrollPane);
-		
+
 		table = new JTable();
-		
+		transTable = new JTable();
 
 		JButton btnCatetory = new JButton("Category Report");
 		btnCatetory.setBounds(25, 74, 185, 45);
@@ -102,7 +107,6 @@ public class ReportSummary extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//table.setModel(modelMember);
 				tableSetting(modelMember);
 				scrollPane.setViewportView(table);
 				panelFilter.setVisible(false);
@@ -116,7 +120,6 @@ public class ReportSummary extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//table.setModel(modelProduct);
 				tableSetting(modelProduct);
 				scrollPane.setViewportView(table);
 				panelFilter.setVisible(false);
@@ -130,9 +133,8 @@ public class ReportSummary extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//table.setModel(modelTransction);
-				tableSetting(modelTransction);
-				scrollPane.setViewportView(table);
+				transTableSetting(modelTransction);
+				scrollPane.setViewportView(transTable);
 				panelFilter.setVisible(true);
 			}
 		});
@@ -143,53 +145,53 @@ public class ReportSummary extends JPanel {
 		add(btnMember);
 		add(btnProduct);
 		add(btnTransaction);
-		
+
 		JLabel lblReportSummary = new JLabel("Report Summary");
 		lblReportSummary.setBounds(343, 6, 205, 56);
 		lblReportSummary.setFont(new Font("AppleGothic", Font.PLAIN, 25));
 		add(lblReportSummary);
-		
 
-		
 		JButton btnNewButton = new JButton("Print Report");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					if (panelFilter.isShowing())
+						transTable.print();
 					table.print();
+
 				} catch (PrinterException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
 		btnNewButton.setBounds(343, 532, 160, 50);
 		add(btnNewButton);
-		
-	    panelFilter = new JPanel();
+
+		panelFilter = new JPanel();
 		panelFilter.setBounds(273, 131, 339, 32);
 		add(panelFilter);
 		panelFilter.setOpaque(false);
 		panelFilter.setVisible(false);
 		panelFilter.setLayout(null);
-		
+
 		JLabel fromLbl = new JLabel("From:");
 		fromLbl.setBounds(6, 6, 36, 16);
 		panelFilter.add(fromLbl);
-		
+
 		fromText = new JTextField();
 		fromText.setPreferredSize(new Dimension(80, 20));
 		fromText.setBounds(50, 6, 80, 20);
 		panelFilter.add(fromText);
-		
+
 		JLabel toLbl = new JLabel("To:");
 		toLbl.setBounds(142, 6, 20, 16);
 		panelFilter.add(toLbl);
-		
+
 		toText = new JTextField();
 		toText.setPreferredSize(new Dimension(80, 20));
 		toText.setBounds(165, 6, 80, 20);
 		panelFilter.add(toText);
-		
+
 		JButton filterBtn = new JButton("Filter");
 		filterBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -199,39 +201,40 @@ public class ReportSummary extends JPanel {
 		filterBtn.setBounds(257, 1, 76, 29);
 		panelFilter.add(filterBtn);
 	}
-	
-	private void prepareData(){
 
+	private void prepareData() {
 
-		
-		modelCategory = new DefaultTableModel(this.getCategoryData(), columnCategoryName){
-			public boolean isCellEditable(int row, int column){  
-		          return false;  
-		      }
+		modelCategory = new DefaultTableModel(this.getCategoryData(),
+				columnCategoryName) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
-		
-		modelProduct = new DefaultTableModel(this.getProductData(), columnProductName){
-			public boolean isCellEditable(int row, int column){  
-		          return false;  
-		      }
+
+		modelProduct = new DefaultTableModel(this.getProductData(),
+				columnProductName) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
-					
-		modelMember = new DefaultTableModel(this.getMemberData(), columnMemberName){
-			public boolean isCellEditable(int row, int column){  
-		          return false;  
-		      }
+
+		modelMember = new DefaultTableModel(this.getMemberData(),
+				columnMemberName) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
-		
-		modelTransction = new DefaultTableModel(this.getTransactionData(), columnNameTransaction){
-			public boolean isCellEditable(int row, int column){  
-		          return false;  
-		      }
+
+		modelTransction = new DefaultTableModel(this.getTransactionData(),
+				columnNameTransaction) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
-		
-		
+
 	}
-	
-	private Object[][] getCategoryData(){
+
+	private Object[][] getCategoryData() {
 		Object[][] data;
 		int count = FileDataWrapper.categoryMap.size();
 		listCategory = new ArrayList<Category>(
@@ -245,9 +248,12 @@ public class ReportSummary extends JPanel {
 		}
 		return data;
 	}
-	private Object[][] getProductData(){
+
+	private Object[][] getProductData() {
 		Object[][] data;
-		listProduct = new ArrayList<Product>((Collection<? extends Product>) FileDataWrapper.productMap.values());
+		listProduct = new ArrayList<Product>(
+				(Collection<? extends Product>) FileDataWrapper.productMap
+						.values());
 		int count = FileDataWrapper.productMap.size();
 		data = new Object[count][];
 		for (int i = 0; i < count; i++) {
@@ -255,9 +261,12 @@ public class ReportSummary extends JPanel {
 		}
 		return data;
 	}
-	private Object[][] getMemberData(){
+
+	private Object[][] getMemberData() {
 		Object[][] data;
-		listMember = new ArrayList<Member>((Collection<? extends Member>) FileDataWrapper.memberMap.values());
+		listMember = new ArrayList<Member>(
+				(Collection<? extends Member>) FileDataWrapper.memberMap
+						.values());
 		int count = FileDataWrapper.memberMap.size();
 		data = new Object[count][];
 		for (int i = 0; i < count; i++) {
@@ -265,10 +274,10 @@ public class ReportSummary extends JPanel {
 		}
 		return data;
 	}
-	
-	private Object[][] getTransactionData(){
+
+	private Object[][] getTransactionData() {
 		Object[][] data;
-		
+
 		productMap = new HashMap<>();
 		proList = new ArrayList<Product>(
 				(Collection<? extends Product>) FileDataWrapper.productMap
@@ -303,7 +312,7 @@ public class ReportSummary extends JPanel {
 		}
 		return data;
 	}
-	
+
 	private Date getDate(String s) {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(
@@ -315,19 +324,20 @@ public class ReportSummary extends JPanel {
 			return null;
 		}
 	}
-	
+
 	private void filterRecordsByDate() {
 		String startDateString = fromText.getText();
 		String endDateString = toText.getText();
 		System.out.println(startDateString);
 		System.out.println(endDateString);
-		
+
 		if (!(rv.isDateValid(startDateString) && rv.isDateValid(endDateString))) {
-			JOptionPane.showMessageDialog(filterBtn,StoreConstants.INVALID_DATE, null,
+			JOptionPane.showMessageDialog(filterBtn,
+					StoreConstants.INVALID_DATE, null,
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		
+
 		RowFilter<Object, Object> dateFilter = new RowFilter<Object, Object>() {
 
 			@Override
@@ -351,20 +361,27 @@ public class ReportSummary extends JPanel {
 
 		};
 
-		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(
+				transTable.getModel());
 		sorter.setRowFilter(dateFilter);
-		
-		table.setRowSorter(sorter);
-		table.getRowSorter().toggleSortOrder(4);
 
-	}	
-	
-	private void tableSetting(DefaultTableModel modelCategory){
-		table.removeAll();
-		table.setModel(modelCategory);
+		transTable.setRowSorter(sorter);
+		transTable.getRowSorter().toggleSortOrder(4);
+
+	}
+
+	private void tableSetting(DefaultTableModel model) {
+		table.setModel(model);
 		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
 	}
-	
+
+	private void transTableSetting(DefaultTableModel model) {
+		transTable.setModel(model);
+		transTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+		transTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+
+	}
+
 }
