@@ -51,15 +51,13 @@ public class TotalReceiptCalculator {
 
         //update productQuantity and transaction
         for(LineItem item : order.getItems()){
-            Product product = item.getProduct();
-            System.out.println(product.toString());
-            long remainingQty = product.getQuantity() - item.getBuyQuantity();
-            product.setQuantity(remainingQty);
-            productMap.put(product.getBarCode(), product);
-            System.out.println(product.toString());
-
-            Transaction transaction = new Transaction(transactionId,product.getProductId(),order.getMemberIdOfUser(),item.getBuyQuantity() );
-            transactionList.add(transaction);
+            Product product = productMap.get(String.valueOf(item.getProduct().getBarCode()));
+            if(product != null ){
+                long remainingQty = product.getQuantity() - item.getBuyQuantity();
+                product.setQuantity(remainingQty);
+                Transaction transaction = new Transaction(transactionId,product.getProductId(),order.getMemberIdOfUser(),item.getBuyQuantity() );
+                transactionList.add(transaction);
+            }
 
             //update Transaction
             System.out.println(transactionList);
