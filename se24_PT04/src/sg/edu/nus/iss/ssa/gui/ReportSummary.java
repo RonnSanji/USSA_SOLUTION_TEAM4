@@ -46,8 +46,6 @@ public class ReportSummary extends JPanel {
 
 	// private JFrame frame;
 
-	private DashBoard db;
-
 	private DefaultTableModel modelCategory,modelProduct,modelMember,modelTransction;
 	private String[] columnCategoryName =  new String[] {"Category Id", "Category Name"};
 	private String[] columnProductName = new String[] { "ProductId", "ProductName","ProductDescription", "Quantity", "Price", "BarCode","ThresholdQuantity", "OrderQuantity" };
@@ -76,49 +74,65 @@ public class ReportSummary extends JPanel {
 		setOpaque(false);
 		prepareData();
 		this.setBounds(6, 6, 854, 588);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(25, 173, 809, 347);
+		add(scrollPane);
+		
+		table = new JTable();
+		
+
 		JButton btnCatetory = new JButton("Category Report");
-		btnCatetory.setBounds(25, 74, 160, 45);
+		btnCatetory.setBounds(25, 74, 185, 45);
 		btnCatetory.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				table.setModel(modelCategory);
+
+				tableSetting(modelCategory);
+				scrollPane.setViewportView(table);
 				panelFilter.setVisible(false);
 			}
 		});
 		btnCatetory.setFont(new Font("AppleGothic", Font.BOLD, 15));
 
 		JButton btnMember = new JButton("Member Report");
-		btnMember.setBounds(466, 74, 160, 45);
+		btnMember.setBounds(410, 73, 185, 45);
 		btnMember.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				table.setModel(modelMember);
+				//table.setModel(modelMember);
+				tableSetting(modelMember);
+				scrollPane.setViewportView(table);
 				panelFilter.setVisible(false);
 			}
 		});
 		btnMember.setFont(new Font("AppleGothic", Font.BOLD, 16));
 
 		JButton btnProduct = new JButton("Product Report");
-		btnProduct.setBounds(238, 74, 160, 45);
+		btnProduct.setBounds(221, 73, 185, 45);
 		btnProduct.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				table.setModel(modelProduct);
+				//table.setModel(modelProduct);
+				tableSetting(modelProduct);
+				scrollPane.setViewportView(table);
 				panelFilter.setVisible(false);
 			}
 		});
 		btnProduct.setFont(new Font("AppleGothic", Font.BOLD, 16));
 
 		JButton btnTransaction = new JButton("Transaction Report");
-		btnTransaction.setBounds(674, 74, 160, 45);
+		btnTransaction.setBounds(612, 73, 185, 45);
 		btnTransaction.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				table.setModel(modelTransction);	
+				//table.setModel(modelTransction);
+				tableSetting(modelTransction);
+				scrollPane.setViewportView(table);
 				panelFilter.setVisible(true);
 			}
 		});
@@ -135,15 +149,7 @@ public class ReportSummary extends JPanel {
 		lblReportSummary.setFont(new Font("AppleGothic", Font.PLAIN, 25));
 		add(lblReportSummary);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(25, 173, 809, 347);
-		add(scrollPane);
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
-		table.setModel(modelCategory);
 		
 		JButton btnNewButton = new JButton("Print Report");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -352,5 +358,13 @@ public class ReportSummary extends JPanel {
 		table.getRowSorter().toggleSortOrder(4);
 
 	}	
+	
+	private void tableSetting(DefaultTableModel modelCategory){
+		table.removeAll();
+		table.setModel(modelCategory);
+		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+
+	}
 	
 }
