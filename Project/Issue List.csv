@@ -1,6 +1,6 @@
 SN,Form,Function,Description,Category,Remark,,,,,,Category,Bug,Missing,Enhancement,TBC
 1,Purchase management,Payment,There is duplicate producat created after payment,Bug,,,,,,,,,,,
-2,Dashboard,Left hand side menu,No add product or product management window ?,Missing,,,,,,,,,,,
+2,Manage product,Manage product,No edit and remove product window ?,Missing,,,,,,,,,,,
 3,Product management,Print label (bar code list),"To implement print label function, for now list down in the console",Missing,,,,,,,,,,,
 4,Dashboard,Product management button,To add product management button and show form code,Missing,,,,,,,,,,,
 5,Report,Vendor list,To add vendor list report,Missing,,,,,,,,,,,
