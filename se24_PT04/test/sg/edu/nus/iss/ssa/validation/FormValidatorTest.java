@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Random;
 import java.util.Set;
 
@@ -208,7 +209,7 @@ public class FormValidatorTest extends TestCase {
 	}
 
 	@Test
-	public void testRemoveCategoryValidateData() {
+	public void testEditRemoveCategoryValidateData() {
 		Random ran = new Random();
 
 		String testExistingCategoryID = null;
@@ -263,7 +264,7 @@ public class FormValidatorTest extends TestCase {
 		cat = new Category();
 		cat.setCategoryId(newCategoryID);
 		cat.setCategoryName(newCategoryID);
-		
+
 		while (true) {
 			if (existingKeyList.contains(newCategoryID)) {
 				System.out.println("Category: " + newCategoryID + " exists");
@@ -304,13 +305,51 @@ public class FormValidatorTest extends TestCase {
 			testQuantityString = "test";
 			msg = FormValidator.replenishStockValidateForm(testQuantityString);
 			assertTrue(msg.contains(StoreConstants.INVALID_REPLENISH_QUANTITY));
+
+			testQuantityString = "123";
+			msg = FormValidator.replenishStockValidateForm(testQuantityString);
+			assertTrue(msg == null);
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	@Test
-	public void testReplenishStockValidateData() {
+	public void testConfigureThresholdReorderQuantityValidateForm() {
+		String testthreshold = null;
+		String testreorderQuantity = null;
+
+		String msg = null;
+
+		msg = FormValidator.configureThresholdReorderQuantityValidateForm(testthreshold, testreorderQuantity);
+		assertTrue(msg.contains(StoreConstants.ENTER_NEW_THRESHOLD));
+
+		testthreshold = "";
+		msg = FormValidator.configureThresholdReorderQuantityValidateForm(testthreshold, testreorderQuantity);
+		assertTrue(msg.contains(StoreConstants.ENTER_NEW_THRESHOLD));
+
+		testthreshold = "test";
+		msg = FormValidator.configureThresholdReorderQuantityValidateForm(testthreshold, testreorderQuantity);
+		assertTrue(msg.contains(StoreConstants.INVALID_THRESHOLD_QUANTITY));
+
+		testthreshold = "123";
+		testreorderQuantity = "";
+		msg = FormValidator.configureThresholdReorderQuantityValidateForm(testthreshold, testreorderQuantity);
+		assertTrue(msg.contains(StoreConstants.ENTER_NEW_REORDER_QUANTITY));
+
+		testreorderQuantity = "test";
+		msg = FormValidator.configureThresholdReorderQuantityValidateForm(testthreshold, testreorderQuantity);
+		assertTrue(msg.contains(StoreConstants.INVALID_REORDER_QUANTITY));
+
+		testreorderQuantity = "456";
+		msg = FormValidator.configureThresholdReorderQuantityValidateForm(testthreshold, testreorderQuantity);
+		assertTrue(msg == null);
+
+	}
+
+	@Test
+	public void testReplenishStockConfigureThresholdValidateData() {
 		int barcode = 0;
 		String msg = FormValidator.replenishStockConfigureThresholdValidateData(barcode);
 		assertTrue(msg.contains(StoreConstants.INVALID_PRODUCT_BAR_CODE));
@@ -350,4 +389,185 @@ public class FormValidatorTest extends TestCase {
 		msg = FormValidator.replenishStockConfigureThresholdValidateData(barcode);
 		assertTrue(msg == null);
 	}
+
+	@Test
+	public void testAddEditDiscountValidateForm() {
+		String testdiscountCode = null;
+		String testdiscountDescription = null;
+		String teststartDateType = null;
+		Date teststartDate = null;
+		String testperiod = null;
+		String testpercentage = null;
+		String testapplicableTo = null;
+
+		String msg = null;
+
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.ENTER_DISCOUNT_CODE));
+			
+		testdiscountCode = "";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.ENTER_DISCOUNT_CODE));
+		
+		testdiscountCode = "test";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.ENTER_DISCOUNT_DESCRIPTION));
+		
+		testdiscountDescription= "";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.ENTER_DISCOUNT_DESCRIPTION));
+		
+		testdiscountDescription="test";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.SELECT_DISCOUNT_START_DATE));
+		
+		teststartDateType = "";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.SELECT_DISCOUNT_START_DATE));
+		
+		teststartDateType = "test";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.SELECT_DISCOUNT_START_DATE));
+		
+		teststartDateType = StoreConstants.PERIOD_DSCOUNT_START_DATE;
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.SELECT_DISCOUNT_START_DATE));
+		
+		teststartDate = new Date();
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.ENTER_DISCOUNT_PERIOD));
+		
+		testperiod = "";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.ENTER_DISCOUNT_PERIOD));
+		
+		teststartDateType = StoreConstants.PERMANENT_DSCOUNT_START_DATE;
+		testperiod = "30";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERIOD));
+		
+		teststartDateType = StoreConstants.PERIOD_DSCOUNT_START_DATE;
+		testperiod = "test";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERIOD));
+		
+		testperiod ="0";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERIOD));
+		
+		testperiod ="-10";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERIOD));
+		
+		testperiod ="35";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.ENTER_DISCOUNT_PERCENTAGE));
+		
+		testpercentage = "";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.ENTER_DISCOUNT_PERCENTAGE));
+		
+		testpercentage = "test";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERCENTAGE));
+		
+		testpercentage = "0";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERCENTAGE));
+		
+		testpercentage = "-3";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERCENTAGE));
+		
+		testpercentage = "100";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERCENTAGE));
+		
+		testpercentage = "110";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_DISCOUNT_PERCENTAGE));
+		
+		testpercentage = "20";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO));
+		
+		testapplicableTo = "";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO));
+		
+		testapplicableTo = "-select-";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.SELECT_DISCOUNT_APPLICABLE_TO));
+		
+		testapplicableTo = "test";
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg.contains(StoreConstants.INVALID_APPLICABLE_TO));
+		
+		testapplicableTo = StoreConstants.MEMBER_DICSOUNT_NAME;
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg == null);
+		
+		testapplicableTo = StoreConstants.PUBLIC_DICSOUNT_NAME;
+		msg = FormValidator.addEditDiscountValidateForm(testdiscountCode, testdiscountDescription, teststartDateType,
+				teststartDate, testperiod, testpercentage, testapplicableTo);
+		assertTrue(msg == null);
+	}
+	
+	@Test
+	public void testAddDiscountValidateData()
+	{
+		
+	}
+	
+	@Test
+	public void testEditRemoveDiscountValidateData()
+	{
+		
+	}
+	
+	@Test
+	public void testAddMemberValidateForm()
+	{
+		
+	}
+	
+	@Test
+	public void testAddStoreKeeperValidateForm()
+	{
+		
+	}
+	
+	@Test
+	public void testAddProductValidateForm()
+	{
+		
+	}
+	
+
 }

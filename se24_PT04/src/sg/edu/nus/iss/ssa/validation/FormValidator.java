@@ -54,7 +54,7 @@ public class FormValidator {
 	}
 
 	public static String removeCategoryValidateForm(String categoryID) {
-		if (categoryID==null ||  categoryID.isEmpty()) {
+		if (categoryID == null || categoryID.isEmpty()) {
 			return StoreConstants.SELECT_CATEGORY;
 		}
 		return null;
@@ -90,7 +90,7 @@ public class FormValidator {
 		return null;
 	}
 
-	public static String configureThresholdValidateForm(String threshold, String reorderQuantity) {
+	public static String configureThresholdReorderQuantityValidateForm(String threshold, String reorderQuantity) {
 
 		if (threshold == null || threshold.isEmpty()) {
 			return StoreConstants.ENTER_NEW_THRESHOLD;
@@ -104,7 +104,7 @@ public class FormValidator {
 			// ex.printStackTrace();
 			return StoreConstants.INVALID_THRESHOLD_QUANTITY;
 		}
-		if (reorderQuantity == null ||reorderQuantity.isEmpty()) {
+		if (reorderQuantity == null || reorderQuantity.isEmpty()) {
 			return StoreConstants.ENTER_NEW_REORDER_QUANTITY;
 		}
 		try {
@@ -116,7 +116,7 @@ public class FormValidator {
 			// ex.printStackTrace();
 			return StoreConstants.INVALID_REORDER_QUANTITY;
 		}
-		
+
 		return null;
 	}
 
@@ -162,6 +162,9 @@ public class FormValidator {
 		} else if (startDateType.equalsIgnoreCase(StoreConstants.PERIOD_DSCOUNT_START_DATE)) {
 			try {
 				Integer tempPeriod = Integer.parseInt(period);
+				if (tempPeriod <= 0) {
+					return StoreConstants.INVALID_DISCOUNT_PERIOD;
+				}
 			} catch (Exception ex) {
 				// ex.printStackTrace();
 				return StoreConstants.INVALID_DISCOUNT_PERIOD;

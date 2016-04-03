@@ -225,7 +225,7 @@ public class EditInventory extends JDialog {
 		}
 		String msg = null;
 		if (mode == 0) {
-			msg = FormValidator.configureThresholdValidateForm(addQuantity_NewThreshold, newReorderQuantity);
+			msg = FormValidator.configureThresholdReorderQuantityValidateForm(addQuantity_NewThreshold, newReorderQuantity);
 		} else if (mode == 1) {
 			msg = FormValidator.replenishStockValidateForm(addQuantity_NewThreshold);
 		}
