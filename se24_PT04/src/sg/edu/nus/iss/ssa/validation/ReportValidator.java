@@ -8,7 +8,10 @@ import sg.edu.nus.iss.ssa.constants.StoreConstants;
 public class ReportValidator {
 
 	public boolean isDateValid(String date) {
-	    if (date == null || !date.matches("\\d{4}-[01]\\d-[0-3]\\d"))
+		if(date.isEmpty()){
+			return true;
+		}
+		else if (!date.matches("\\d{4}-[01]\\d-[0-3]\\d"))
 	    	return false;	        
 	    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	    df.setLenient(false);
