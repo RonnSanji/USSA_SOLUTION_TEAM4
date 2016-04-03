@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Locale.Category;
 import java.util.Random;
 import java.util.Set;
 import junit.framework.TestCase;
@@ -23,6 +22,7 @@ import org.junit.Test;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.IOService;
 
@@ -62,7 +62,7 @@ public class EntityListControllerTest extends TestCase {
 	}
 
 	@Test
-	public void testaddCategory() {
+	public void testAddCategory() {
 		Random ran = new Random();
 		String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		IOService<?> ioManager = new IOService<>();
@@ -114,7 +114,7 @@ public class EntityListControllerTest extends TestCase {
 
 		EntityListController controller = new EntityListController();
 
-		String msg = controller.addCategory(categoryID, categoryID);
+		String msg = controller.saveCategory(cat, 0);
 
 		if (msg == null) {
 
@@ -173,12 +173,14 @@ public class EntityListControllerTest extends TestCase {
 		}
 
 		String categoryID = tempKeyList.get(ran.nextInt(keySet.size()));
-
+		Category cat = new Category();
+		cat.setCategoryId(categoryID);
+		cat.setCategoryName(categoryID);
 		System.out.println(categoryID);
 
 		EntityListController controller = new EntityListController();
 
-		String msg = controller.RemoveCategory(categoryID);
+		String msg = controller.saveCategory(cat, 2);
 
 		if (msg == null) {
 

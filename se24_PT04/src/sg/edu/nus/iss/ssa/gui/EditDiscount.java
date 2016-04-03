@@ -55,8 +55,10 @@ public class EditDiscount extends JDialog {
 	private int mode = 0;
 
 	public EditDiscount(PeriodDiscount selectedDiscount) {
-		setResizable(false);
 		this.selectedDiscount = selectedDiscount;
+	
+		setResizable(false);
+		
 		this.addWindowListener(new MyWindowListener());
 
 		setBounds(100, 100, 652, 447);

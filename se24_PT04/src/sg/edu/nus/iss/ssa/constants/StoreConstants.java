@@ -54,6 +54,8 @@ public class StoreConstants
 	public static final String CATEGORY_REMOVED_SUCCESSFULLY = "Category has been removed successfully !";
 	public static final String CATEGORYID_NOT_EXIST = "does not exist";
 	public static final String CONFIRM_TO_REMOVE_CATEROGY = "Confirm to remove category ?";
+	public static final String EMPTY_CATEGORY = "Empty category !";
+	public static final String CATEGORY_UPDATED_SUCCESSFULLY = "Category has been updated successfully !";
 
 	// Manage Member message
 	public static final String MEMBER_ADDED_SUCCESSFULLY = "Member has been added succesfully";

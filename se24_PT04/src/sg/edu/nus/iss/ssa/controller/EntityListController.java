@@ -7,6 +7,7 @@ import java.util.List;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.IOService;
@@ -18,56 +19,37 @@ public class EntityListController {
 
 	private IOService<?> ioManager;
 
-	// For add category
-	public String addCategory(String categoryID, String categoryName) {
-		sg.edu.nus.iss.ssa.model.Category category = new sg.edu.nus.iss.ssa.model.Category();
-		category.setCategoryId(categoryID);
-		category.setCategoryName(categoryName);
-		try {
-			FileDataWrapper.categoryMap.put(categoryID, category);
-		} catch (Exception ex) {
-			reloadCategoryData();
-			ex.printStackTrace();
-			return StoreConstants.ERROR + " creating new category";
+	// For manage category
+	public String saveCategory(Category selectedCategory, int mode) {
+		// add
+		if (mode == 0 || mode ==1) {
+			try {
+				FileDataWrapper.categoryMap.put(selectedCategory.getCategoryId(), selectedCategory);
+			} catch (Exception ex) {
+				reloadCategoryData();
+				ex.printStackTrace();
+				return StoreConstants.ERROR + " creating new category";
+			}
+		}
+		// remove
+		else if (mode == 2) {
+			try {
+				FileDataWrapper.categoryMap.remove(selectedCategory.getCategoryId());
+			} catch (Exception ex) {
+				reloadCategoryData();
+				ex.printStackTrace();
+				return StoreConstants.ERROR + " removing category " + selectedCategory.getCategoryId();
+			}
 		}
 		if (ioManager == null) {
 			ioManager = new IOService<>();
 		}
 		try {
-			ioManager.writeToFile(FileDataWrapper.categoryMap.values(), new sg.edu.nus.iss.ssa.model.Category());
+			ioManager.writeToFile(FileDataWrapper.discounts, new PeriodDiscount());
 		} catch (Exception ex) {
-			reloadCategoryData();
+			reloadDiscountData();
 			ex.printStackTrace();
-			return StoreConstants.ERROR + " saving new category";
-		} finally {
-			ioManager = null;
-		}
-		return null;
-
-	}
-
-	// For remove category
-	public String RemoveCategory(String categoryID) {
-		if (categoryID == null || categoryID.isEmpty()) {
-			return StoreConstants.SELECT_CATEGORY;
-		}
-
-		try {
-			FileDataWrapper.categoryMap.remove(categoryID);
-		} catch (Exception ex) {
-			reloadCategoryData();
-			ex.printStackTrace();
-			return StoreConstants.ERROR + " removing category " + categoryID;
-		}
-		if (ioManager == null) {
-			ioManager = new IOService<>();
-		}
-		try {
-			ioManager.writeToFile(FileDataWrapper.categoryMap.values(), new sg.edu.nus.iss.ssa.model.Category());
-		} catch (Exception ex) {
-			reloadCategoryData();
-			ex.printStackTrace();
-			return StoreConstants.ERROR + " removing category " + categoryID;
+			return StoreConstants.ERROR + " saving Category";
 		} finally {
 			ioManager = null;
 		}
@@ -190,8 +172,7 @@ public class EntityListController {
 			}
 		}
 		// remove
-		else if(mode == 2)
-		{
+		else if (mode == 2) {
 			((List<PeriodDiscount>) FileDataWrapper.discounts).remove(discount);
 		}
 		if (ioManager == null) {

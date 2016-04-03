@@ -149,12 +149,11 @@ public class ManageCategory extends JPanel {
 		});
 		btnRemoveCategory.setBounds(561, 525, 150, 60);
 		add(btnRemoveCategory);
-		
+
 		btnEditCategory = new JButton("Edit Category");
 		btnEditCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
+				editCategory();
 			}
 		});
 		btnEditCategory.setBounds(326, 525, 150, 60);
@@ -186,7 +185,7 @@ public class ManageCategory extends JPanel {
 	}
 
 	private boolean validateData() {
-		String msg = FormValidator.removeCategoryValidateData(selectedCategory.getCategoryId());
+		String msg = FormValidator.editRemoveCategoryValidateData(selectedCategory);
 		if (msg != null) {
 			DisplayUtil.displayValidationError(this, msg);
 			return false;
@@ -200,7 +199,7 @@ public class ManageCategory extends JPanel {
 		if (controller == null) {
 			controller = new EntityListController();
 		}
-		String msg = controller.RemoveCategory(selectedCategory.getCategoryId());
+		String msg = controller.saveCategory(selectedCategory, 2);
 		if (msg != null) {
 			DisplayUtil.displayValidationError(this, msg);
 			return;
@@ -273,19 +272,29 @@ public class ManageCategory extends JPanel {
 		TbResult.setVisible(true);
 		btnRemoveCategory.setEnabled(true);
 	}
-
+	
+	private void editCategory() {
+		selectedRow = TbResult.getSelectedRow();
+		if (selectedRow == -1) {
+			// JOptionPane.showMessageDialog(contentPane, "Please select a
+			// product", "Warning",JOptionPane.WARNING_MESSAGE);
+			DisplayUtil.displayValidationError(scrollPane, StoreConstants.SELECT_CATEGORY);
+			return;
+		}
+		selectedCategory = categoryListResult.get(selectedRow);
+		showAddEditCategoryWindow();
+	}
 	private void addCategory() {
-		showAddCategoryWindow();
+		selectedCategory = null;
+		showAddEditCategoryWindow();
 	}
 
-	private void showAddCategoryWindow() {
-		EditCategory addCategoryWindow = new EditCategory();
-
-		addCategoryWindow.setLocation(scrollPane.getLocationOnScreen());
-
-		addCategoryWindow.setModal(true);
-		addCategoryWindow.setVisible(true);
-		addCategoryWindow.addWindowListener(new WindowListener() {
+	private void showAddEditCategoryWindow() {
+		EditCategory addEditCategoryWindow = new EditCategory(selectedCategory);
+		addEditCategoryWindow.setLocation(scrollPane.getLocationOnScreen());
+		addEditCategoryWindow.setModal(true);
+		addEditCategoryWindow.setVisible(true);
+		addEditCategoryWindow.addWindowListener(new WindowListener() {
 
 			@Override
 			public void windowClosed(WindowEvent e) {

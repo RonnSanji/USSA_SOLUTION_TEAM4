@@ -7,6 +7,7 @@ import java.util.Set;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.model.StoreKeeper;
@@ -17,7 +18,7 @@ public class FormValidator {
 	 * Naming convention rule: form name + ValidateForm No UI controller
 	 * 
 	 */
-	public static String addCategoryValidateForm(String categoryID, String categoryName) {
+	public static String addEditCategoryValidateForm(String categoryID, String categoryName) {
 		if (categoryID == null) {
 			return StoreConstants.ENTER_CATEGORYID;
 		}
@@ -39,38 +40,37 @@ public class FormValidator {
 		return null;
 	}
 
-	public static String addCategoryValidateData(String categoryID) {
-		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
-		ArrayList<String> tempKeyList = new ArrayList<>();
+	public static String addCategoryValidateData(Category selectedCategory) {
+		if (selectedCategory == null) {
+			return StoreConstants.EMPTY_CATEGORY;
+		}
 
-		if (keySet != null && keySet.size() > 0) {
-			for (String key : keySet) {
-				tempKeyList.add(key.toUpperCase());
-			}
-			if (tempKeyList.contains(categoryID.toUpperCase())) {
-				return "Category ID: " + categoryID + " " + StoreConstants.CATEGORY_EXISTS;
+		for (Category category : FileDataWrapper.categoryMap.values()) {
+			if (category.getCategoryId().equalsIgnoreCase(selectedCategory.getCategoryId())) {
+				return "Category ID: " + selectedCategory.getCategoryId() + " " + StoreConstants.CATEGORY_EXISTS;
 			}
 		}
 		return null;
 	}
 
 	public static String removeCategoryValidateForm(String categoryID) {
-		if (categoryID == null || categoryID.isEmpty()) {
+		if (categoryID==null ||  categoryID.isEmpty()) {
 			return StoreConstants.SELECT_CATEGORY;
 		}
 		return null;
 	}
 
-	public static String removeCategoryValidateData(String categoryID) {
-		if (categoryID == null || categoryID.isEmpty()) {
-			return StoreConstants.SELECT_CATEGORY;
+	public static String editRemoveCategoryValidateData(Category selectedCategory) {
+		if (selectedCategory == null) {
+			return StoreConstants.EMPTY_CATEGORY;
 		}
-		categoryID = categoryID.trim();
-		Set<String> keys = FileDataWrapper.categoryMap.keySet();
-		if (!keys.contains(categoryID)) {
-			return "Category ID: " + categoryID + " " + StoreConstants.CATEGORYID_NOT_EXIST;
+		for (Category category : FileDataWrapper.categoryMap.values()) {
+			if (category.getCategoryId().equalsIgnoreCase(selectedCategory.getCategoryId())) {
+				return null;
+			}
 		}
-		return null;
+
+		return "Category ID: " + selectedCategory.getCategoryId() + " " + StoreConstants.CATEGORYID_NOT_EXIST;
 	}
 
 	public static String replenishStockValidateForm(String stockTxt) {
@@ -254,7 +254,7 @@ public class FormValidator {
 			return "Invalid Quantity Entered. Please Enter a valid one.";
 		} else if (!(price.matches(StoreConstants.NUMBER_REGEX))) {
 			return "Invalid Product Price. Please Enter only number.";
-		}  else if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
+		} else if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
 			return "Invalid Product Threshold Quantity. Please Enter Only Digits.";
 		}
 		return null;

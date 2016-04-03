@@ -266,20 +266,20 @@ public class ManageDiscount extends JPanel {
 			return;
 		}
 		selectedDiscount = discountListResult.get(selectedRow);
-		showEditWindow();
+		showAddEditWindow();
 	}
 
 	private void addDiscount() {
 		selectedDiscount = null;
-		showEditWindow();
+		showAddEditWindow();
 	}
 
-	private void showEditWindow() {
-		EditDiscount editDiscountWindow = new EditDiscount(selectedDiscount);
-		editDiscountWindow.setLocation(this.getLocationOnScreen());
-		editDiscountWindow.setModal(true);
-		editDiscountWindow.setVisible(true);
-		editDiscountWindow.addWindowListener(new WindowListener() {
+	private void showAddEditWindow() {
+		EditDiscount addEditDiscountWindow = new EditDiscount(selectedDiscount);
+		addEditDiscountWindow.setLocation(this.getLocationOnScreen());
+		addEditDiscountWindow.setModal(true);
+		addEditDiscountWindow.setVisible(true);
+		addEditDiscountWindow.addWindowListener(new WindowListener() {
 
 			@Override
 			public void windowClosed(WindowEvent e) {

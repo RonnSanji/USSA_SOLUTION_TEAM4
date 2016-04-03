@@ -16,40 +16,29 @@ import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
+import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.model.StoreKeeper;
 import sg.edu.nus.iss.ssa.util.IOService;
 
-public class FormValidatorTest extends TestCase
-{
+public class FormValidatorTest extends TestCase {
 	@Test
-	public void testStoreKeeperValidateForm()
-	{
+	public void testStoreKeeperValidateForm() {
 		IOService<?> ioManager = new IOService<>();
-		try
-		{
-			ioManager.readFromFile( FileDataWrapper.storeKeeperMap,null, new StoreKeeper());
-		}
-		catch (FileNotFoundException e)
-		{
+		try {
+			ioManager.readFromFile(FileDataWrapper.storeKeeperMap, null, new StoreKeeper());
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch (FieldMismatchExcepion fieldMismatchExcepion)
-		{
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
 			fieldMismatchExcepion.printStackTrace();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally
-		{
+		} finally {
 			ioManager = null;
 		}
 
 		String msg;
-		try
-		{
+		try {
 			String emptyName = null;
 			char[] emptyPassword = {};
 			msg = FormValidator.addStoreKeeperValidateForm(emptyName, emptyPassword);
@@ -58,83 +47,76 @@ public class FormValidatorTest extends TestCase
 			String upperCaseName = "Stacy";
 			msg = FormValidator.addStoreKeeperValidateForm(upperCaseName, emptyPassword);
 			assertTrue(msg.contains(StoreConstants.STOREKEEPER_INCORRECT_PASSWORD));
-			
-			char[] lowerCasePassword = {'d','e','a','n','5','6','s'};
+
+			char[] lowerCasePassword = { 'd', 'e', 'a', 'n', '5', '6', 's' };
 			msg = FormValidator.addStoreKeeperValidateForm(upperCaseName, lowerCasePassword);
 			assertTrue(msg.contains(StoreConstants.STOREKEEPER_INCORRECT_PASSWORD));
-			
-			char[] correctPassword = {'D','e','a','n','5','6','s'};
+
+			char[] correctPassword = { 'D', 'e', 'a', 'n', '5', '6', 's' };
 			msg = FormValidator.addStoreKeeperValidateForm(upperCaseName, correctPassword);
 			assertTrue(msg == null);
-			
+
 			String lowerCassName = "stacy";
 			msg = FormValidator.addStoreKeeperValidateForm(lowerCassName, correctPassword);
 			assertTrue(msg == null);
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	@Test
-	public void testAddCategoryValidateForm()
-	{
+	public void testAddCategoryValidateForm() {
 
 		String msg;
 
 		String testCategoryID = null;
 		String testCategoryName = null;
 
-		try
-		{
-			msg = FormValidator.addCategoryValidateForm(testCategoryID, testCategoryName);
+		try {
+			msg = FormValidator.addEditCategoryValidateForm(testCategoryID, testCategoryName);
 			assertTrue(msg.contains(StoreConstants.ENTER_CATEGORYID));
 
 			testCategoryID = "";
 			testCategoryName = "";
-			msg = FormValidator.addCategoryValidateForm(testCategoryID, testCategoryName);
+			msg = FormValidator.addEditCategoryValidateForm(testCategoryID, testCategoryName);
 			assertTrue(msg.contains(StoreConstants.ENTER_CATEGORYID));
 
 			testCategoryID = "";
 			testCategoryName = "test";
-			msg = FormValidator.addCategoryValidateForm(testCategoryID, testCategoryName);
+			msg = FormValidator.addEditCategoryValidateForm(testCategoryID, testCategoryName);
 			assertTrue(msg.contains(StoreConstants.ENTER_CATEGORYID));
 
 			testCategoryID = "123";
 			testCategoryName = "";
-			msg = FormValidator.addCategoryValidateForm(testCategoryID, testCategoryName);
+			msg = FormValidator.addEditCategoryValidateForm(testCategoryID, testCategoryName);
 			assertTrue(msg.contains(StoreConstants.ENTER_CATEGORYNAME));
 
 			testCategoryID = "1";
 			testCategoryName = "test";
-			msg = FormValidator.addCategoryValidateForm(testCategoryID, testCategoryName);
+			msg = FormValidator.addEditCategoryValidateForm(testCategoryID, testCategoryName);
 			assertTrue(msg.contains(StoreConstants.CATEGORY_3_LETTERS));
 
 			testCategoryID = "12";
 			testCategoryName = "test";
-			msg = FormValidator.addCategoryValidateForm(testCategoryID, testCategoryName);
+			msg = FormValidator.addEditCategoryValidateForm(testCategoryID, testCategoryName);
 			assertTrue(msg.contains(StoreConstants.CATEGORY_3_LETTERS));
 
 			testCategoryID = "123";
 			testCategoryName = "test";
-			msg = FormValidator.addCategoryValidateForm(testCategoryID, testCategoryName);
+			msg = FormValidator.addEditCategoryValidateForm(testCategoryID, testCategoryName);
 			assertTrue(msg == null);
 
 			testCategoryID = "1234";
 			testCategoryName = "test";
-			msg = FormValidator.addCategoryValidateForm(testCategoryID, testCategoryName);
+			msg = FormValidator.addEditCategoryValidateForm(testCategoryID, testCategoryName);
 			assertTrue(msg.contains(StoreConstants.CATEGORY_3_LETTERS));
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	@Test
-	public void testAddCategoryValidateData()
-	{
+	public void testAddCategoryValidateData() {
 		Random ran = new Random();
 
 		String testExistingCategoryID = null;
@@ -143,51 +125,39 @@ public class FormValidatorTest extends TestCase
 
 		IOService<?> ioManager = new IOService<>();
 		FileDataWrapper.categoryMap.clear();
-		if (ioManager == null)
-		{
+		if (ioManager == null) {
 			ioManager = new IOService<>();
 		}
-		try
-		{
+		try {
 			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
 			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
-		}
-		catch (FileNotFoundException e)
-		{
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch (FieldMismatchExcepion fieldMismatchExcepion)
-		{
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
 			fieldMismatchExcepion.printStackTrace();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally
-		{
+		} finally {
 			ioManager = null;
 		}
 
 		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
-		if (keySet != null && keySet.size() > 0)
-		{
-			for (String key : keySet)
-			{
+		if (keySet != null && keySet.size() > 0) {
+			for (String key : keySet) {
 				existingKeyList.add(key.toUpperCase());
 			}
 		}
 
 		testExistingCategoryID = existingKeyList.get(ran.nextInt(existingKeyList.size()));
+		Category cat = new Category();
+		cat.setCategoryId(testExistingCategoryID);
+		cat.setCategoryName(testExistingCategoryID);
 
 		String msg;
-		try
-		{
-			msg = FormValidator.addCategoryValidateData(testExistingCategoryID);
+		try {
+			msg = FormValidator.addCategoryValidateData(cat);
 			assertTrue(msg.contains(StoreConstants.CATEGORY_EXISTS));
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
@@ -195,39 +165,33 @@ public class FormValidatorTest extends TestCase
 		String newCategoryID = String.valueOf(letters.charAt(ran.nextInt(26))) + letters.charAt(ran.nextInt(26))
 				+ letters.charAt(ran.nextInt(26));
 
-		while (true)
-		{
-			if (existingKeyList.contains(newCategoryID))
-			{
+		while (true) {
+			if (existingKeyList.contains(newCategoryID)) {
 				System.out.println("Category: " + newCategoryID + " exists");
 				newCategoryID = String.valueOf(letters.charAt(ran.nextInt(26))) + letters.charAt(ran.nextInt(26))
 						+ letters.charAt(ran.nextInt(26));
-			}
-			else
-			{
+			} else {
 				break;
 			}
 
 		}
 		System.out.println("New category ID:" + newCategoryID);
-		try
-		{
-			msg = FormValidator.addCategoryValidateData(newCategoryID);
+		cat = new Category();
+		cat.setCategoryId(newCategoryID);
+		cat.setCategoryName(newCategoryID);
+		try {
+			msg = FormValidator.addCategoryValidateData(cat);
 			assertTrue(msg == null);
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	@Test
-	public void testRemoveCategoryValidateForm()
-	{
+	public void testRemoveCategoryValidateForm() {
 		String categoryID = null;
 		String msg;
-		try
-		{
+		try {
 			msg = FormValidator.removeCategoryValidateForm(categoryID);
 			assertTrue(msg.contains(StoreConstants.SELECT_CATEGORY));
 
@@ -238,16 +202,13 @@ public class FormValidatorTest extends TestCase
 			categoryID = "test";
 			msg = FormValidator.removeCategoryValidateForm(categoryID);
 			assertTrue(msg == null);
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	@Test
-	public void testRemoveCategoryValidateData()
-	{
+	public void testRemoveCategoryValidateData() {
 		Random ran = new Random();
 
 		String testExistingCategoryID = null;
@@ -256,97 +217,75 @@ public class FormValidatorTest extends TestCase
 
 		IOService<?> ioManager = new IOService<>();
 		FileDataWrapper.categoryMap.clear();
-		if (ioManager == null)
-		{
+		if (ioManager == null) {
 			ioManager = new IOService<>();
 		}
-		try
-		{
+		try {
 			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
 			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
-		}
-		catch (FileNotFoundException e)
-		{
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch (FieldMismatchExcepion fieldMismatchExcepion)
-		{
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
 			fieldMismatchExcepion.printStackTrace();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally
-		{
+		} finally {
 			ioManager = null;
 		}
 
 		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
-		if (keySet != null && keySet.size() > 0)
-		{
-			for (String key : keySet)
-			{
+		if (keySet != null && keySet.size() > 0) {
+			for (String key : keySet) {
 				existingKeyList.add(key.toUpperCase());
 			}
 		}
 
 		testExistingCategoryID = existingKeyList.get(ran.nextInt(existingKeyList.size()));
-
+		Category cat = new Category();
+		cat.setCategoryId(testExistingCategoryID);
+		cat.setCategoryName(testExistingCategoryID);
 		String msg;
-		try
-		{
-			msg = FormValidator.removeCategoryValidateData(testExistingCategoryID);
+		try {
+			msg = FormValidator.editRemoveCategoryValidateData(cat);
 			assertTrue(msg == null);
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
 		String newCategoryID = null;
-		msg = FormValidator.removeCategoryValidateData(newCategoryID);
-		assertTrue(msg.contains(StoreConstants.SELECT_CATEGORY));
-
-		newCategoryID = "";
-		msg = FormValidator.removeCategoryValidateData(newCategoryID);
-		assertTrue(msg.contains(StoreConstants.SELECT_CATEGORY));
+		msg = FormValidator.editRemoveCategoryValidateData(null);
+		assertTrue(msg.contains(StoreConstants.EMPTY_CATEGORY));
 
 		String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		newCategoryID = String.valueOf(letters.charAt(ran.nextInt(26))) + letters.charAt(ran.nextInt(26))
 				+ letters.charAt(ran.nextInt(26));
 
-		while (true)
-		{
-			if (existingKeyList.contains(newCategoryID))
-			{
+		cat = new Category();
+		cat.setCategoryId(newCategoryID);
+		cat.setCategoryName(newCategoryID);
+		
+		while (true) {
+			if (existingKeyList.contains(newCategoryID)) {
 				System.out.println("Category: " + newCategoryID + " exists");
 				newCategoryID = String.valueOf(letters.charAt(ran.nextInt(26))) + letters.charAt(ran.nextInt(26))
 						+ letters.charAt(ran.nextInt(26));
-			}
-			else
-			{
+			} else {
 				break;
 			}
 		}
-		try
-		{
-			msg = FormValidator.removeCategoryValidateData(newCategoryID);
+		try {
+			msg = FormValidator.editRemoveCategoryValidateData(cat);
 			assertTrue(msg.contains(StoreConstants.CATEGORYID_NOT_EXIST));
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	@Test
-	public void testReplenishStockValidateForm()
-	{
+	public void testReplenishStockValidateForm() {
 		String testQuantityString = null;
 		String msg;
-		try
-		{
+		try {
 			msg = FormValidator.replenishStockValidateForm(testQuantityString);
 			assertTrue(msg.contains(StoreConstants.ENTER_REPLENISH_QUANTITY));
 
@@ -365,16 +304,13 @@ public class FormValidatorTest extends TestCase
 			testQuantityString = "test";
 			msg = FormValidator.replenishStockValidateForm(testQuantityString);
 			assertTrue(msg.contains(StoreConstants.INVALID_REPLENISH_QUANTITY));
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	@Test
-	public void testReplenishStockValidateData()
-	{
+	public void testReplenishStockValidateData() {
 		int barcode = 0;
 		String msg = FormValidator.replenishStockConfigureThresholdValidateData(barcode);
 		assertTrue(msg.contains(StoreConstants.INVALID_PRODUCT_BAR_CODE));
@@ -387,36 +323,25 @@ public class FormValidatorTest extends TestCase
 
 		IOService<?> ioManager = new IOService<>();
 		FileDataWrapper.productMap.clear();
-		if (ioManager == null)
-		{
+		if (ioManager == null) {
 			ioManager = new IOService<>();
 		}
-		try
-		{
+		try {
 			ioManager.readFromFile(FileDataWrapper.productMap, null, new sg.edu.nus.iss.ssa.model.Product());
 			System.out.println("products : " + FileDataWrapper.productMap.keySet());
-		}
-		catch (FileNotFoundException e)
-		{
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch (FieldMismatchExcepion fieldMismatchExcepion)
-		{
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
 			fieldMismatchExcepion.printStackTrace();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally
-		{
+		} finally {
 			ioManager = null;
 		}
 
 		ArrayList<Integer> barcodes = new ArrayList<Integer>();
 
-		for (Product p : FileDataWrapper.productMap.values())
-		{
+		for (Product p : FileDataWrapper.productMap.values()) {
 			barcodes.add(p.getBarCode());
 		}
 
