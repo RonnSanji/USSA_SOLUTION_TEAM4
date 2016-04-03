@@ -38,6 +38,10 @@ public class EditInventory extends JDialog {
 	private JLabel lblBarCode;
 	private JLabel lblThresholdLable;
 	private JLabel lblThreshold;
+	private JLabel lblRerorderQuantity;
+	private JLabel lblReorderQuantityLable;
+	private JLabel lblNewReorderQuantity;
+	private JTextField txtReorderQuantity;
 
 	private EntityListController controller = new EntityListController();
 
@@ -55,23 +59,13 @@ public class EditInventory extends JDialog {
 		this.selectedProduct = selectedProduct;
 		this.mode = mode;
 		setResizable(false);
-		if (mode == 0) {
-			setTitle("Configure Threshold");
-			lblAddQuantity_NewThreshold = new JLabel("New Threshold:");
-			lblThresholdLable = new JLabel("Current Threshold:");
 
-		} else if (mode == 1) {
-			setTitle("Replenish Stock");
-			lblAddQuantity_NewThreshold = new JLabel("Add quantity:");
-			lblThresholdLable = new JLabel("Threshold:");
-
-		}
-		setBounds(100, 100, 450, 348);
+		setBounds(100, 100, 450, 378);
 		contentPanel.setLayout(null);
 		getContentPane().setLayout(null);
 
 		buttonPane = new JPanel();
-		buttonPane.setBounds(0, 256, 444, 50);
+		buttonPane.setBounds(0, 300, 444, 50);
 		getContentPane().add(buttonPane);
 		buttonPane.setLayout(null);
 
@@ -104,7 +98,7 @@ public class EditInventory extends JDialog {
 		getRootPane().setDefaultButton(okButton);
 
 		lblNewLabel = new JLabel("Product Name:");
-		lblNewLabel.setBounds(75, 24, 131, 14);
+		lblNewLabel.setBounds(75, 25, 131, 14);
 		getContentPane().add(lblNewLabel);
 
 		lblNewLabel_1 = new JLabel("Product Description:");
@@ -112,49 +106,93 @@ public class EditInventory extends JDialog {
 		getContentPane().add(lblNewLabel_1);
 
 		lblNewLabel_2 = new JLabel("Current quantity:");
-		lblNewLabel_2.setBounds(75, 132, 131, 14);
+		lblNewLabel_2.setBounds(75, 130, 131, 14);
 		getContentPane().add(lblNewLabel_2);
 
-		lblThresholdLable.setBounds(75, 172, 130, 14);
+		lblThresholdLable = new JLabel();
+		lblThresholdLable.setBounds(75, 165, 165, 14);
 		getContentPane().add(lblThresholdLable);
 
 		lblThreshold = new JLabel("");
-		lblThreshold.setBounds(223, 172, 46, 14);
+		lblThreshold.setBounds(250, 165, 180, 14);
 		getContentPane().add(lblThreshold);
 
-		lblAddQuantity_NewThreshold.setBounds(75, 214, 131, 14);
+		lblAddQuantity_NewThreshold = new JLabel();
+		lblAddQuantity_NewThreshold.setBounds(75, 235, 165, 14);
 		getContentPane().add(lblAddQuantity_NewThreshold);
 
 		lblProductName = new JLabel("");
-		lblProductName.setBounds(223, 24, 211, 14);
+		lblProductName.setBounds(250, 25, 180, 14);
 		getContentPane().add(lblProductName);
 
 		lblProductDescription = new JLabel("");
-		lblProductDescription.setBounds(223, 60, 211, 14);
+		lblProductDescription.setBounds(250, 60, 180, 14);
 		getContentPane().add(lblProductDescription);
 
 		lblCurrentQuantity = new JLabel("");
-		lblCurrentQuantity.setBounds(223, 132, 211, 14);
+		lblCurrentQuantity.setBounds(250, 130, 180, 14);
 		getContentPane().add(lblCurrentQuantity);
 
 		txtAddQuantity_NewThreshold = new JTextField();
 		txtAddQuantity_NewThreshold.setDocument(new PlainDocument() {
 			@Override
 			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-				if (str.matches("[0-9]"))
+				if (str.matches("[0-9]*"))
 					super.insertString(offs, str, a);
 			}
 		});
-		txtAddQuantity_NewThreshold.setBounds(223, 211, 46, 20);
+		txtAddQuantity_NewThreshold.setBounds(250, 235, 46, 20);
 		getContentPane().add(txtAddQuantity_NewThreshold);
 
 		lblNewLabel_4 = new JLabel("Bar Code:");
-		lblNewLabel_4.setBounds(75, 96, 95, 14);
+		lblNewLabel_4.setBounds(75, 95, 95, 14);
 		getContentPane().add(lblNewLabel_4);
 
 		lblBarCode = new JLabel("");
-		lblBarCode.setBounds(223, 96, 46, 14);
+		lblBarCode.setBounds(250, 95, 180, 14);
 		getContentPane().add(lblBarCode);
+
+		lblRerorderQuantity = new JLabel("New label");
+		lblRerorderQuantity.setBounds(250, 200, 180, 14);
+		getContentPane().add(lblRerorderQuantity);
+
+		lblReorderQuantityLable = new JLabel("");
+		lblReorderQuantityLable.setBounds(75, 200, 165, 14);
+		getContentPane().add(lblReorderQuantityLable);
+
+		lblNewReorderQuantity = new JLabel("New Reorder Quantity:");
+		lblNewReorderQuantity.setBounds(75, 270, 165, 14);
+		getContentPane().add(lblNewReorderQuantity);
+
+		txtReorderQuantity = new JTextField();
+		txtReorderQuantity.setBounds(250, 270, 46, 20);
+		getContentPane().add(txtReorderQuantity);
+		txtReorderQuantity.setDocument(new PlainDocument() {
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (str.matches("[0-9]*"))
+					super.insertString(offs, str, a);
+			}
+		});
+
+		// 0 for configure threshold and reorder quantity
+		if (mode == 0) {
+			setTitle("Configure Threshold / Reorder Quantity");
+			lblAddQuantity_NewThreshold.setText("New Threshold:");
+			lblThresholdLable.setText("Current Threshold:");
+			lblReorderQuantityLable.setText("Current Reorder Quantity:");
+			lblNewReorderQuantity.setVisible(true);
+			txtReorderQuantity.setVisible(true);
+		}
+		// 1 for replenish stock
+		else if (mode == 1) {
+			setTitle("Replenish Stock");
+			lblAddQuantity_NewThreshold.setText("Add quantity:");
+			lblThresholdLable.setText("Threshold:");
+			lblReorderQuantityLable.setText("Reorder Quantity:");
+			lblNewReorderQuantity.setVisible(false);
+			txtReorderQuantity.setVisible(false);
+		}
 
 		populateData();
 	}
@@ -166,13 +204,28 @@ public class EditInventory extends JDialog {
 		lblBarCode.setText(String.valueOf(selectedProduct.getBarCode()));
 		lblCurrentQuantity.setText(String.valueOf(selectedProduct.getQuantity()));
 		lblThreshold.setText(String.valueOf(selectedProduct.getThresholdQuantity()));
+		lblRerorderQuantity.setText(String.valueOf(selectedProduct.getOrderQuantity()));
+		// 0 for configure threshold and reorder quantity
+		if (mode == 0) {
+			txtAddQuantity_NewThreshold.setText(String.valueOf(selectedProduct.getThresholdQuantity()));
+			txtReorderQuantity.setText(String.valueOf(selectedProduct.getOrderQuantity()));
+		}
 	}
 
 	private boolean validateForm() {
 		String addQuantity_NewThreshold = txtAddQuantity_NewThreshold.getText();
+		String newReorderQuantity = null;
+		// 0 for configure threshold and reorder quantity
+		if (mode == 0) {
+			newReorderQuantity = txtReorderQuantity.getText();
+		}
+		// 1 for replenish stock
+		else if (mode == 1) {
+			newReorderQuantity = lblRerorderQuantity.getText();
+		}
 		String msg = null;
 		if (mode == 0) {
-			msg = FormValidator.configureThresholdValidateForm(addQuantity_NewThreshold);
+			msg = FormValidator.configureThresholdValidateForm(addQuantity_NewThreshold, newReorderQuantity);
 		} else if (mode == 1) {
 			msg = FormValidator.replenishStockValidateForm(addQuantity_NewThreshold);
 		}
@@ -192,8 +245,18 @@ public class EditInventory extends JDialog {
 			return;
 		}
 		long stockAdd_newThreshold = Long.parseLong(txtAddQuantity_NewThreshold.getText());
+		long newReorderQuantity = 0;
+		// 0 for configure threshold and reorder quantity
 		if (mode == 0) {
-			msg = controller.updateThreshold(selectedProduct, stockAdd_newThreshold);
+			newReorderQuantity = Long.parseLong(txtReorderQuantity.getText());
+		}
+		// 1 for replenish stock
+		else if (mode == 1) {
+			newReorderQuantity = Long.parseLong(lblRerorderQuantity.getText());
+		}
+		if (mode == 0) {
+			msg = controller.updateThreshold_ReorderQuantity(selectedProduct, stockAdd_newThreshold,
+					newReorderQuantity);
 		} else if (mode == 1) {
 			msg = controller.addStock(selectedProduct, stockAdd_newThreshold);
 		}
@@ -203,7 +266,8 @@ public class EditInventory extends JDialog {
 			return;
 		}
 		if (mode == 0) {
-			DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.THRESHOLD_UPDATED_SUCCESSFULLY);
+			DisplayUtil.displayAcknowledgeMessage(buttonPane,
+					StoreConstants.THRESHOLD_REORDER_QUANTITY_UPDATED_SUCCESSFULLY);
 		} else if (mode == 1) {
 			DisplayUtil.displayAcknowledgeMessage(buttonPane, StoreConstants.STOCK_UPDATED_SUCCESSFULLY);
 		}

@@ -72,8 +72,10 @@ public class StoreConstants
 	public static final String INVALID_REPLENISH_QUANTITY = "Please enter a valid replenish quantity";
 	public static final String BAR_CODE_NOT_EXIST = "does not exist";
 	public static final String ENTER_NEW_THRESHOLD = "Please enter new threshold quantity";
+	public static final String ENTER_NEW_REORDER_QUANTITY = "Please enter new reorder quantity";
 	public static final String INVALID_THRESHOLD_QUANTITY = "Please enter a valid threshold quantity";
-	public static final String THRESHOLD_UPDATED_SUCCESSFULLY = "Threshold has been updated successfully !";
+	public static final String INVALID_REORDER_QUANTITY = "Please enter a valid reorder quantity";
+	public static final String THRESHOLD_REORDER_QUANTITY_UPDATED_SUCCESSFULLY = "Threshold/Reorder quantity has been updated successfully !";
 	
 	// Add Product Message
 	public static final String EMPTY_QUANTITY = "Please Enter the Quantity greater than 0";

@@ -105,9 +105,10 @@ public class EntityListController {
 	}
 
 	// For configure threshold
-	public String updateThreshold(Product selectedProduct, long newThreshold) {
+	public String updateThreshold_ReorderQuantity(Product selectedProduct, long newThreshold, long newReorderQuantity) {
 		selectedProduct.setThresholdQuantity(newThreshold);
-
+		selectedProduct.setOrderQuantity(newReorderQuantity);
+		
 		for (Product p : FileDataWrapper.productMap.values()) {
 			int barcode = p.getBarCode();
 			if (barcode == selectedProduct.getBarCode()) {

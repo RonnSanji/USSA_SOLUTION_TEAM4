@@ -166,13 +166,13 @@ public class ManageInventory extends JPanel {
 		btnGeneratePurchaseOrder.setBounds(561, 525, 150, 60);
 		add(btnGeneratePurchaseOrder);
 
-		btnConfigureThreshold = new JButton("Configure Threshold");
+		btnConfigureThreshold = new JButton("<html>Configure Threshold/<br>&nbsp&nbsp Reorder Quantity</html>");
 		btnConfigureThreshold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showEditInventoryWindow(0);
 			}
 		});
-		btnConfigureThreshold.setBounds(98, 525, 150, 60);
+		btnConfigureThreshold.setBounds(85, 525, 160, 60);
 		add(btnConfigureThreshold);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);

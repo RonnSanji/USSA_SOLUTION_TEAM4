@@ -90,7 +90,7 @@ public class FormValidator {
 		return null;
 	}
 
-	public static String configureThresholdValidateForm(String threshold) {
+	public static String configureThresholdValidateForm(String threshold, String reorderQuantity) {
 
 		if (threshold == null || threshold.isEmpty()) {
 			return StoreConstants.ENTER_NEW_THRESHOLD;
@@ -104,6 +104,19 @@ public class FormValidator {
 			// ex.printStackTrace();
 			return StoreConstants.INVALID_THRESHOLD_QUANTITY;
 		}
+		if (reorderQuantity == null ||reorderQuantity.isEmpty()) {
+			return StoreConstants.ENTER_NEW_REORDER_QUANTITY;
+		}
+		try {
+			long l = Long.parseLong(reorderQuantity);
+			if (l <= 0) {
+				return StoreConstants.INVALID_REORDER_QUANTITY;
+			}
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return StoreConstants.INVALID_REORDER_QUANTITY;
+		}
+		
 		return null;
 	}
 
