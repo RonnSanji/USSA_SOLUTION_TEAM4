@@ -265,7 +265,8 @@ public class DashBoard extends JFrame
 		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		buttonProductManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				showProductSelectionWindow(dashBoard);
+      AddProduct product = new AddProduct();
+				activateMainPanel(product);
 			}
 		});
 		buttonProductManagement.setBounds(70, 100, 220, 50);

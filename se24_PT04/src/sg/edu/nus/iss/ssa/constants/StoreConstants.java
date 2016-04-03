@@ -42,6 +42,7 @@ public class StoreConstants
 
 	// Manage category message
 	public static final String CATEGORY_ADDED_SUCCESSFULLY = "Category has been added successfully. Would like to add another one ?";
+	public static final String PRODUCT_ADDED_SUCCESSFULLY = "Product has been added successfully. Would like to add another one ?";
 	public static final String CATEGORY_EXISTS = "already exists. Would you like to add another one ?";
 	public static final String ENTER_CATEGORYID = "Please enter category ID";
 	public static final String ENTER_CATEGORYNAME = "Please enter category name";
@@ -76,7 +77,7 @@ public class StoreConstants
 	public static final String EMPTY_QUANTITY = "Please Enter the Quantity greater than 0";
 	public static final String EMPTY_PRICE = "Please Enter the Price greater than 0";
 	public static final String EMPTY_PRODUCT_NAME = "Please Enter the Product Name. Product Name cannot be Empty";
-	public static final String NUMBER_REGEX = "[0-9]";
+	public static final String NUMBER_REGEX = "[+-]?\\d*(\\.\\d+)?";
 	public static final String STRING_REGEX = "[a-zA-Z]";
 
 	// StoreKeeper validation message

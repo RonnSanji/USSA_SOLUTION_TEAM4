@@ -62,7 +62,7 @@ public class AddProduct extends JPanel{
 	 * Create the application.
 	 */
 	public AddProduct() {
-		initialize1();
+		initialize();
 	}
 
 
@@ -168,7 +168,7 @@ public class AddProduct extends JPanel{
            boolean isAdditionSuccesfull = addProduct();
 						if (isAdditionSuccesfull) {
 							dialogResult = DisplayUtil.displayConfirmationMessage(addProduct,
-									StoreConstants.CATEGORY_ADDED_SUCCESSFULLY);
+									StoreConstants.PRODUCT_ADDED_SUCCESSFULLY);
 							if (dialogResult == 0) {
 								clearFields();
 							}

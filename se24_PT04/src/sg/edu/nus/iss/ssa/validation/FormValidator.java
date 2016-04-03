@@ -252,13 +252,9 @@ public class FormValidator {
 			return "Invalid Category, Please select a valid one";
 		} else if (!quantityAvailable.matches(StoreConstants.NUMBER_REGEX)) {
 			return "Invalid Quantity Entered. Please Enter a valid one.";
-		} else if (!(categoryName.matches(StoreConstants.STRING_REGEX))) {
-			return "Invalid Category Name. Please Enter only characters";
 		} else if (!(price.matches(StoreConstants.NUMBER_REGEX))) {
 			return "Invalid Product Price. Please Enter only number.";
-		} else if (!(productName.matches(StoreConstants.STRING_REGEX))) {
-			return "Invalid Product Name. Please Enter a correct name.";
-		} else if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
+		}  else if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
 			return "Invalid Product Threshold Quantity. Please Enter Only Digits.";
 		}
 		return null;
