@@ -10,12 +10,14 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Category;
+import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.BarCodeGenerator;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
@@ -23,8 +25,10 @@ import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.util.ProductIdGenerator;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
 
-public class AddProduct extends JPanel {
+public class AddProduct extends JDialog {
 
+  private final JPanel contentPanel = new JPanel();
+  private final JPanel buttonPanel = new JPanel();
   private JTextField txtProductName;
   private JTextField txtProductDescription;
   private JTextField txtQuantityAvailable;
@@ -45,23 +49,18 @@ public class AddProduct extends JPanel {
   /**
    * Create the application.
    */
-  public AddProduct(Map productMap,ManageProductWindow productManagerWindow) {
-    initialize();
-  }
-
-  /**
-   * Initialize the contents of the this.
-   */
-  private void initialize() {
-    AddProduct addProduct = this;
+  public AddProduct(Map productMap, ManageProductWindow productManagerWindow) {
+    setTitle("Adding New Member");
+    setResizable(false);
+    setLocationRelativeTo(null);
+    getContentPane().setLayout(new BorderLayout());
     setSize(800, 600);
-
-    this.setOpaque(false);
-    setLayout(null);
-
+    contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+    getContentPane().add(contentPanel, BorderLayout.CENTER);
+    contentPanel.setLayout(null);
     JLabel lblProductCategory = new JLabel("Product Category");
     lblProductCategory.setBounds(20, 32, 108, 60);
-    this.add(lblProductCategory);
+    contentPanel.add(lblProductCategory);
     try {
       ioService.readFromFile(FileDataWrapper.categoryMap, null, new Category());
     } catch (FileNotFoundException | FieldMismatchExcepion e) {
@@ -76,107 +75,122 @@ public class AddProduct extends JPanel {
       txtProductCategory.addItem(c);
     }
     txtProductCategory.setBounds(164, 55, 120, 16);
-    this.add(txtProductCategory);
+    contentPanel.add(txtProductCategory);
 
     JLabel lblProductTitle = new JLabel("Product Name");
     lblProductTitle.setBounds(20, 90, 98, 16);
-    this.add(lblProductTitle);
+    contentPanel.add(lblProductTitle);
 
     txtProductName = new JTextField();
     txtProductName.setBounds(154, 85, 130, 26);
-    this.add(txtProductName);
+    contentPanel.add(txtProductName);
     txtProductName.setColumns(10);
 
     JLabel lblProductDescription = new JLabel("Product Description");
     lblProductDescription.setBounds(20, 132, 130, 16);
-    this.add(lblProductDescription);
+    contentPanel.add(lblProductDescription);
 
     txtProductDescription = new JTextField();
     txtProductDescription.setBounds(154, 127, 130, 26);
-    this.add(txtProductDescription);
+    contentPanel.add(txtProductDescription);
     txtProductDescription.setColumns(10);
 
     JLabel lblQuantityAvailable = new JLabel("Quantity Available");
     lblQuantityAvailable.setBounds(20, 172, 130, 16);
-    this.add(lblQuantityAvailable);
+    contentPanel.add(lblQuantityAvailable);
 
     txtQuantityAvailable = new JTextField();
     txtQuantityAvailable.setBounds(154, 167, 130, 26);
-    this.add(txtQuantityAvailable);
+    contentPanel.add(txtQuantityAvailable);
     txtQuantityAvailable.setColumns(10);
 
     JLabel lblPrice = new JLabel("Price");
     lblPrice.setBounds(20, 200, 61, 16);
-    this.add(lblPrice);
+    contentPanel.add(lblPrice);
 
     txtPrice = new JTextField();
     txtPrice.setBounds(154, 195, 130, 26);
-    this.add(txtPrice);
+    contentPanel.add(txtPrice);
     txtPrice.setColumns(10);
 
     JLabel lblNewLabel = new JLabel("ReOrder Quantity");
     lblNewLabel.setBounds(20, 283, 119, 16);
-    this.add(lblNewLabel);
+    contentPanel.add(lblNewLabel);
 
     txtReorderQuantity = new JTextField();
     txtReorderQuantity.setBounds(154, 277, 130, 26);
-    this.add(txtReorderQuantity);
+    contentPanel.add(txtReorderQuantity);
     txtReorderQuantity.setColumns(10);
 
     JLabel lblOrderQuantity = new JLabel("Order Quantity");
     lblOrderQuantity.setBounds(20, 332, 108, 16);
-    this.add(lblOrderQuantity);
+    contentPanel.add(lblOrderQuantity);
 
     txtOrderQuantity = new JTextField();
     txtOrderQuantity.setBounds(154, 327, 130, 26);
-    this.add(txtOrderQuantity);
+    contentPanel.add(txtOrderQuantity);
     txtOrderQuantity.setColumns(10);
+
+    buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+    getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
     JButton btnAddProduct = new JButton("Add Product");
     btnAddProduct.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        try {
-          int dialogResult = -1;
-          boolean isValid = doValidation();
-          if (isValid) {
-            boolean isAdditionSuccesfull = addProduct();
-            if (isAdditionSuccesfull) {
-              dialogResult = DisplayUtil.displayConfirmationMessage(addProduct,
-                  StoreConstants.PRODUCT_ADDED_SUCCESSFULLY);
-              if (dialogResult == 0) {
-                clearFields();
-              } else if (dialogResult == 1) {
-              }
-            }
-            reloadData();
+        fetchValuesFromTextFields();
+        String validatorMessage = FormValidator.addProductValidateForm(productCategory, productName,
+            quantityAvailable, price, reorderQuantity);
+        if (validatorMessage != null) {
+          JOptionPane.showMessageDialog(btnAddProduct, validatorMessage, "Error",
+              JOptionPane.ERROR_MESSAGE);
+        } else {
+          Collection<Product> products = productMap.values();
+          ProductIdGenerator productIdGenerator = new ProductIdGenerator();
+          BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
+          int barCode = barCodeGenerator.generateBarCode();
+          Product product = new Product(
+              productIdGenerator.getProductId(products, productCategory),
+              productName, productDescription,
+              Long.valueOf(quantityAvailable), Double.valueOf(
+                  price),
+              barCode, Long.valueOf(reorderQuantity),
+              Long.valueOf(orderQuantity));
+          // add new member to memory
+          try {
+            productMap.put(barCode, product);
+          } catch (Exception ex) {
+            DisplayUtil.displayValidationError(contentPanel,
+                StoreConstants.ERROR + " creating new product");
           }
-        } catch (Exception e1) {
-          e1.printStackTrace();
+
+          // write new memeber from memory to .dat file
+          IOService<?> ioManager = new IOService<Entity>();
+          try {
+            ioManager.writeToFile(productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
+            ioManager = null;
+          } catch (Exception ex)
+
+          {
+            DisplayUtil.displayValidationError(contentPanel,
+                StoreConstants.ERROR + " saving new product");
+            ioManager = null;
+          }
+
+          // update the table data in MemberManagerWindow
+          productManagerWindow.refreshTable(product.getProductArray());
+          dispose();
         }
       }
     });
-    btnAddProduct.setBounds(54, 369, 89, 23);
-    this.add(btnAddProduct);
+    buttonPanel.add(btnAddProduct);
 
-    JButton btnClose = new JButton("Cancel");
-    btnClose.addActionListener(new ActionListener() {
+    JButton btnCancel = new JButton("Cancel");
+    btnCancel.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        dispose();
       }
     });
-    btnClose.setBounds(209, 369, 89, 23);
-    this.add(btnClose);
-    this.setVisible(true);
-  }
-
-  private boolean doValidation() throws FieldMismatchExcepion, IOException {
-    fetchValuesFromTextFields();
-    String validatorMessage = FormValidator.addProductValidateForm(productCategory, productName,
-        quantityAvailable, price, reorderQuantity);
-    if (validatorMessage != null) {
-      DisplayUtil.displayValidationError(this, validatorMessage);
-      return false;
-    }
-    return true;
+    buttonPanel.add(btnCancel);
   }
 
   private void fetchValuesFromTextFields() {
@@ -187,39 +201,5 @@ public class AddProduct extends JPanel {
     price = txtPrice.getText();
     reorderQuantity = txtReorderQuantity.getText();
     orderQuantity = txtOrderQuantity.getText();
-  }
-
-  private boolean addProduct() throws FieldMismatchExcepion, IOException {
-    Map<Integer, Product> mapProduct = FileDataWrapper.productMap;
-    ioService.readFromFile(mapProduct, null, new Product());
-    Collection<Product> products = mapProduct.values();
-    ProductIdGenerator productIdGenerator = new ProductIdGenerator();
-    BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
-    int barCode = barCodeGenerator.generateBarCode();
-    Product product = new Product(productIdGenerator.getProductId(products, productCategory),
-        productName, productDescription,
-        Long.valueOf(quantityAvailable), Double.valueOf(
-            price),
-        barCode, Long.valueOf(reorderQuantity),
-        Long.valueOf(orderQuantity));
-    String isProductAdded = entityListController.addProduct(product);
-    if (isProductAdded != null) {
-      DisplayUtil.displayValidationError(this, isProductAdded);
-      return false;
-    }
-    return true;
-  }
-
-  private void clearFields() {
-    txtProductDescription.setText("");
-    txtProductName.setText("");
-    txtOrderQuantity.setText("");
-    txtPrice.setText("");
-    txtQuantityAvailable.setText("");
-    txtReorderQuantity.setText("");
-  }
-
-  private void reloadData() {
-    entityListController.reloadProductData();
   }
 }
