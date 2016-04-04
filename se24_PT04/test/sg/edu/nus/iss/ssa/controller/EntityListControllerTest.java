@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
+
+import javax.annotation.Generated;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -23,8 +26,11 @@ import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Category;
+import sg.edu.nus.iss.ssa.model.Discount;
+import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.IOService;
+import sg.edu.nus.iss.ssa.util.TestUtil;
 
 /**
  * @author LOL
@@ -62,26 +68,10 @@ public class EntityListControllerTest extends TestCase {
 	}
 
 	@Test
-	public void testAddCategory() {
-		Random ran = new Random();
-		String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		IOService<?> ioManager = new IOService<>();
-		FileDataWrapper.categoryMap.clear();
-		if (ioManager == null) {
-			ioManager = new IOService<>();
-		}
-		try {
-			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
-			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
-			fieldMismatchExcepion.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			ioManager = null;
-		}
+	public void testSaveCategory() {
+		EntityListController controller = new EntityListController();
+		controller.reloadCategoryData();
+		// add
 
 		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
 		ArrayList<String> tempKeyList = new ArrayList<>();
@@ -91,119 +81,56 @@ public class EntityListControllerTest extends TestCase {
 				tempKeyList.add(key.toUpperCase());
 			}
 		}
-		// for (int i = 0; i < 100; i++) {
-		String categoryID = String.valueOf(letters.charAt(ran.nextInt(26))) + letters.charAt(ran.nextInt(26))
-				+ letters.charAt(ran.nextInt(26));
+		String categoryID = TestUtil.generateRandomString(3, tempKeyList, false);
+		String newCategoryname = TestUtil.generateRandomString(50);
 
-		while (true) {
-			if (tempKeyList.contains(categoryID)) {
-				System.out.println("Category: " + categoryID + " exists");
-				categoryID = String.valueOf(letters.charAt(ran.nextInt(26))) + letters.charAt(ran.nextInt(26))
-						+ letters.charAt(ran.nextInt(26));
-
-			} else {
-				break;
-			}
-		}
-
-		System.out.println(categoryID);
-
-		sg.edu.nus.iss.ssa.model.Category cat = new sg.edu.nus.iss.ssa.model.Category();
+		Category cat = new Category();
 		cat.setCategoryId(categoryID);
-		cat.setCategoryName(categoryID);
+		cat.setCategoryName(newCategoryname);
 
-		EntityListController controller = new EntityListController();
+		// System.out.println(categoryID);
 
 		String msg = controller.saveCategory(cat, 0);
 
-		if (msg == null) {
+		assertTrue(msg == null);
 
-			FileDataWrapper.categoryMap.clear();
-			if (ioManager == null) {
-				ioManager = new IOService<>();
-			}
-			try {
-				ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
-				System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (FieldMismatchExcepion fieldMismatchExcepion) {
-				fieldMismatchExcepion.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				ioManager = null;
-				controller = null;
-			}
+		// System.out.println(msg);
+		if (msg == null) {
+			controller.reloadCategoryData();
 
 			assertEquals(categoryID, FileDataWrapper.categoryMap.get(categoryID).getCategoryId());
-			assertEquals(categoryID, FileDataWrapper.categoryMap.get(categoryID).getCategoryName());
-		}
-	}
+			assertEquals(newCategoryname, FileDataWrapper.categoryMap.get(categoryID).getCategoryName());
 
-	@Test
-	public void testRemoveCategory() {
-		Random ran = new Random();
-		String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		IOService<?> ioManager = new IOService<>();
-		FileDataWrapper.categoryMap.clear();
-		if (ioManager == null) {
-			ioManager = new IOService<>();
-		}
-		try {
-			ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
-			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
-			fieldMismatchExcepion.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			ioManager = null;
+			// System.out.println(FileDataWrapper.categoryMap.get(categoryID).getCategoryId());
 		}
 
-		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
-		ArrayList<String> tempKeyList = new ArrayList<>();
+		// edit
+		newCategoryname = TestUtil.generateRandomString(20);
+		cat = ((Category) FileDataWrapper.categoryMap.values().toArray()[new Random()
+				.nextInt(FileDataWrapper.categoryMap.size())]);
 
-		if (keySet != null && keySet.size() > 0) {
-			for (String key : keySet) {
-				tempKeyList.add(key.toUpperCase());
-			}
-		}
-
-		String categoryID = tempKeyList.get(ran.nextInt(keySet.size()));
-		Category cat = new Category();
-		cat.setCategoryId(categoryID);
-		cat.setCategoryName(categoryID);
-		System.out.println(categoryID);
-
-		EntityListController controller = new EntityListController();
-
-		String msg = controller.saveCategory(cat, 2);
+		cat.setCategoryName(newCategoryname);
+		msg = controller.saveCategory(cat, 1);
+		assertTrue(msg == null);
 
 		if (msg == null) {
+			controller.reloadCategoryData();
+			assertEquals(newCategoryname, FileDataWrapper.categoryMap.get(cat.getCategoryId()).getCategoryName());
+		}
 
-			FileDataWrapper.categoryMap.clear();
-			if (ioManager == null) {
-				ioManager = new IOService<>();
-			}
-			try {
-				ioManager.readFromFile(FileDataWrapper.categoryMap, null, new sg.edu.nus.iss.ssa.model.Category());
-				System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (FieldMismatchExcepion fieldMismatchExcepion) {
-				fieldMismatchExcepion.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				ioManager = null;
-				controller = null;
-			}
+		// remove
+		cat = ((Category) FileDataWrapper.categoryMap.values().toArray()[new Random()
+				.nextInt(FileDataWrapper.categoryMap.size())]);
 
-			assertTrue(FileDataWrapper.categoryMap.get(categoryID) == null);
+		msg = controller.saveCategory(cat, 2);
+		assertTrue(msg == null);
 
+		if (msg == null) {
+			controller.reloadCategoryData();
+			assertEquals(FileDataWrapper.categoryMap.get(cat.getCategoryId()), null);
+		}
+		if (controller != null) {
+			controller = null;
 		}
 	}
 
@@ -333,6 +260,35 @@ public class EntityListControllerTest extends TestCase {
 	}
 
 	@Test
+	public void testUpdateThreshold_ReorderQuantity() {
+		Random ran = new Random();
+		EntityListController controller = new EntityListController();
+		controller.reloadProductData();
+
+		Product testProduct = (Product) FileDataWrapper.productMap.values().toArray()[ran
+				.nextInt(FileDataWrapper.productMap.size())];
+		long testThreshold = ran.nextInt(100);
+		long testReorderQuantity = ran.nextInt(100);
+
+		String msg = controller.updateThreshold_ReorderQuantity(testProduct, testThreshold, testReorderQuantity);
+
+		assertTrue(msg == null);
+
+		if (msg == null) {
+			controller.reloadProductData();
+
+			for (Product p : FileDataWrapper.productMap.values()) {
+				if (p.getBarCode() == testProduct.getBarCode()) {
+					assertEquals(testThreshold, p.getThresholdQuantity());
+
+					assertEquals(testReorderQuantity, p.getOrderQuantity());
+				}
+			}
+		}
+		controller = null;
+	}
+
+	@Test
 	public void testReloadProductData() {
 		Random ran = new Random();
 
@@ -387,6 +343,163 @@ public class EntityListControllerTest extends TestCase {
 		for (Product product : FileDataWrapper.productMap.values()) {
 			if (product.getBarCode() == barCode) {
 				assertEquals(originalProductName, p.getProductName());
+				break;
+			}
+		}
+	}
+
+	@Test
+	public void testSaveDiscount() {
+		Random ran = new Random();
+
+		EntityListController controller = new EntityListController();
+		controller.reloadDiscountData();
+
+		ArrayList<String> discountCodeList = new ArrayList<>();
+		for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+			PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+			discountCodeList.add(tempDiscount.getDiscountCode());
+		}
+
+		// add
+		PeriodDiscount discount = new PeriodDiscount();
+
+		String newDiscountCode = TestUtil.generateRandomString(10, discountCodeList, false);
+
+		discount.setDiscountCode(newDiscountCode);
+		discount.setDiscountDesc(TestUtil.generateRandomString(50));
+		discount.setDiscountPerc(ran.nextInt(99));
+		discount.setDiscountPeriod(String.valueOf(ran.nextInt(100)));
+		discount.setStarDate("2017-01-01");
+		discount.setApplicableTo("A");
+
+		String msg = controller.saveDiscount(discount, 0);
+
+		assertTrue(msg == null);
+
+		if (msg == null) {
+			controller.reloadDiscountData();
+
+			for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+				PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+				if (tempDiscount.getDiscountCode().equalsIgnoreCase(newDiscountCode)) {
+					assertEquals(tempDiscount.getDiscountDesc(), discount.getDiscountDesc());
+					assertEquals(tempDiscount.getDiscountPerc(), discount.getDiscountPerc());
+					assertEquals(tempDiscount.getDiscountPeriod(), discount.getDiscountPeriod());
+					assertEquals(tempDiscount.getStarDate(), discount.getStarDate());
+					assertEquals(tempDiscount.getApplicableTo(), discount.getApplicableTo());
+				}
+			}
+		}
+
+		// edit
+
+		discount = (PeriodDiscount) FileDataWrapper.discounts.get(ran.nextInt(FileDataWrapper.discounts.size()));
+		discount.setDiscountDesc(TestUtil.generateRandomString(80));
+		discount.setDiscountPerc(ran.nextInt(99));
+		discount.setDiscountPeriod(String.valueOf(ran.nextInt(100)));
+		discount.setStarDate("2018-01-01");
+		discount.setApplicableTo("M");
+
+		msg = controller.saveDiscount(discount, 1);
+
+		assertTrue(msg == null);
+
+		if (msg == null) {
+			controller.reloadDiscountData();
+
+			for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+				PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+				if (tempDiscount.getDiscountCode().equalsIgnoreCase(discount.getDiscountCode())) {
+					assertEquals(tempDiscount.getDiscountDesc(), discount.getDiscountDesc());
+					assertEquals(tempDiscount.getDiscountPerc(), discount.getDiscountPerc());
+					assertEquals(tempDiscount.getDiscountPeriod(), discount.getDiscountPeriod());
+					assertEquals(tempDiscount.getStarDate(), discount.getStarDate());
+					assertEquals(tempDiscount.getApplicableTo(), discount.getApplicableTo());
+				}
+			}
+		}
+
+		// remove
+
+		discount = (PeriodDiscount) FileDataWrapper.discounts.get(ran.nextInt(FileDataWrapper.discounts.size()));
+
+		msg = controller.saveDiscount(discount, 2);
+
+		assertTrue(msg == null);
+
+		if (msg == null) {
+			controller.reloadDiscountData();
+
+			for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+				PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+				if (tempDiscount.getDiscountCode().equalsIgnoreCase(discount.getDiscountCode())) {
+					assertFalse(true);
+				}
+			}
+
+		}
+	controller = null;
+	}
+
+	@Test
+	public void testReloadDiscountData() {
+		Random ran = new Random();
+
+		IOService<?> ioManager = new IOService<>();
+		FileDataWrapper.discounts.clear();
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.readFromFile(null, FileDataWrapper.discounts, new sg.edu.nus.iss.ssa.model.PeriodDiscount());
+			System.out.println("discounts : " + FileDataWrapper.discounts);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ioManager = null;
+		}
+
+		ArrayList<PeriodDiscount> tempDiscountList = new ArrayList<PeriodDiscount>();
+
+		for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+			PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+			tempDiscountList.add(tempDiscount);
+		}
+
+		PeriodDiscount p = tempDiscountList.get(ran.nextInt(tempDiscountList.size()));
+		String discountCode = p.getDiscountCode();
+		String originalDiscountDesc = p.getDiscountDesc();
+
+		for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+			PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+			if (tempDiscount.getDiscountCode().equalsIgnoreCase(discountCode)) {
+				tempDiscount.setDiscountDesc("A new discount description");
+				break;
+			}
+		}
+
+		System.out.println("Original discount description: " + originalDiscountDesc);
+
+		System.out.println("New discount description: A new discount description");
+
+		EntityListController controller = new EntityListController();
+		try {
+			controller.reloadDiscountData();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			controller = null;
+		}
+
+		for (int i = 0; i < FileDataWrapper.discounts.size(); i++) {
+			PeriodDiscount tempDiscount = (PeriodDiscount) FileDataWrapper.discounts.get(i);
+			if (tempDiscount.getDiscountCode().equalsIgnoreCase(discountCode)) {
+				assertEquals(originalDiscountDesc, tempDiscount.getDiscountDesc());
 				break;
 			}
 		}

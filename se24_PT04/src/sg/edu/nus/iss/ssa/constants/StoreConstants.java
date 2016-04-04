@@ -45,7 +45,9 @@ public class StoreConstants
 	public static final String PRODUCT_ADDED_SUCCESSFULLY = "Product has been added successfully. Would like to add another one ?";
 	public static final String CATEGORY_EXISTS = "already exists. Would you like to add another one ?";
 	public static final String ENTER_CATEGORYID = "Please enter category ID";
+	public static final String INVALID_CATEGORYID = "Please enter a valid category ID";
 	public static final String ENTER_CATEGORYNAME = "Please enter category name";
+	public static final String INVALID_CATEGORYNAME = "Please enter a valid category name";
 	public static final String BLANK_CATEGORYID = "Category ID is blank !";
 	public static final String BLANK_CATEGORYNAME = "Category name is blank !";
 	public static final String CATEGORY_3_LETTERS = "Category ID must be 3 letters";
@@ -61,7 +63,7 @@ public class StoreConstants
 	public static final String MEMBER_ADDED_SUCCESSFULLY = "Member has been added succesfully";
 	public static final String BLANK_MEMBER_NUMBERANDNAME = "Please enter Member Name and Member Number";
 	public static final String INVALID_NEWMEMBER_NUMBER = "Not a valid member, Please enter a number with 9 Charactor";
-
+	public static final String INVALID_NEWMEMBER_NAME = "Please enter a valid member name";
 	// Manage stock message
 	public static final String SELECT_PRODUCT = "Please select a product";
 	public static final String STOCK_UPDATED_SUCCESSFULLY = "Stock has been updated successfully !";
@@ -76,22 +78,29 @@ public class StoreConstants
 	public static final String INVALID_THRESHOLD_QUANTITY = "Please enter a valid threshold quantity";
 	public static final String INVALID_REORDER_QUANTITY = "Please enter a valid reorder quantity";
 	public static final String THRESHOLD_REORDER_QUANTITY_UPDATED_SUCCESSFULLY = "Threshold/Reorder quantity has been updated successfully !";
-	
+
 	// Add Product Message
 	public static final String EMPTY_QUANTITY = "Please Enter the Quantity greater than 0";
 	public static final String EMPTY_PRICE = "Please Enter the Price greater than 0";
 	public static final String EMPTY_PRODUCT_NAME = "Please Enter the Product Name. Product Name cannot be Empty";
+	public static final String INVALID_PRODUCT_NAME = "Please Enter a valid Product Name";
 	public static final String NUMBER_REGEX = "[+-]?\\d*(\\.\\d+)?";
 	public static final String STRING_REGEX = "[a-zA-Z]";
+	public static final String INVALID_CATERORY = "Invalid Category, Please select a valid one";
+	public static final String INVALID_QUANTITY = "Invalid Quantity Entered. Please Enter a valid one.";
+	public static final String INVALID_PRICE = "Invalid Product Price. Please Enter only number.";
+	public static final String INVALID_THRESHOLD = "Invalid Product Threshold Quantity. Please Enter Only Digits.";
 
 	// StoreKeeper validation message
 	public static final String STOREKEEPER_NOT_FOUND = "StoreKeeper not found.";
 	public static final String STOREKEEPER_INCORRECT_PASSWORD = "Incorrect password.";
-
+	
 	// Manage discount message
 	public static final String SELECT_DISCOUNT = "Please select a discount";
 	public static final String ENTER_DISCOUNT_CODE = "Please enter discount code";
+	public static final String INVALID_DISCOUNT_CODE = "Please enter a valid discount code";
 	public static final String ENTER_DISCOUNT_DESCRIPTION = "Please enter discount description";
+	public static final String INVALID_DISCOUNT_DESCRIPTION = "Please enter a valid discount description";
 	public static final String SELECT_DISCOUNT_START_DATE = "Please select discount start date";
 	public static final String ENTER_DISCOUNT_PERIOD = "Please enter discount period";
 	public static final String ENTER_DISCOUNT_PERCENTAGE = "Please enter discount percentage";

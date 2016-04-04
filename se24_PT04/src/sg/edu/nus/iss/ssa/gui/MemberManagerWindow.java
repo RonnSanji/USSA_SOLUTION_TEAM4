@@ -82,7 +82,9 @@ public class MemberManagerWindow extends JPanel {
 		btnAddNewMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MemberAddingWindow memberAddWindow = new MemberAddingWindow(FileDataWrapper.memberMap,memberManagerWindow);
+				memberAddWindow.setModal(true);
 				memberAddWindow.setVisible(true);
+				
 			}
 		});
 		buttonPanel.setLayout(null);
@@ -184,6 +186,7 @@ public class MemberManagerWindow extends JPanel {
 		JButton btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				txtMemberSearch.setText("");
 				table.setModel(model);
 			}
 		});

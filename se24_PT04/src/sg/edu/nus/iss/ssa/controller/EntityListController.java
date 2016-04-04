@@ -21,7 +21,7 @@ public class EntityListController {
 
 	// For manage category
 	public String saveCategory(Category selectedCategory, int mode) {
-		// add
+		// add and edit
 		if (mode == 0 || mode ==1) {
 			try {
 				FileDataWrapper.categoryMap.put(selectedCategory.getCategoryId(), selectedCategory);
@@ -45,7 +45,7 @@ public class EntityListController {
 			ioManager = new IOService<>();
 		}
 		try {
-			ioManager.writeToFile(FileDataWrapper.discounts, new PeriodDiscount());
+			ioManager.writeToFile(FileDataWrapper.categoryMap.values(), new Category());
 		} catch (Exception ex) {
 			reloadDiscountData();
 			ex.printStackTrace();

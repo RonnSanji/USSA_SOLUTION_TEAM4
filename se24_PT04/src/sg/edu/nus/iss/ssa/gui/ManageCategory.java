@@ -124,6 +124,7 @@ public class ManageCategory extends JPanel {
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearKeyWordTextBox();
+				search();
 			}
 		});
 		btnClear.setBounds(540, 26, 89, 23);

@@ -113,6 +113,7 @@ public class ManageDiscount extends JPanel {
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearKeyWordTextBox();
+				search();
 			}
 		});
 		btnClear.setBounds(649, 26, 89, 23);

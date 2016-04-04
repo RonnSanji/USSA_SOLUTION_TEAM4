@@ -26,6 +26,9 @@ public class FormValidator {
 		if (categoryID.isEmpty()) {
 			return StoreConstants.ENTER_CATEGORYID;
 		}
+		if (categoryID.contains(",")) {
+			return StoreConstants.INVALID_CATEGORYID;
+		}
 		if (categoryID.length() != 3) {
 			return StoreConstants.CATEGORY_3_LETTERS;
 		}
@@ -36,7 +39,9 @@ public class FormValidator {
 		if (categoryName.isEmpty()) {
 			return StoreConstants.ENTER_CATEGORYNAME;
 		}
-
+		if (categoryName.contains(",")) {
+			return StoreConstants.INVALID_CATEGORYNAME;
+		}
 		return null;
 	}
 
@@ -137,8 +142,14 @@ public class FormValidator {
 		if (discountCode == null || discountCode.isEmpty()) {
 			return StoreConstants.ENTER_DISCOUNT_CODE;
 		}
+		if (discountCode.contains(",")) {
+			return StoreConstants.INVALID_DISCOUNT_CODE;
+		}
 		if (discountDescription == null || discountDescription.isEmpty()) {
 			return StoreConstants.ENTER_DISCOUNT_DESCRIPTION;
+		}
+		if (discountDescription.contains(",")) {
+			return StoreConstants.INVALID_DISCOUNT_DESCRIPTION;
 		}
 		if (startDateType == null || startDateType.isEmpty()) {
 			return StoreConstants.SELECT_DISCOUNT_START_DATE;
@@ -154,6 +165,9 @@ public class FormValidator {
 		}
 		if (period == null || period.isEmpty()) {
 			return StoreConstants.ENTER_DISCOUNT_PERIOD;
+		}
+		if (period.contains(",")) {
+			return StoreConstants.INVALID_DISCOUNT_PERIOD;
 		}
 		if (startDateType.equalsIgnoreCase(StoreConstants.PERMANENT_DSCOUNT_START_DATE)) {
 			if (!period.equalsIgnoreCase(StoreConstants.PERMANENT_DSCOUNT_START_PERIOD)) {
@@ -222,10 +236,16 @@ public class FormValidator {
 	}
 
 	public static String addMemberValidateForm(String memberName, String memberNumber) {
-		if (memberName == null || memberNumber.isEmpty()) {
+		if (memberName == null || memberName.isEmpty() || memberNumber == null || memberNumber.isEmpty()) {
 			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
 		}
+		if (memberName.contains(",")) {
+			return StoreConstants.INVALID_NEWMEMBER_NAME;
+		}
 		if (memberNumber.length() != 9) {
+			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
+		}
+		if (memberNumber.contains(",")) {
 			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
 		}
 		return null;
@@ -235,7 +255,6 @@ public class FormValidator {
 		if (name == null || name.isEmpty()) {
 			return StoreConstants.STOREKEEPER_NOT_FOUND;
 		}
-
 		if (password == null || password.length == 0) {
 			return StoreConstants.STOREKEEPER_INCORRECT_PASSWORD;
 		}
@@ -258,20 +277,39 @@ public class FormValidator {
 			String price, String thresholdQuantity) {
 		if (categoryName == null || categoryName.isEmpty()) {
 			return StoreConstants.BLANK_CATEGORYNAME;
-		} else if (quantityAvailable.isEmpty() || quantityAvailable == null) {
+		}
+		if (categoryName.contains(",")) {
+			return StoreConstants.INVALID_CATEGORYNAME;
+		}
+		if (quantityAvailable.isEmpty() || quantityAvailable == null) {
 			return StoreConstants.EMPTY_QUANTITY;
-		} else if (price.isEmpty() || price == null) {
+		}
+		if (quantityAvailable.contains(",")) {
+			return StoreConstants.INVALID_QUANTITY;
+		}
+		if (price.isEmpty() || price == null) {
 			return StoreConstants.EMPTY_PRICE;
-		} else if (productName == null || productName.isEmpty()) {
+		}
+		if (price.contains(",")) {
+			return StoreConstants.INVALID_PRICE;
+		}
+		if (productName == null || productName.isEmpty()) {
 			return StoreConstants.EMPTY_PRODUCT_NAME;
-		} else if (categoryName.length() != 3) {
-			return "Invalid Category, Please select a valid one";
-		} else if (!quantityAvailable.matches(StoreConstants.NUMBER_REGEX)) {
-			return "Invalid Quantity Entered. Please Enter a valid one.";
-		} else if (!(price.matches(StoreConstants.NUMBER_REGEX))) {
-			return "Invalid Product Price. Please Enter only number.";
-		} else if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
-			return "Invalid Product Threshold Quantity. Please Enter Only Digits.";
+		}
+		if (productName.contains(",")) {
+			return StoreConstants.INVALID_PRODUCT_NAME;
+		}
+		if (categoryName.length() != 3) {
+			return StoreConstants.INVALID_CATERORY;
+		}
+		if (!quantityAvailable.matches(StoreConstants.NUMBER_REGEX)) {
+			return StoreConstants.INVALID_QUANTITY;
+		}
+		if (!(price.matches(StoreConstants.NUMBER_REGEX))) {
+			return StoreConstants.INVALID_PRICE;
+		}
+		if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
+			return StoreConstants.INVALID_THRESHOLD;
 		}
 		return null;
 	}
