@@ -1,21 +1,17 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-
-import sg.edu.nus.iss.ssa.util.IOService;
-
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-
-import javax.swing.border.TitledBorder;
-
-import java.awt.Font;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+
+import sg.edu.nus.iss.ssa.util.IOService;
 
 public class DashBoard extends JFrame
 {
@@ -227,7 +223,7 @@ public class DashBoard extends JFrame
 		btnReport.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		btnReport.setBounds(70, 500, 220, 50);
 		menuPanel.add(btnReport);
-		
+
 		JLabel lblProduct = new JLabel("");
 		lblProduct.setBounds(10, 99, 60, 50);
 		lblProduct.setIcon(imgProduct);
@@ -265,14 +261,14 @@ public class DashBoard extends JFrame
 		btnDiscount.setFont(new Font("AppleGothic", Font.BOLD, 16));
 		buttonProductManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-      AddProduct product = new AddProduct();
-				activateMainPanel(product);
+       ManageProductWindow productManagerWindow = new ManageProductWindow();
+				activateMainPanel(productManagerWindow);
 			}
 		});
 		buttonProductManagement.setBounds(70, 100, 220, 50);
 		menuPanel.add(buttonProductManagement);
-		
-	
+
+
 
 		btnMemberManage.addActionListener(new ActionListener()
 		{
