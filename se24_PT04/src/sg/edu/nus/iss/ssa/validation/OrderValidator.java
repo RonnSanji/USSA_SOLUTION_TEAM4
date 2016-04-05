@@ -33,7 +33,7 @@ public class OrderValidator {
         return errorMessage;
     }
 
-    public String validateSelectedProduct(final String productBarCode, final  Map<Integer,Product> productMap){
+    public String validateSelectedProduct(final String productBarCode, final  Map<?,Product> productMap){
         String errorMessage = null;
         if(productBarCode != null){
             Product selectedItem = productMap.get(productBarCode);
@@ -58,6 +58,9 @@ public class OrderValidator {
      */
     public String validateRedeemedPoints(long redeemedPoints, double renderedCash, Order receipt){
         long totalAvlPoints = receipt.getMemberInfo()!= null ? receipt.getMemberInfo().getLoyaltyPoints(): 0;
+        if(totalAvlPoints <= 0 ){
+            return null;
+        }
         double finalCost = receipt.getFinalPrice();
         if(redeemedPoints > totalAvlPoints ){
             return StoreConstants.MAX_POINTS_REDEEMED_MSG + totalAvlPoints;

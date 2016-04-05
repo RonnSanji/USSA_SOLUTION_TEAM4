@@ -28,6 +28,7 @@ public class Member extends User{
 		this.memberName=memberName;
 		this.memberId = memberNumber;
 		this.loyaltyPoints = loyaltyPoints;
+		this.isMember = true;
 	}
 	
 	@Override

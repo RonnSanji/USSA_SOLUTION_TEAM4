@@ -90,7 +90,8 @@ public class MemberAddingWindow extends JDialog {
 				  
 				  else{
 					  //create new member object
-					  Member newMember = new Member(memberNameString,memberNumberString,-1);	
+					  Member newMember = new Member(memberNameString,memberNumberString,-1);
+
 					  
 					  //add new member to memory 
 					  try{
