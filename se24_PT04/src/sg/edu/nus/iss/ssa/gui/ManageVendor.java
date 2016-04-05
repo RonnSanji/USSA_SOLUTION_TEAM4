@@ -62,26 +62,20 @@ public class ManageVendor extends JDialog {
 	private JButton btnEditVendor;
 	private JButton btnClose;
 
-	public static void main(String[] args) {
-		try {
-			EntityListController controller = new EntityListController();
-			controller.reloadCategoryData();
-			controller.loadAllVendorMap();
-			
-			JFrame frame = new JFrame();
-			frame.setBounds(0, 0, 800, 600);
-
-			ManageCategory manageCat = new ManageCategory();
-			manageCat.setVisible(true);
-
-			frame.add(manageCat);
-			frame.setVisible(true);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	/*
+	 * public static void main(String[] args) { try { EntityListController
+	 * controller = new EntityListController(); controller.reloadCategoryData();
+	 * controller.loadAllVendorMap();
+	 * 
+	 * JFrame frame = new JFrame(); frame.setBounds(0, 0, 800, 600);
+	 * 
+	 * ManageCategory manageCat = new ManageCategory();
+	 * manageCat.setVisible(true);
+	 * 
+	 * frame.add(manageCat); frame.setVisible(true);
+	 * 
+	 * } catch (Exception e) { e.printStackTrace(); } }
+	 */
 	/**
 	 * Create the dialog.
 	 */
@@ -224,11 +218,9 @@ public class ManageVendor extends JDialog {
 		TbResult.setVisible(false);
 
 		FileDataWrapper.vendorList.clear();
-		if(controller.getVendorListByCategoryID(selectedCategory.getCategoryId()) !=null)
-		{
+		if (controller.getVendorListByCategoryID(selectedCategory.getCategoryId()) != null) {
 			FileDataWrapper.vendorList.addAll(controller.getVendorListByCategoryID(selectedCategory.getCategoryId()));
 		}
-		
 
 		search();
 	}

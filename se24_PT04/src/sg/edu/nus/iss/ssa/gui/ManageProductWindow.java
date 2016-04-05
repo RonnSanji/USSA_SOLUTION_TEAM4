@@ -159,6 +159,7 @@ public class ManageProductWindow extends JPanel {
     JButton btnClear = new JButton("Clear");
     btnClear.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+    	txtProductSearch.setText("");
         table.setModel(model);
       }
     });
