@@ -2,7 +2,9 @@ package sg.edu.nus.iss.ssa.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
@@ -10,6 +12,7 @@ import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.model.Vendor;
 import sg.edu.nus.iss.ssa.util.IOService;
 
 /**
@@ -22,7 +25,7 @@ public class EntityListController {
 	// For manage category
 	public String saveCategory(Category selectedCategory, int mode) {
 		// add and edit
-		if (mode == 0 || mode ==1) {
+		if (mode == 0 || mode == 1) {
 			try {
 				FileDataWrapper.categoryMap.put(selectedCategory.getCategoryId(), selectedCategory);
 			} catch (Exception ex) {
@@ -78,6 +81,124 @@ public class EntityListController {
 		}
 	}
 
+	// for save vendor
+	public String saveVendor(String categoryID, Vendor selectedVendor, int mode) {
+		// add
+		if (mode == 0) {
+			((List<Vendor>) FileDataWrapper.vendorList).add(selectedVendor);
+		}
+		// edit
+		else if (mode == 1) {
+			for (int i = 0; i < FileDataWrapper.vendorList.size(); i++) {
+				Vendor tempVendor = (Vendor) FileDataWrapper.vendorList.get(i);
+				if (tempVendor.getVendorId().equalsIgnoreCase(selectedVendor.getVendorId())) {
+					tempVendor.setVendorId(selectedVendor.getVendorId());
+					tempVendor.setVendorName(selectedVendor.getVendorName());
+				}
+			}
+		}
+		// remove
+		else if (mode == 2) {
+			((List<Vendor>) FileDataWrapper.vendorList).remove(selectedVendor);
+		}
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.writeToFile(FileDataWrapper.vendorList, new Vendor(categoryID));
+			refreshVendorMap(categoryID);
+		} catch (Exception ex) {
+			reloadVendorDataByCategoryID(categoryID);
+			ex.printStackTrace();
+			return StoreConstants.ERROR + " saving Vendor";
+		} finally {
+			ioManager = null;
+		}
+		return null;
+	}
+
+	public String adjustVendorListOrder(String categoryID) {
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.writeToFile(FileDataWrapper.vendorList, new Vendor(categoryID));
+			refreshVendorMap(categoryID);
+		} catch (Exception ex) {
+			reloadVendorDataByCategoryID(categoryID);
+			ex.printStackTrace();
+			return StoreConstants.ERROR + " saving Vendor";
+		} finally {
+			ioManager = null;
+		}
+		return null;
+	}
+
+	// for retrieve vendor by category
+	public void reloadVendorDataByCategoryID(String categoryID) {
+		FileDataWrapper.vendorList.clear();
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.readFromFile(null, FileDataWrapper.vendorList, new sg.edu.nus.iss.ssa.model.Vendor(categoryID));
+			refreshVendorMap(categoryID);
+		} catch (FileNotFoundException e) {
+			// e.printStackTrace();
+		} catch (FieldMismatchExcepion fieldMismatchExcepion) {
+			fieldMismatchExcepion.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ioManager = null;
+		}
+
+	}
+
+	private void refreshVendorMap(String categoryID) {
+
+		if (FileDataWrapper.vendorList != null) {
+			ArrayList<Vendor> vendors = new ArrayList<Vendor>();
+			for (Vendor vendor : FileDataWrapper.vendorList) {
+				vendors.add(vendor);
+			}
+
+			FileDataWrapper.vendorMap.put(categoryID, vendors);
+		}
+	}
+
+	public void loadAllVendorMap() {
+		ArrayList<String> uniqueCategoryCodeList = new ArrayList<String>();
+		for (Category category : FileDataWrapper.categoryMap.values()) {
+			if (!uniqueCategoryCodeList.contains(category.getCategoryId())) {
+				uniqueCategoryCodeList.add(category.getCategoryId());
+			}
+		}
+		for (String categoryCode : uniqueCategoryCodeList) {
+			reloadVendorDataByCategoryID(categoryCode);
+		}
+	}
+
+	// for retrieve vendors
+	public ArrayList<Vendor> getVendorListByCategoryID(String categoryID) {
+		if(categoryID ==null || categoryID.isEmpty())
+		{
+			return null;
+		}
+		if (FileDataWrapper.vendorMap == null || FileDataWrapper.vendorMap.values().size() == 0) {
+			reloadVendorDataByCategoryID(categoryID);
+		}
+		// ArrayList<Vendor> vendorList = new ArrayList<Vendor>();
+		Set<String> keys = FileDataWrapper.vendorMap.keySet();
+		for (String key : keys) {
+			if (key.equals(categoryID)) {
+				return (ArrayList<Vendor>) FileDataWrapper.vendorMap.get(key);
+			}
+		}
+
+		return null;
+	}
+
 	// For replenish stock
 	public String addStock(Product selectedProduct, long stockAdd) {
 		selectedProduct.setQuantity(selectedProduct.getQuantity() + stockAdd);
@@ -108,7 +229,7 @@ public class EntityListController {
 	public String updateThreshold_ReorderQuantity(Product selectedProduct, long newThreshold, long newReorderQuantity) {
 		selectedProduct.setThresholdQuantity(newThreshold);
 		selectedProduct.setOrderQuantity(newReorderQuantity);
-		
+
 		for (Product p : FileDataWrapper.productMap.values()) {
 			int barcode = p.getBarCode();
 			if (barcode == selectedProduct.getBarCode()) {

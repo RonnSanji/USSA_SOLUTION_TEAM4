@@ -9,6 +9,7 @@ import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.main.SouvenirStoreApp;
 import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.model.Vendor;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
 
@@ -60,8 +61,8 @@ public class ManageInventory extends JPanel {
 	// 1 for search, 2 for show all below threshold
 	private int searchType = 0;
 
-	private String[] columns = new String[] { "Product Name", "Product Description", "Bar Code", "Price",
-			"Current Quantity", "Reorder Threshold", "Reorder Quantity" };
+	private String[] columns = new String[] { "Product Name", "Bar Code", "Price", "Current Quantity",
+			"Reorder Threshold", "Reorder Quantity", "Preferred Vendor" };
 	private String[][] data;
 
 	private TableModel model;
@@ -258,15 +259,30 @@ public class ManageInventory extends JPanel {
 		for (int i = 0; i < productListResult.size(); i++) {
 			String[] values = new String[columns.length];
 			values[0] = productListResult.get(i).getProductName();
-			values[1] = productListResult.get(i).getProductDesc();
-			values[2] = String.valueOf(productListResult.get(i).getBarCode());
-			values[3] = String.valueOf(productListResult.get(i).getPrice());
-			values[4] = String.valueOf(productListResult.get(i).getQuantity());
-			values[5] = String.valueOf(productListResult.get(i).getThresholdQuantity());
-			values[6] = String.valueOf(productListResult.get(i).getOrderQuantity());
+			values[1] = String.valueOf(productListResult.get(i).getBarCode());
+			values[2] = String.valueOf(productListResult.get(i).getPrice());
+			values[3] = String.valueOf(productListResult.get(i).getQuantity());
+			values[4] = String.valueOf(productListResult.get(i).getThresholdQuantity());
+			values[5] = String.valueOf(productListResult.get(i).getOrderQuantity());
+			ArrayList<Vendor> vendors = controller
+					.getVendorListByCategoryID(findCategoryID(productListResult.get(i).getProductId()));
+			if (vendors != null && vendors.size() > 0) {
+				values[6] = vendors.get(0).getVendorId();
+			} else {
+				values[6] = StoreConstants.NO_VENDOR_CONFIGURED;
+			}
 			data[i] = values;
 		}
 
+	}
+
+	private String findCategoryID(String productID) {
+		String categoryID = null;
+		if (productID != null && !productID.isEmpty() && productID.length() >= 5) {
+			categoryID = productID.substring(0, 3);
+		}
+
+		return categoryID;
 	}
 
 	private void showNoresult() {
@@ -294,10 +310,10 @@ public class ManageInventory extends JPanel {
 		return false;
 	}
 
-	public JTable getResulTable()
-	{
+	public JTable getResulTable() {
 		return TbResult;
 	}
+
 	private void showEditInventoryWindow(int mode) {
 
 		selectedRow = TbResult.getSelectedRow();

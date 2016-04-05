@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
+import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.*;
 import sg.edu.nus.iss.ssa.util.IOService;
@@ -29,6 +30,7 @@ public class SouvenirStoreApp {
 	public static void main(String[] args) throws FieldMismatchExcepion, IOException {
 
 		IOService<?> ioManager = new IOService<Entity>();
+		EntityListController controller = new EntityListController();
 				
 		try {
 			//load data in memory
@@ -38,6 +40,7 @@ public class SouvenirStoreApp {
 			ioManager.readFromFile( null, FileDataWrapper.transactionList, new Transaction());
 			ioManager.readFromFile( FileDataWrapper.storeKeeperMap,null, new StoreKeeper());
 			ioManager.readFromFile( null, FileDataWrapper.discounts, new PeriodDiscount());
+			controller.loadAllVendorMap();
 			
 			System.out.println("products :" + FileDataWrapper.productMap.keySet());
 			System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());

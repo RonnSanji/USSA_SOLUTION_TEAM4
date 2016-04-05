@@ -1,23 +1,26 @@
 package sg.edu.nus.iss.ssa.gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
@@ -25,10 +28,9 @@ import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.model.Vendor;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
-
-import javax.swing.JLabel;
 
 public class ManageCategory extends JPanel {
 
@@ -36,13 +38,13 @@ public class ManageCategory extends JPanel {
 	EntityListController controller = new EntityListController();
 	// private JPanel contentPane;
 	private JTextField txtSearchText;
-	private JButton btnSearch;
 	private JTable TbResult;
-	JComboBox<String> comboBoxSearchBy;
-	JScrollPane scrollPane;
-	JLabel lblNoResult;
-	JButton btnAddCategory;
-	JButton btnRemoveCategory;
+	private JComboBox<String> comboBoxSearchBy;
+	private JScrollPane scrollPane;
+	private JLabel lblNoResult;
+	private JLabel lblSeachBy;
+	private JButton btnAddCategory;
+	private JButton btnRemoveCategory;
 
 	private String[] comboBoxSearchByItem = new String[] { "Code", "Name" };
 
@@ -53,31 +55,24 @@ public class ManageCategory extends JPanel {
 	private List<Category> categoryListResult;
 	private Category selectedCategory;
 
-	String[] columns = new String[] { "Category Code", "Category Name" };
-	String[][] data;
-
-	TableModel model;
+	private String[] columns = new String[] { "Category Code", "Category Name", "Preferred Vendor" };
+	private String[][] data;
+	private model tableModel;
+	private TableModel model;
 
 	private int selectedRow;
 	private JButton btnEditCategory;
 
 	public ManageCategory() {
-		// setResizable(false);
+
 		this.setSize(800, 600);
 		this.setOpaque(false);
-		// setTitle("Manage Category");
-		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// this.setBounds(100, 100, 800, 550);
+
 		setLayout(null);
-		// contentPane = new JPanel();
 
-		// this.add(contentPane);
-		// contentPane.setBounds(120, 205, 1, 1);
-		// contentPane.setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("Search by");
-		lblNewLabel.setBounds(50, 30, 80, 14);
-		this.add(lblNewLabel);
+		lblSeachBy = new JLabel("Search by");
+		lblSeachBy.setBounds(50, 30, 80, 14);
+		this.add(lblSeachBy);
 
 		comboBoxSearchBy = new JComboBox<String>();
 		comboBoxSearchBy.setBounds(129, 27, 106, 20);
@@ -103,7 +98,7 @@ public class ManageCategory extends JPanel {
 		this.add(lblNoResult);
 
 		btnAddCategory = new JButton("Add Category");
-		btnAddCategory.setBounds(98, 525, 150, 60);
+		btnAddCategory.setBounds(10, 525, 150, 60);
 		btnAddCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addCategory();
@@ -112,10 +107,11 @@ public class ManageCategory extends JPanel {
 		});
 		this.add(btnAddCategory);
 
-		TbResult = new JTable(new model());
+		tableModel= new model();
+		TbResult = new JTable(tableModel);
 		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TbResult.setFillsViewportHeight(true);
-
+		
 		scrollPane = new JScrollPane(TbResult);
 		scrollPane.setBounds(10, 100, 780, 420);
 		this.add(scrollPane);
@@ -148,7 +144,7 @@ public class ManageCategory extends JPanel {
 				}
 			}
 		});
-		btnRemoveCategory.setBounds(561, 525, 150, 60);
+		btnRemoveCategory.setBounds(427, 525, 150, 60);
 		add(btnRemoveCategory);
 
 		btnEditCategory = new JButton("Edit Category");
@@ -157,8 +153,17 @@ public class ManageCategory extends JPanel {
 				editCategory();
 			}
 		});
-		btnEditCategory.setBounds(326, 525, 150, 60);
+		btnEditCategory.setBounds(214, 525, 150, 60);
 		add(btnEditCategory);
+
+		JButton btnManageVendor = new JButton("Manage Vendor");
+		btnManageVendor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				manageVendor();
+			}
+		});
+		btnManageVendor.setBounds(640, 525, 150, 60);
+		add(btnManageVendor);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
 
@@ -254,6 +259,12 @@ public class ManageCategory extends JPanel {
 			String[] values = new String[columns.length];
 			values[0] = categoryListResult.get(i).getCategoryId();
 			values[1] = categoryListResult.get(i).getCategoryName();
+			ArrayList<Vendor> vendors = controller.getVendorListByCategoryID(values[0]);
+			if (vendors != null && vendors.size() > 0) {
+				values[2] = vendors.get(0).getVendorId();
+			} else {
+				values[2] = StoreConstants.NO_VENDOR_CONFIGURED;
+			}
 			data[i] = values;
 		}
 
@@ -262,6 +273,7 @@ public class ManageCategory extends JPanel {
 	private void showNoresult() {
 		TbResult.setVisible(false);
 		btnRemoveCategory.setEnabled(false);
+		btnEditCategory.setEnabled(false);
 		lblNoResult.setText("No result found");
 	}
 
@@ -272,22 +284,86 @@ public class ManageCategory extends JPanel {
 		TbResult.setModel(model);
 		TbResult.setVisible(true);
 		btnRemoveCategory.setEnabled(true);
+		btnEditCategory.setEnabled(true);
 	}
-	
+
 	private void editCategory() {
 		selectedRow = TbResult.getSelectedRow();
 		if (selectedRow == -1) {
-			// JOptionPane.showMessageDialog(contentPane, "Please select a
-			// product", "Warning",JOptionPane.WARNING_MESSAGE);
+
 			DisplayUtil.displayValidationError(scrollPane, StoreConstants.SELECT_CATEGORY);
 			return;
 		}
 		selectedCategory = categoryListResult.get(selectedRow);
 		showAddEditCategoryWindow();
 	}
+
 	private void addCategory() {
 		selectedCategory = null;
 		showAddEditCategoryWindow();
+	}
+
+	private void manageVendor() {
+		selectedRow = TbResult.getSelectedRow();
+		if (selectedRow == -1) {
+			if (selectedRow == -1) {
+				DisplayUtil.displayValidationError(scrollPane, StoreConstants.SELECT_CATEGORY);
+				return;
+			}
+		}
+		selectedCategory = categoryListResult.get(selectedRow);
+		showManageVendorWindow();
+	}
+
+	private void showManageVendorWindow() {
+		ManageVendor manageVendor = new ManageVendor(selectedCategory);
+		manageVendor.setLocation(this.getLocationOnScreen());
+		manageVendor.setModal(true);
+		manageVendor.setVisible(true);
+		manageVendor.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				search();
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	private void showAddEditCategoryWindow() {
@@ -328,16 +404,16 @@ public class ManageCategory extends JPanel {
 		});
 	}
 
-	class model extends AbstractTableModel {
+	class model extends DefaultTableModel {
 
 		private static final long serialVersionUID = 1817809661748404816L;
 
-		@Override
+		List<Color> rowColours = Arrays.asList(Color.RED, Color.GREEN, Color.CYAN);
+
 		public int getColumnCount() {
 			return columns.length;
 		}
 
-		@Override
 		public int getRowCount() {
 			// TODO Auto-generated method stub
 			if (data == null) {
@@ -346,7 +422,6 @@ public class ManageCategory extends JPanel {
 			return data.length;
 		}
 
-		@Override
 		public Object getValueAt(int arg0, int arg1) {
 			// TODO Auto-generated method stub
 			if (data == null) {
@@ -356,11 +431,21 @@ public class ManageCategory extends JPanel {
 				return null;
 			}
 			return data[arg0][arg1];
+
 		}
 
-		@Override
 		public String getColumnName(int col) {
 			return columns[col];
 		}
+
+		public void setRowColour(int row, Color c) {
+			rowColours.set(row, c);
+			fireTableRowsUpdated(row, row);
+		}
+
+		public Color getRowColour(int row) {
+			return rowColours.get(0);
+		}
+
 	}
 }

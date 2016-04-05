@@ -41,8 +41,8 @@ public class IOService<E> {
         File inputFile = new File(dataFilePathPrefix + fileName);
         if (inputFile == null || !inputFile.exists()) {
             throw new FileNotFoundException(fileName + " file is not available. Please make sure file is present " +
-                    "	under \"data\" folder and same is added in classpath. ");
-        }
+					"	under \"data\" folder. ");
+		}
 
         //by now we know that file is available for processing.
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
@@ -155,8 +155,14 @@ public class IOService<E> {
 		String[] fields = entityToCreate.getProperties();
 		File outputFile = new File(dataFilePathPrefix + fileName);
 		if (outputFile == null || !outputFile.exists()) {
-			throw new FileNotFoundException(fileName + " file is not available. Please make sure file is present "
-					+ "	under \"data\" folder and same is added in classpath. ");
+			if (outputFile.createNewFile()) {
+				System.out.println("File: " + fileName + " does not exist, creating new ...");
+			} else {
+				throw new FileNotFoundException(
+						fileName + " file is not available, failed to create new one. Please make sure file is present "
+								+ "	under \"data\" folder. ");
+			}
+
 		}
 		StringBuilder sb = new StringBuilder();
 		try {

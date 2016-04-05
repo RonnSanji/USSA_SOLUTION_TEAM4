@@ -1,44 +1,48 @@
 package sg.edu.nus.iss.ssa.gui;
 
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import sg.edu.nus.iss.ssa.constants.StoreConstants;
-import sg.edu.nus.iss.ssa.controller.EntityListController;
-import sg.edu.nus.iss.ssa.model.Category;
-import sg.edu.nus.iss.ssa.model.PeriodDiscount;
-import sg.edu.nus.iss.ssa.util.DisplayUtil;
-import sg.edu.nus.iss.ssa.validation.FormValidator;
-
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Date;
-import java.awt.event.ActionEvent;
-import javax.swing.text.*;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
-public class EditCategory extends JDialog {
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
+import sg.edu.nus.iss.ssa.controller.EntityListController;
+import sg.edu.nus.iss.ssa.model.Vendor;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.validation.FormValidator;
 
-	private static final long serialVersionUID = -1420940689801074313L;
-	public Category selectedCategory;
+public class EditVendor extends JDialog {
+
+	private static final long serialVersionUID = 1161515678958525932L;
+
+	public Vendor selectedVendor;
+	public String selectedCategoryID;
 	private JPanel contentPanel;
-	private JTextField txtCategoryCode;
-	private JTextArea txtCategoryName;
+	private JTextField txtVendorCode;
+	private JTextArea txtVendorName;
 
-	private String categoryID;
-	private String categoryName;
+	private String vendorID;
+	private String vendorName;
 	private EntityListController controller = new EntityListController();
 
 	// 0 for add, 1 for edit
 	private int mode = 0;
 
-	public EditCategory(Category selectedCategory) {
-		this.selectedCategory = selectedCategory;
+	public EditVendor(String categoryID, Vendor selectedVendor) {
+		this.selectedVendor = selectedVendor;
+		this.selectedCategoryID = categoryID;
 		this.addWindowListener(new MyWindowListener());
 		setResizable(false);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -48,33 +52,20 @@ public class EditCategory extends JDialog {
 		setContentPane(contentPanel);
 		contentPanel.setLayout(null);
 
-		JLabel lblCategoryID = new JLabel("Category Code: ");
-		lblCategoryID.setBounds(68, 38, 128, 14);
-		contentPanel.add(lblCategoryID);
+		JLabel lblVendorID = new JLabel("Vendor Code: ");
+		lblVendorID.setBounds(68, 38, 128, 14);
+		contentPanel.add(lblVendorID);
 
-		JLabel lblCategoryName = new JLabel("Category Name: ");
-		lblCategoryName.setBounds(68, 94, 128, 14);
-		contentPanel.add(lblCategoryName);
+		JLabel lblVendorName = new JLabel("Vendor Name: ");
+		lblVendorName.setBounds(68, 94, 128, 14);
+		contentPanel.add(lblVendorName);
 
 		JButton btnAdd = new JButton("OK");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (validateForm() && validateData()) {
-					saveCategory();
+					saveVendor();
 				}
-				/*
-				 * int dialogResult = -1; if (validateForm()) { String msg =
-				 * validateData(); if (msg == null) { if (addCategory()) {
-				 * dialogResult =
-				 * DisplayUtil.displayConfirmationMessage(contentPane,
-				 * StoreConstants.CATEGORY_ADDED_SUCCESSFULLY); if (dialogResult
-				 * == 0) { clearFields(); } else if (dialogResult == 1) {
-				 * dispose(); } } } else { dialogResult =
-				 * DisplayUtil.displayConfirmationMessage(contentPane, msg); if
-				 * (dialogResult == 0) { clearFields(); } else if (dialogResult
-				 * == 1) { dispose(); } } }
-				 */
-
 			}
 		});
 		btnAdd.setBounds(98, 240, 89, 23);
@@ -89,17 +80,16 @@ public class EditCategory extends JDialog {
 		btnClose.setBounds(249, 240, 89, 23);
 		contentPanel.add(btnClose);
 
-		txtCategoryCode = new JTextField();
+		txtVendorCode = new JTextField();
 
-		txtCategoryCode.setBounds(206, 35, 177, 20);
-		contentPanel.add(txtCategoryCode);
+		txtVendorCode.setBounds(206, 35, 177, 20);
+		contentPanel.add(txtVendorCode);
 
-		txtCategoryName = new JTextArea();
-		txtCategoryName.setLineWrap(true);
-		txtCategoryName.setBounds(274, 158, 177, 109);
-		txtCategoryName.setDocument(new PlainDocument() {
-
-			private static final long serialVersionUID = -4821895230137024666L;
+		txtVendorName = new JTextArea();
+		txtVendorName.setLineWrap(true);
+		txtVendorName.setBounds(274, 158, 177, 109);
+		txtVendorName.setDocument(new PlainDocument() {
+			private static final long serialVersionUID = 8233477329983644784L;
 
 			@Override
 			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -108,18 +98,18 @@ public class EditCategory extends JDialog {
 					super.insertString(offs, str, a);
 			}
 		});
-		contentPanel.add(txtCategoryName);
+		contentPanel.add(txtVendorName);
 
-		JScrollPane scrollPane = new JScrollPane(txtCategoryName);
+		JScrollPane scrollPane = new JScrollPane(txtVendorName);
 		scrollPane.setBounds(206, 94, 177, 109);
 		contentPanel.add(scrollPane);
 
 		bindData();
 	}
 
-	private void saveCategory() {
+	private void saveVendor() {
 
-		String msg = controller.saveCategory(selectedCategory, mode);
+		String msg = controller.saveVendor(selectedCategoryID, selectedVendor, mode);
 		if (msg != null) {
 			DisplayUtil.displayValidationError(contentPanel, msg);
 			return;
@@ -127,9 +117,9 @@ public class EditCategory extends JDialog {
 		// add
 		if (mode == 0) {
 			int dialogResult = DisplayUtil.displayConfirmationMessage(contentPanel,
-					StoreConstants.CATEGORY_ADDED_SUCCESSFULLY);
+					StoreConstants.VENDOR_ADDED_SUCCESSFULLY);
 			if (dialogResult == 0) {
-				selectedCategory = null;
+				selectedVendor = null;
 				clearFields();
 			} else if (dialogResult == 1) {
 				dispose();
@@ -137,16 +127,16 @@ public class EditCategory extends JDialog {
 		}
 		// edit
 		else if (mode == 1) {
-			DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.CATEGORY_UPDATED_SUCCESSFULLY);
+			DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.VENDOR_UPDATED_SUCCESSFULLY);
 			dispose();
 		}
 	}
 
 	private boolean validateForm() {
-		categoryID = txtCategoryCode.getText().replace("\n", " ");
-		categoryName = txtCategoryName.getText().replace("\n", " ");
+		vendorID = txtVendorCode.getText().replace("\n", " ");
+		vendorName = txtVendorName.getText().replace("\n", " ");
 
-		String msg = FormValidator.addEditCategoryValidateForm(categoryID, categoryName);
+		String msg = FormValidator.addEditVendorValidateForm(vendorID, vendorName);
 		if (msg != null) {
 			DisplayUtil.displayValidationError(contentPanel, msg);
 			return false;
@@ -156,20 +146,20 @@ public class EditCategory extends JDialog {
 
 	private boolean validateData() {
 		if (mode == 0) {
-			selectedCategory = new Category();
+			selectedVendor = new Vendor(selectedCategoryID);
 		}
 
-		selectedCategory.setCategoryId(txtCategoryCode.getText().trim().replace("\n", " "));
-		selectedCategory.setCategoryName(txtCategoryName.getText().trim().replace("\n", " "));
+		selectedVendor.setVendorId(txtVendorCode.getText().trim().replace("\n", " "));
+		selectedVendor.setVendorName(txtVendorName.getText().trim().replace("\n", " "));
 
 		String msg = null;
 		// add
 		if (mode == 0) {
-			msg = FormValidator.addCategoryValidateData(selectedCategory);
+			msg = FormValidator.addVendorValidateData(selectedVendor);
 		}
 		// edit
 		else if (mode == 1) {
-			msg = FormValidator.editRemoveCategoryValidateData(selectedCategory);
+			msg = FormValidator.editRemoveVendorValidateData(selectedVendor);
 		}
 
 		if (msg != null) {
@@ -180,23 +170,23 @@ public class EditCategory extends JDialog {
 	}
 
 	private void clearFields() {
-		txtCategoryCode.setText("");
-		txtCategoryName.setText("");
+		txtVendorCode.setText("");
+		txtVendorName.setText("");
 	}
 
 	private void bindData() {
 		// add
-		if (selectedCategory == null) {
+		if (selectedVendor == null) {
 			mode = 0;
-			this.setTitle("Add Category");
-			txtCategoryCode.setDocument(new PlainDocument() {
+			this.setTitle("Add Vendor");
+			txtVendorCode.setDocument(new PlainDocument() {
 				private static final long serialVersionUID = 5790057198546248513L;
 
 				@Override
 				public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-					// System.out.println(getLength() + str.length());
-					if (getLength() + str.length() <= StoreConstants.CATEGORY_ID_MAX_LENGTH && str.matches("[a-zA-Z]"))
-						super.insertString(offs, str.toUpperCase(), a);
+
+					if (!str.contains(","))
+						super.insertString(offs, str, a);
 				}
 			});
 			clearFields();
@@ -205,10 +195,10 @@ public class EditCategory extends JDialog {
 		// edit
 		else {
 			mode = 1;
-			this.setTitle("Edit Category");
-			txtCategoryCode.setText(selectedCategory.getCategoryId());
-			txtCategoryCode.setEditable(false);
-			txtCategoryName.setText(selectedCategory.getCategoryName());
+			this.setTitle("Edit Vendor");
+			txtVendorCode.setText(selectedVendor.getVendorId());
+			txtVendorCode.setEditable(false);
+			txtVendorName.setText(selectedVendor.getVendorName());
 
 		}
 	}

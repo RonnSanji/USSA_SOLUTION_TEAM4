@@ -11,6 +11,7 @@ import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.model.StoreKeeper;
+import sg.edu.nus.iss.ssa.model.Vendor;
 
 public class FormValidator {
 
@@ -26,7 +27,7 @@ public class FormValidator {
 		if (categoryID.isEmpty()) {
 			return StoreConstants.ENTER_CATEGORYID;
 		}
-		if (categoryID.contains(",")) {
+		if (categoryID.contains(",") || categoryID.contains("\n")) {
 			return StoreConstants.INVALID_CATEGORYID;
 		}
 		if (categoryID.length() != 3) {
@@ -39,7 +40,7 @@ public class FormValidator {
 		if (categoryName.isEmpty()) {
 			return StoreConstants.ENTER_CATEGORYNAME;
 		}
-		if (categoryName.contains(",")) {
+		if (categoryName.contains(",") || categoryName.contains("\n")) {
 			return StoreConstants.INVALID_CATEGORYNAME;
 		}
 		return null;
@@ -142,13 +143,13 @@ public class FormValidator {
 		if (discountCode == null || discountCode.isEmpty()) {
 			return StoreConstants.ENTER_DISCOUNT_CODE;
 		}
-		if (discountCode.contains(",")) {
+		if (discountCode.contains(",") || discountCode.contains("\n")) {
 			return StoreConstants.INVALID_DISCOUNT_CODE;
 		}
 		if (discountDescription == null || discountDescription.isEmpty()) {
 			return StoreConstants.ENTER_DISCOUNT_DESCRIPTION;
 		}
-		if (discountDescription.contains(",")) {
+		if (discountDescription.contains(",") || discountDescription.contains("\n")) {
 			return StoreConstants.INVALID_DISCOUNT_DESCRIPTION;
 		}
 		if (startDateType == null || startDateType.isEmpty()) {
@@ -166,7 +167,7 @@ public class FormValidator {
 		if (period == null || period.isEmpty()) {
 			return StoreConstants.ENTER_DISCOUNT_PERIOD;
 		}
-		if (period.contains(",")) {
+		if (period.contains(",") || period.contains("\n")) {
 			return StoreConstants.INVALID_DISCOUNT_PERIOD;
 		}
 		if (startDateType.equalsIgnoreCase(StoreConstants.PERMANENT_DSCOUNT_START_DATE)) {
@@ -239,13 +240,13 @@ public class FormValidator {
 		if (memberName == null || memberName.isEmpty() || memberNumber == null || memberNumber.isEmpty()) {
 			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
 		}
-		if (memberName.contains(",")) {
+		if (memberName.contains(",") || memberName.contains("\n")) {
 			return StoreConstants.INVALID_NEWMEMBER_NAME;
 		}
 		if (memberNumber.length() != 9) {
 			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
 		}
-		if (memberNumber.contains(",")) {
+		if (memberNumber.contains(",") || memberNumber.contains("\n")) {
 			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
 		}
 		return null;
@@ -297,19 +298,19 @@ public class FormValidator {
 		if (categoryName == null || categoryName.isEmpty()) {
 			return StoreConstants.BLANK_CATEGORYNAME;
 		}
-		if (categoryName.contains(",")) {
+		if (categoryName.contains(",") || categoryName.contains("\n")) {
 			return StoreConstants.INVALID_CATEGORYNAME;
 		}
 		if (quantityAvailable.isEmpty() || quantityAvailable == null) {
 			return StoreConstants.EMPTY_QUANTITY;
 		}
-		if (quantityAvailable.contains(",")) {
+		if (quantityAvailable.contains(",") || quantityAvailable.contains("\n")) {
 			return StoreConstants.INVALID_QUANTITY;
 		}
 		if (price.isEmpty() || price == null) {
 			return StoreConstants.EMPTY_PRICE;
 		}
-		if (price.contains(",")) {
+		if (price.contains(",") || price.contains("\n")) {
 			return StoreConstants.INVALID_PRICE;
 		}
 		if (productName == null || productName.isEmpty()) {
@@ -323,7 +324,7 @@ public class FormValidator {
 		} else if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
 			return "Invalid Product Threshold Quantity. Please Enter Only Digits.";
 		}
-		if (productName.contains(",")) {
+		if (productName.contains(",") || productName.contains("\n")) {
 			return StoreConstants.INVALID_PRODUCT_NAME;
 		}
 		if (categoryName.length() != 3) {
@@ -337,6 +338,56 @@ public class FormValidator {
 		}
 		if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
 			return StoreConstants.INVALID_THRESHOLD;
+		}
+		return null;
+	}
+
+	public static String addEditVendorValidateForm(String vendorCode, String vendorName) {
+		if (vendorCode == null || vendorCode.trim().isEmpty()) {
+			return StoreConstants.ENTER_VENDOR_CODE;
+		}
+		if (vendorCode.contains(",") || vendorCode.contains("\n")) {
+			return StoreConstants.INVALID_VENDOR_CODE;
+		}
+		if (vendorName == null || vendorName.trim().isEmpty()) {
+			return StoreConstants.ENTER_VENDOR_NAME;
+		}
+		if (vendorName.contains(",") || vendorName.contains("\n")) {
+			return StoreConstants.INVALID_VENDOR_NAME;
+		}
+		return null;
+	}
+
+	public static String removeVendorValidateForm(String vendorCode) {
+		if (vendorCode == null || vendorCode.trim().isEmpty()) {
+			return StoreConstants.SELECT_VENDOR;
+		}
+
+		return null;
+	}
+
+	public static String editRemoveVendorValidateData(Vendor selectedVendor) {
+		if (selectedVendor == null) {
+			return StoreConstants.EMPTY_VENDOR;
+		}
+		for (int i = 0; i < FileDataWrapper.vendorList.size(); i++) {
+			Vendor tempVendor = FileDataWrapper.vendorList.get(i);
+			if (tempVendor.getVendorId().equalsIgnoreCase(selectedVendor.getVendorId())) {
+				return null;
+			}
+		}
+		return "Vendor: " + selectedVendor.getVendorId() + " " + StoreConstants.VENDOR_NOT_EXIST;
+	}
+
+	public static String addVendorValidateData(Vendor selectedVendor) {
+		if (selectedVendor == null) {
+			return StoreConstants.EMPTY_VENDOR;
+		}
+		for (int i = 0; i < FileDataWrapper.vendorList.size(); i++) {
+			Vendor tempVendor = FileDataWrapper.vendorList.get(i);
+			if (tempVendor.getVendorId().equalsIgnoreCase(selectedVendor.getVendorId())) {
+				return "Vendor: " + selectedVendor.getVendorId() + " " + StoreConstants.VENDOR_EXIST;
+			}
 		}
 		return null;
 	}

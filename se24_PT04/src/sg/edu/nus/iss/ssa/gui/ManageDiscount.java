@@ -38,7 +38,7 @@ public class ManageDiscount extends JPanel {
 	private JComboBox<String> comboBoxSearchBy;
 	private JScrollPane scrollPane;
 	private JLabel lblNoResult;
-	private JButton btnEdit;
+	private JButton btnEditDiscount;
 	private JButton btnAddDiscount;
 	private JButton btnRemoveDiscount;
 
@@ -90,16 +90,15 @@ public class ManageDiscount extends JPanel {
 		lblNoResult.setBounds(75, 71, 150, 14);
 		this.add(lblNoResult);
 
-		btnEdit = new JButton("Edit Discount");
-		btnEdit.setBounds(326, 525, 150, 60);
-		btnEdit.setEnabled(false);
-		btnEdit.addActionListener(new ActionListener() {
+		btnEditDiscount = new JButton("Edit Discount");
+		btnEditDiscount.setBounds(326, 525, 150, 60);
+		btnEditDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editDiscount();
 
 			}
 		});
-		this.add(btnEdit);
+		this.add(btnEditDiscount);
 
 		TbResult = new JTable(new model());
 		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -240,17 +239,19 @@ public class ManageDiscount extends JPanel {
 
 	private void showNoresult() {
 		// scrollPane.setVisible(false);
-		btnEdit.setEnabled(false);
+		btnEditDiscount.setEnabled(false);
 		btnRemoveDiscount.setEnabled(false);
+		btnEditDiscount.setEnabled(false);
 		TbResult.setVisible(false);
 		lblNoResult.setText("No result found");
 	}
 
 	private void showResultTable() {
 		lblNoResult.setText("");
-		btnEdit.setEnabled(true);
+		btnEditDiscount.setEnabled(true);
 		btnRemoveDiscount.setEnabled(true);
-
+		btnEditDiscount.setEnabled(true);
+		
 		model = new model();
 
 		TbResult.setModel(model);

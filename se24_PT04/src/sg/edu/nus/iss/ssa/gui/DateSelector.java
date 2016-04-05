@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import java.awt.Font;
 
 public class DateSelector extends JPanel {
 
@@ -82,10 +83,12 @@ public class DateSelector extends JPanel {
 			}
 		});
 		JLabel lblYear = new JLabel("Year: ");
+		lblYear.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblYear.setBounds(0, 0, 32, 20);
 		add(lblYear);
 
 		comboBoxYear = new JComboBox<String>();
+		comboBoxYear.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		comboBoxYear.setBounds(lblYear.getX() + lblYear.getWidth() + 2, 0, 70, 20);
 		comboBoxYear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -98,10 +101,12 @@ public class DateSelector extends JPanel {
 		add(comboBoxYear);
 
 		JLabel lblMonth = new JLabel("Month: ");
+		lblMonth.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblMonth.setBounds(comboBoxYear.getX() + comboBoxYear.getWidth() + 2, 0, 42, 20);
 		add(lblMonth);
 
 		comboBoxMonth = new JComboBox<String>();
+		comboBoxMonth.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		comboBoxMonth.setBounds(lblMonth.getX() + lblMonth.getWidth() + 2, 0, 70, 20);
 		comboBoxMonth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -113,10 +118,12 @@ public class DateSelector extends JPanel {
 		add(comboBoxMonth);
 
 		JLabel lblDay = new JLabel("Day: ");
+		lblDay.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblDay.setBounds(comboBoxMonth.getX() + comboBoxMonth.getWidth() + 2, 3, 32, 14);
 		add(lblDay);
 
 		comboBoxDay = new JComboBox<String>();
+		comboBoxDay.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		comboBoxDay.setBounds(lblDay.getX() + lblDay.getWidth() + 2, 0, 70, 20);
 		add(comboBoxDay);
 

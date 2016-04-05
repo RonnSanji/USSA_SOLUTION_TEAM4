@@ -56,9 +56,9 @@ public class EditDiscount extends JDialog {
 
 	public EditDiscount(PeriodDiscount selectedDiscount) {
 		this.selectedDiscount = selectedDiscount;
-	
+
 		setResizable(false);
-		
+
 		this.addWindowListener(new MyWindowListener());
 
 		setBounds(100, 100, 652, 447);
@@ -122,7 +122,9 @@ public class EditDiscount extends JDialog {
 
 			@Override
 			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-				super.insertString(offs, str.toUpperCase(), a);
+				if (!str.contains(",")) {
+					super.insertString(offs, str.toUpperCase(), a);
+				}
 			}
 		});
 		txtDiscountCode.setColumns(10);
@@ -130,6 +132,15 @@ public class EditDiscount extends JDialog {
 		txtDiscountDescription = new JTextArea();
 		txtDiscountDescription.setAutoscrolls(true);
 		txtDiscountDescription.setLineWrap(true);
+		txtDiscountDescription.setDocument(new PlainDocument() {
+ 
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+
+				if (!str.contains(","))
+					super.insertString(offs, str, a);
+			}
+		});
 		contentPanel.add(txtDiscountDescription);
 
 		scrollPane = new JScrollPane(txtDiscountDescription);
@@ -269,9 +280,9 @@ public class EditDiscount extends JDialog {
 			selectedDiscount = new PeriodDiscount();
 		}
 
-		selectedDiscount.setDiscountCode(txtDiscountCode.getText().trim());
-		selectedDiscount.setDiscountDesc(txtDiscountDescription.getText().trim());
-		selectedDiscount.setDiscountPerc(Float.parseFloat(txtPercentage.getText().trim()));
+		selectedDiscount.setDiscountCode(txtDiscountCode.getText().trim().replace("\n", " "));
+		selectedDiscount.setDiscountDesc(txtDiscountDescription.getText().trim().replace("\n", " "));
+		selectedDiscount.setDiscountPerc(Float.parseFloat(txtPercentage.getText().trim().replace("\n", " ")));
 		// member
 		if (comboApplicableTo.getSelectedItem().toString().equalsIgnoreCase(StoreConstants.MEMBER_DICSOUNT_NAME)) {
 			selectedDiscount.setApplicableTo(StoreConstants.MEMBER_DICSOUNT_CODE);
@@ -288,7 +299,7 @@ public class EditDiscount extends JDialog {
 		else if (comboPeriodType.getSelectedIndex() == 2) {
 			selectedDiscount.setStarDate(StoreConstants.PERMANENT_DSCOUNT_START_PERIOD);
 		}
-		selectedDiscount.setDiscountPeriod(txtPeriod.getText().trim());
+		selectedDiscount.setDiscountPeriod(txtPeriod.getText().trim().replace("\n", " "));
 
 		String msg = null;
 		// add

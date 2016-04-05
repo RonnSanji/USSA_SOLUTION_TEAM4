@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.ssa.constants;
 
-public class StoreConstants
-{
+public class StoreConstants {
 
 	public static final String PROJECT_NAME = "se24_PT04";
 	public static final String FIELD_DELIMITER = ",";
@@ -95,7 +94,7 @@ public class StoreConstants
 	// StoreKeeper validation message
 	public static final String STOREKEEPER_NOT_FOUND = "StoreKeeper not found.";
 	public static final String STOREKEEPER_INCORRECT_PASSWORD = "Incorrect password.";
-	
+
 	// Manage discount message
 	public static final String SELECT_DISCOUNT = "Please select a discount";
 	public static final String ENTER_DISCOUNT_CODE = "Please enter discount code";
@@ -116,4 +115,20 @@ public class StoreConstants
 	public static final String EMPTY_DISCOUNT = "Empty discount !";
 	public static final String DISCOUNT_NOT_EXIST = "does not exist";
 	public static final String DISCOUNT_EXIST = "already exists";
+
+	// manage vendor
+	public static final String SELECT_VENDOR = "Please select a vendor";
+	public static final String VENDOR_REMOVED_SUCCESSFULLY = "Vendor has been removed successfully !";
+	public static final String VENDOR_LIST_EMPTY = "Vendor list is empty, please add vendor";
+	public static final String VENDOR_ADDED_SUCCESSFULLY = "Vendor has been added successfully. Would like to add another one ?";
+	public static final String VENDOR_UPDATED_SUCCESSFULLY = "Vendor has been updated successfully !";
+	public static final String ENTER_VENDOR_CODE = "Please enter vendor code";
+	public static final String INVALID_VENDOR_CODE = "Please enter a valid vendor code";
+	public static final String ENTER_VENDOR_NAME = "Please enter vendor name";
+	public static final String INVALID_VENDOR_NAME = "Please enter a valid vendor name";
+	public static final String EMPTY_VENDOR = "Empty vendor !";
+	public static final String VENDOR_EXIST = "already exists";
+	public static final String VENDOR_NOT_EXIST = "does not exist";
+	public static final String CONFIRM_TO_REMOVE_VENDOR = "Confirm to remove vendor ?";
+	public static final String NO_VENDOR_CONFIGURED = "No vendor configured";
 }

@@ -135,6 +135,11 @@ public class EditInventory extends JDialog {
 
 		txtAddQuantity_NewThreshold = new JTextField();
 		txtAddQuantity_NewThreshold.setDocument(new PlainDocument() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 				if (str.matches("[0-9]*"))
@@ -168,6 +173,9 @@ public class EditInventory extends JDialog {
 		txtReorderQuantity.setBounds(250, 270, 46, 20);
 		getContentPane().add(txtReorderQuantity);
 		txtReorderQuantity.setDocument(new PlainDocument() {
+
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 				if (str.matches("[0-9]*"))
@@ -213,15 +221,15 @@ public class EditInventory extends JDialog {
 	}
 
 	private boolean validateForm() {
-		String addQuantity_NewThreshold = txtAddQuantity_NewThreshold.getText();
+		String addQuantity_NewThreshold = txtAddQuantity_NewThreshold.getText().replace("\n", " ");
 		String newReorderQuantity = null;
 		// 0 for configure threshold and reorder quantity
 		if (mode == 0) {
-			newReorderQuantity = txtReorderQuantity.getText();
+			newReorderQuantity = txtReorderQuantity.getText().replace("\n", " ");
 		}
 		// 1 for replenish stock
 		else if (mode == 1) {
-			newReorderQuantity = lblRerorderQuantity.getText();
+			newReorderQuantity = lblRerorderQuantity.getText().replace("\n", " ");
 		}
 		String msg = null;
 		if (mode == 0) {
@@ -244,15 +252,15 @@ public class EditInventory extends JDialog {
 			DisplayUtil.displayValidationError(buttonPane, msg);
 			return;
 		}
-		long stockAdd_newThreshold = Long.parseLong(txtAddQuantity_NewThreshold.getText());
+		long stockAdd_newThreshold = Long.parseLong(txtAddQuantity_NewThreshold.getText().replace("\n", " "));
 		long newReorderQuantity = 0;
 		// 0 for configure threshold and reorder quantity
 		if (mode == 0) {
-			newReorderQuantity = Long.parseLong(txtReorderQuantity.getText());
+			newReorderQuantity = Long.parseLong(txtReorderQuantity.getText().replace("\n", " "));
 		}
 		// 1 for replenish stock
 		else if (mode == 1) {
-			newReorderQuantity = Long.parseLong(lblRerorderQuantity.getText());
+			newReorderQuantity = Long.parseLong(lblRerorderQuantity.getText().replace("\n", " "));
 		}
 		if (mode == 0) {
 			msg = controller.updateThreshold_ReorderQuantity(selectedProduct, stockAdd_newThreshold,
@@ -278,43 +286,42 @@ public class EditInventory extends JDialog {
 
 		@Override
 		public void windowActivated(WindowEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void windowClosed(WindowEvent arg0) {
-			// TODO Auto-generated method stub
+ 
 			controller = null;
 		}
 
 		@Override
 		public void windowClosing(WindowEvent arg0) {
-			// TODO Auto-generated method stub
+	 
 
 		}
 
 		@Override
 		public void windowDeactivated(WindowEvent arg0) {
-			// TODO Auto-generated method stub
+ 
 
 		}
 
 		@Override
 		public void windowDeiconified(WindowEvent arg0) {
-			// TODO Auto-generated method stub
+ 
 
 		}
 
 		@Override
 		public void windowIconified(WindowEvent arg0) {
-			// TODO Auto-generated method stub
+ 
 
 		}
 
 		@Override
 		public void windowOpened(WindowEvent arg0) {
-			// TODO Auto-generated method stub
+ 
 
 		}
 
