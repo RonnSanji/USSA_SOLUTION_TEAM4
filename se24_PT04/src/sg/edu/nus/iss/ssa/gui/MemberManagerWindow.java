@@ -56,6 +56,8 @@ public class MemberManagerWindow extends JPanel {
 	private String[] comboBoxSearchByItem = new String[] { "Member Name", "Member ID" };
 	private String[] columns = new String[] { "Member Name", "Member Number", "Loylty Points" };
 	private String searchBy;
+	private Member membertoEdit;
+	private int selectedRow;
 	
 	/**
 	 * Create the application.
@@ -96,7 +98,7 @@ public class MemberManagerWindow extends JPanel {
 			
 			
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table.getSelectedRow();
+			    selectedRow = table.getSelectedRow();
 				String selectedRowKey =null;
 				try
 				{
@@ -115,17 +117,7 @@ public class MemberManagerWindow extends JPanel {
 						// Confirm Remove
 						model.removeRow(selectedRow);
 						FileDataWrapper.memberMap.remove(selectedRowKey);
-						// update the .dat file
-						IOService<?> ioManager = new IOService<Entity>();
-						try {
-							ioManager.writeToFile(FileDataWrapper.memberMap.values(), new Member());
-							ioManager = null;
-						} catch (Exception ex)
-
-						{
-							DisplayUtil.displayValidationError(buttonPanel, StoreConstants.ERROR + " saving new member");
-							ioManager = null;
-						}
+						updateDatFile();
 					}
 
 				}
@@ -137,6 +129,23 @@ public class MemberManagerWindow extends JPanel {
 		JButton btnEditMember = new JButton("Edit Member");
 		btnEditMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+			    selectedRow = table.getSelectedRow();
+				String selectedRowKey =null;
+				try
+				{
+				 selectedRowKey = table.getValueAt(selectedRow, 1).toString();
+				}
+				catch( Exception es)
+				{
+					JOptionPane.showMessageDialog(table, "Please select at least one row", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				if(selectedRow != -1){
+			    membertoEdit = FileDataWrapper.memberMap.get(table.getValueAt(selectedRow, 1));
+				MemberEditWindow memberEditWindow = new MemberEditWindow(membertoEdit,memberManagerWindow);				
+				memberEditWindow.setModal(true);
+				memberEditWindow.setVisible(true);
+				}
 			}
 		});
 		btnEditMember.setBounds(316, 5, 160, 55);
@@ -197,6 +206,16 @@ public class MemberManagerWindow extends JPanel {
 	public void refreshTable(String[] memberProperty){
 		this.model.addRow(memberProperty);
 	}
+	
+	public void updateEditedMember(){
+		model.setValueAt(membertoEdit.getMemberName(), selectedRow, 0);
+		model.setValueAt(membertoEdit.getMemberId(), selectedRow, 1);
+		model.setValueAt(membertoEdit.getLoyaltyPoints(), selectedRow, 2);
+		FileDataWrapper.memberMap.put(membertoEdit.getMemberId(), membertoEdit);
+		table.setModel(model);
+		updateDatFile();	
+	}
+	
 	private void memberSearch(){
 		memberList = (Collection<Member>) FileDataWrapper.memberMap.values();
 		memberListResult = new ArrayList<Member>();
@@ -237,6 +256,19 @@ public class MemberManagerWindow extends JPanel {
 		 
 		table.setModel(modelResult);
 		
+	}
+	
+	private void updateDatFile(){
+		// update the .dat file
+		IOService<?> ioManager = new IOService<Entity>();
+		try {
+			ioManager.writeToFile(FileDataWrapper.memberMap.values(), new Member());
+			ioManager = null;
+		} catch (Exception ex)
+		{
+			DisplayUtil.displayValidationError(buttonPanel, StoreConstants.ERROR + " saving new member");
+			ioManager = null;
+		}
 	}
 	
 	

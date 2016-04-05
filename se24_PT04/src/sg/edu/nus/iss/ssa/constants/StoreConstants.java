@@ -64,6 +64,7 @@ public class StoreConstants
 	public static final String BLANK_MEMBER_NUMBERANDNAME = "Please enter Member Name and Member Number";
 	public static final String INVALID_NEWMEMBER_NUMBER = "Not a valid member, Please enter a number with 9 Charactor";
 	public static final String INVALID_NEWMEMBER_NAME = "Please enter a valid member name";
+	public static final String INVALID_LOYLTY_POINT = "Please enter a valid loylty point";
 	// Manage stock message
 	public static final String SELECT_PRODUCT = "Please select a product";
 	public static final String STOCK_UPDATED_SUCCESSFULLY = "Stock has been updated successfully !";

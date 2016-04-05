@@ -250,6 +250,25 @@ public class FormValidator {
 		}
 		return null;
 	}
+	
+	public static String editMemeberValidateForm(String memberName, String memberNumber, long LPoint){
+		if (memberName == null || memberName.isEmpty() || memberNumber == null || memberNumber.isEmpty()) {
+			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
+		}
+		if (memberName.contains(",")) {
+			return StoreConstants.INVALID_NEWMEMBER_NAME;
+		}
+		if (memberNumber.length() != 9) {
+			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
+		}
+		if (memberNumber.contains(",")) {
+			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
+		}
+		if(LPoint<0){
+			return StoreConstants.INVALID_LOYLTY_POINT;
+		}
+		return null;
+	}
 
 	public static String addStoreKeeperValidateForm(String name, char[] password) {
 		if (name == null || name.isEmpty()) {
