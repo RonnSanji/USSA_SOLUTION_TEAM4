@@ -99,7 +99,7 @@ public class DiscountOfferCalculatorTest {
         discounts.add(createDiscount("MEMBER_FIRST", "ALWAYS", "ALWAYS", 10f, "M"));
         discounts.add(createDiscount("MEMBER_SUBSEQ", "ALWAYS", "ALWAYS", 20f, "M"));
         float discount = offerCalculator.getDiscountForFirstTransaction();
-        assertEquals(20, discount, 0);
+        assertEquals(10, discount, 0);
 
 
     }
