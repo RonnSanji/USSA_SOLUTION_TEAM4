@@ -314,6 +314,14 @@ public class FormValidator {
 		}
 		if (productName == null || productName.isEmpty()) {
 			return StoreConstants.EMPTY_PRODUCT_NAME;
+		} else if (categoryName.length() != 3) {
+			return "Invalid Category, Please select a valid one";
+		} else if (quantityAvailable.contains("[0-9]+") && quantityAvailable.length()>2) {
+			return "Invalid Quantity Entered. Please Enter a valid one.";
+		} else if (!(price.matches(StoreConstants.NUMBER_REGEX))) {
+			return "Invalid Product Price. Please Enter only number.";
+		} else if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
+			return "Invalid Product Threshold Quantity. Please Enter Only Digits.";
 		}
 		if (productName.contains(",")) {
 			return StoreConstants.INVALID_PRODUCT_NAME;

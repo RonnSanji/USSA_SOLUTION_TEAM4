@@ -10,12 +10,14 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Category;
+import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.BarCodeGenerator;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
@@ -23,230 +25,181 @@ import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.util.ProductIdGenerator;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
 
-public class AddProduct extends JPanel{
-	
-	private JTextField txtProductName;
-	private JTextField txtProductDescription;
-	private JTextField txtQuantityAvailable;
-	private JTextField txtPrice;
-	private JTextField txtReorderQuantity;
-	private JTextField txtOrderQuantity;
-	private JComboBox txtProductCategory ;
-	private String productName;
-	private String productDescription;
-	private String quantityAvailable;
-	private String price;
-	private String reorderQuantity;
-	private String orderQuantity;
-	private String productCategory;
-	private IOService ioService = new IOService();
-	private EntityListController entityListController = new EntityListController();
+public class AddProduct extends JDialog {
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddProduct window = new AddProduct();
-					window.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+  private final JPanel contentPanel = new JPanel();
+  private final JPanel buttonPanel = new JPanel();
+  private JTextField txtProductName;
+  private JTextField txtProductDescription;
+  private JTextField txtQuantityAvailable;
+  private JTextField txtPrice;
+  private JTextField txtReorderQuantity;
+  private JTextField txtOrderQuantity;
+  private JComboBox txtProductCategory;
+  private String productName;
+  private String productDescription;
+  private String quantityAvailable;
+  private String price;
+  private String reorderQuantity;
+  private String orderQuantity;
+  private String productCategory;
+  private IOService ioService = new IOService();
+  private EntityListController entityListController = new EntityListController();
 
-	/**
-	 * Create the application.
-	 */
-	public AddProduct() {
-		initialize();
-	}
+  /**
+   * Create the application.
+   */
+  public AddProduct(Map productMap, ManageProductWindow productManagerWindow) {
+    setTitle("Adding New Member");
+    setResizable(false);
+    setLocationRelativeTo(null);
+    getContentPane().setLayout(new BorderLayout());
+    setSize(800, 600);
+    contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+    getContentPane().add(contentPanel, BorderLayout.CENTER);
+    contentPanel.setLayout(null);
+    JLabel lblProductCategory = new JLabel("Product Category");
+    lblProductCategory.setBounds(20, 32, 108, 60);
+    contentPanel.add(lblProductCategory);
+    try {
+      ioService.readFromFile(FileDataWrapper.categoryMap, null, new Category());
+    } catch (FileNotFoundException | FieldMismatchExcepion e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    Map<String, Category> categories = FileDataWrapper.categoryMap;
+    Set<String> ctgs = categories.keySet();
+    txtProductCategory = new JComboBox();
+    for (String c : ctgs) {
+      txtProductCategory.addItem(c);
+    }
+    txtProductCategory.setBounds(164, 55, 120, 16);
+    contentPanel.add(txtProductCategory);
 
+    JLabel lblProductTitle = new JLabel("Product Name");
+    lblProductTitle.setBounds(20, 90, 98, 16);
+    contentPanel.add(lblProductTitle);
 
-	public void initialize1(){
-			AddProduct addProduct = this;
-			setSize(800,600);
+    txtProductName = new JTextField();
+    txtProductName.setBounds(154, 85, 130, 26);
+    contentPanel.add(txtProductName);
+    txtProductName.setColumns(10);
 
-			this.setOpaque(false);
-			setLayout(null);
+    JLabel lblProductDescription = new JLabel("Product Description");
+    lblProductDescription.setBounds(20, 132, 130, 16);
+    contentPanel.add(lblProductDescription);
 
-		}
-	/**
-	 * Initialize the contents of the this.
-	 */
-	private void initialize() {
-		AddProduct addProduct = this;
-		setSize(800,600);
+    txtProductDescription = new JTextField();
+    txtProductDescription.setBounds(154, 127, 130, 26);
+    contentPanel.add(txtProductDescription);
+    txtProductDescription.setColumns(10);
 
-		this.setOpaque(false);
-		setLayout(null);
+    JLabel lblQuantityAvailable = new JLabel("Quantity Available");
+    lblQuantityAvailable.setBounds(20, 172, 130, 16);
+    contentPanel.add(lblQuantityAvailable);
 
-		JLabel lblProductCategory = new JLabel("Product Category");
-		lblProductCategory.setBounds(20, 32, 108, 60);
-		this.add(lblProductCategory);
-		try{
-			ioService.readFromFile(FileDataWrapper.categoryMap,null,new Category());
-		} catch(FileNotFoundException | FieldMismatchExcepion e){
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Map<String,Category> categories = FileDataWrapper.categoryMap;
-		Set<String> ctgs = categories.keySet();
-		txtProductCategory = new JComboBox();
-		for(String c:ctgs){
-			txtProductCategory.addItem(c);
-		}
-		txtProductCategory.setBounds(164, 55, 120,16);
-		this.add(txtProductCategory);
+    txtQuantityAvailable = new JTextField();
+    txtQuantityAvailable.setBounds(154, 167, 130, 26);
+    contentPanel.add(txtQuantityAvailable);
+    txtQuantityAvailable.setColumns(10);
 
-		JLabel lblProductTitle = new JLabel("Product Name");
-		lblProductTitle.setBounds(20, 90, 98, 16);
-		this.add(lblProductTitle);
+    JLabel lblPrice = new JLabel("Price");
+    lblPrice.setBounds(20, 200, 61, 16);
+    contentPanel.add(lblPrice);
 
-		txtProductName = new JTextField();
-		txtProductName.setBounds(154, 85, 130, 26);
-		this.add(txtProductName);
-		txtProductName.setColumns(10);
+    txtPrice = new JTextField();
+    txtPrice.setBounds(154, 195, 130, 26);
+    contentPanel.add(txtPrice);
+    txtPrice.setColumns(10);
 
-		JLabel lblProductDescription = new JLabel("Product Description");
-		lblProductDescription.setBounds(20, 132, 130, 16);
-		this.add(lblProductDescription);
+    JLabel lblNewLabel = new JLabel("ReOrder Quantity");
+    lblNewLabel.setBounds(20, 283, 119, 16);
+    contentPanel.add(lblNewLabel);
 
-		txtProductDescription = new JTextField();
-		txtProductDescription.setBounds(154, 127, 130, 26);
-		this.add(txtProductDescription);
-		txtProductDescription.setColumns(10);
+    txtReorderQuantity = new JTextField();
+    txtReorderQuantity.setBounds(154, 277, 130, 26);
+    contentPanel.add(txtReorderQuantity);
+    txtReorderQuantity.setColumns(10);
 
-		JLabel lblQuantityAvailable = new JLabel("Quantity Available");
-		lblQuantityAvailable.setBounds(20, 172, 130, 16);
-		this.add(lblQuantityAvailable);
+    JLabel lblOrderQuantity = new JLabel("Order Quantity");
+    lblOrderQuantity.setBounds(20, 332, 108, 16);
+    contentPanel.add(lblOrderQuantity);
 
-		txtQuantityAvailable = new JTextField();
-		txtQuantityAvailable.setBounds(154, 167, 130, 26);
-		this.add(txtQuantityAvailable);
-		txtQuantityAvailable.setColumns(10);
+    txtOrderQuantity = new JTextField();
+    txtOrderQuantity.setBounds(154, 327, 130, 26);
+    contentPanel.add(txtOrderQuantity);
+    txtOrderQuantity.setColumns(10);
 
-		JLabel lblPrice = new JLabel("Price");
-		lblPrice.setBounds(20, 200, 61, 16);
-		this.add(lblPrice);
+    buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+    getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-		txtPrice = new JTextField();
-		txtPrice.setBounds(154, 195, 130, 26);
-		this.add(txtPrice);
-		txtPrice.setColumns(10);
+    JButton btnAddProduct = new JButton("Add Product");
+    btnAddProduct.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        fetchValuesFromTextFields();
+        String validatorMessage = FormValidator.addProductValidateForm(productCategory, productName,
+            quantityAvailable, price, reorderQuantity);
+        if (validatorMessage != null) {
+          JOptionPane.showMessageDialog(btnAddProduct, validatorMessage, "Error",
+              JOptionPane.ERROR_MESSAGE);
+        } else {
+          Collection<Product> products = productMap.values();
+          ProductIdGenerator productIdGenerator = new ProductIdGenerator();
+          BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
+          int barCode = barCodeGenerator.generateBarCode();
+          Product product = new Product(
+              productIdGenerator.getProductId(products, productCategory),
+              productName, productDescription,
+              Long.valueOf(quantityAvailable), Double.valueOf(
+                  price),
+              barCode, Long.valueOf(reorderQuantity),
+              Long.valueOf(orderQuantity));
+          // add new member to memory
+          try {
+            productMap.put(barCode, product);
+          } catch (Exception ex) {
+            DisplayUtil.displayValidationError(contentPanel,
+                StoreConstants.ERROR + " creating new product");
+          }
 
-		JLabel lblNewLabel = new JLabel("ReOrder Quantity");
-		lblNewLabel.setBounds(20, 283, 119, 16);
-		this.add(lblNewLabel);
+          // write new memeber from memory to .dat file
+          IOService<?> ioManager = new IOService<Entity>();
+          try {
+            ioManager.writeToFile(productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
+            ioManager = null;
+          } catch (Exception ex)
 
-		txtReorderQuantity = new JTextField();
-		txtReorderQuantity.setBounds(154, 277, 130, 26);
-		this.add(txtReorderQuantity);
-		txtReorderQuantity.setColumns(10);
+          {
+            DisplayUtil.displayValidationError(contentPanel,
+                StoreConstants.ERROR + " saving new product");
+            ioManager = null;
+          }
 
-		JLabel lblOrderQuantity = new JLabel("Order Quantity");
-		lblOrderQuantity.setBounds(20, 332, 108, 16);
-		this.add(lblOrderQuantity);
+          // update the table data in MemberManagerWindow
+          productManagerWindow.refreshTable(product.getProductArray());
+          dispose();
+        }
+      }
+    });
+    buttonPanel.add(btnAddProduct);
 
-		txtOrderQuantity = new JTextField();
-		txtOrderQuantity.setBounds(154, 327, 130, 26);
-		this.add(txtOrderQuantity);
-		txtOrderQuantity.setColumns(10);
+    JButton btnCancel = new JButton("Cancel");
+    btnCancel.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        dispose();
+      }
+    });
+    buttonPanel.add(btnCancel);
+  }
 
-
-		JButton btnAddProduct = new JButton("Add Product");
-		btnAddProduct.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try{
-					int dialogResult = -1;
-					boolean isValid = doValidation();
-					if(isValid){
-           boolean isAdditionSuccesfull = addProduct();
-						if (isAdditionSuccesfull) {
-							dialogResult = DisplayUtil.displayConfirmationMessage(addProduct,
-									StoreConstants.PRODUCT_ADDED_SUCCESSFULLY);
-							if (dialogResult == 0) {
-								clearFields();
-							}
-							else if (dialogResult == 1) {
-							}
-						}
-						reloadData();
-					}
-				}
-				catch(Exception e1){
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnAddProduct.setBounds(54,369,89,23);
-		this.add(btnAddProduct);
-
-		JButton btnClose = new JButton("Cancel");
-		btnClose.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-			}
-		});
-		btnClose.setBounds(209, 369, 89, 23);
-		this.add(btnClose);
-    this.setVisible(true);
-	}
-
-	private boolean doValidation() throws FieldMismatchExcepion,IOException{
-		fetchValuesFromTextFields();
-		String validatorMessage = FormValidator.addProductValidateForm(productCategory,productName,quantityAvailable,price,reorderQuantity);
-		if(validatorMessage!=null){
-			DisplayUtil.displayValidationError(this,validatorMessage);
-			return false;
-		}
-		return true;
-	}
-
-	private void fetchValuesFromTextFields(){
-		productCategory = (String)txtProductCategory.getSelectedItem();
-		productName = txtProductName.getText();
-		productDescription = txtProductDescription.getText();
-		quantityAvailable = txtQuantityAvailable.getText();
-		price = txtPrice.getText();
-		reorderQuantity = txtReorderQuantity.getText();
-		orderQuantity = txtOrderQuantity.getText();
-	}
-
-	private boolean addProduct() throws FieldMismatchExcepion,IOException {
-		Map<Integer,Product> mapProduct = FileDataWrapper.productMap;
-		ioService.readFromFile(mapProduct,null,new Product());
-		Collection<Product> products = mapProduct.values();
-		ProductIdGenerator productIdGenerator = new ProductIdGenerator();
-		BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
-		int barCode = barCodeGenerator.generateBarCode();
-		Product product = new Product(productIdGenerator.getProductId(products,productCategory), productName, productDescription,
-				Long.valueOf(quantityAvailable), Double.valueOf(
-				price),barCode, Long.valueOf(reorderQuantity),
-				Long.valueOf(orderQuantity));
-		String isProductAdded = entityListController.addProduct(product);
-		if(isProductAdded!=null){
-			DisplayUtil.displayValidationError(this,isProductAdded);
-			return false;
-		}
-		return true;
-	}
-
-	private void clearFields() {
-   txtProductDescription.setText("");
-	 txtProductName.setText("");
-		txtOrderQuantity.setText("");
-		txtPrice.setText("");
-		txtQuantityAvailable.setText("");
-		txtReorderQuantity.setText("");
-	}
-
-	private void reloadData() {
-    entityListController.reloadProductData();
-	}
+  private void fetchValuesFromTextFields() {
+    productCategory = (String) txtProductCategory.getSelectedItem();
+    productName = txtProductName.getText();
+    productDescription = txtProductDescription.getText();
+    quantityAvailable = txtQuantityAvailable.getText();
+    price = txtPrice.getText();
+    reorderQuantity = txtReorderQuantity.getText();
+    orderQuantity = txtOrderQuantity.getText();
+  }
 }
