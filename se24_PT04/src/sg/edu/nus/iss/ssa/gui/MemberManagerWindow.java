@@ -79,7 +79,7 @@ public class MemberManagerWindow extends JPanel {
 		this.add(buttonPanel);
 		buttonPanel.setOpaque(false);
 
-		btnAddNewMember = new JButton("Add New Memeber");
+		btnAddNewMember = new JButton("Add Memeber");
 		btnAddNewMember.setBounds(20, 5, 160, 55);
 		btnAddNewMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
