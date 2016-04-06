@@ -51,8 +51,8 @@ public class ProductSelectionWindow extends JPanel {
 		this.setOpaque(false);
 		setLayout(null);
 		
-		JButton btnAddProduct = new JButton("Purchase Product");
-		btnAddProduct.setBounds(589, 402, 177, 27);
+		JButton btnAddProduct = new JButton("Add Product");
+		btnAddProduct.setBounds(596, 400, 170, 40);
 		btnAddProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				PurchaseProduct dialog = new PurchaseProduct(productWin);
@@ -65,7 +65,6 @@ public class ProductSelectionWindow extends JPanel {
 		});
 
 		btnAddProduct.setFont(new Font("Arial", Font.BOLD, 16));
-		btnAddProduct.setHorizontalAlignment(SwingConstants.LEFT);
 		this.add(btnAddProduct);
 		
 		JScrollPane tblScrollPane = new JScrollPane();
@@ -150,7 +149,7 @@ public class ProductSelectionWindow extends JPanel {
 		});
 		btnEnterMemberNumber.setHorizontalAlignment(SwingConstants.LEFT);
 		btnEnterMemberNumber.setFont(new Font("Arial", Font.BOLD, 16));
-		btnEnterMemberNumber.setBounds(393, 542, 213, 27);
+		btnEnterMemberNumber.setBounds(364, 524, 213, 40);
 		this.add(btnEnterMemberNumber);
 		
 		JButton btnRemoveProduct = new JButton("Remove Product");
@@ -193,7 +192,7 @@ public class ProductSelectionWindow extends JPanel {
 		});
 		btnRemoveProduct.setHorizontalAlignment(SwingConstants.LEFT);
 		btnRemoveProduct.setFont(new Font("Arial", Font.BOLD, 16));
-		btnRemoveProduct.setBounds(393, 402, 171, 27);
+		btnRemoveProduct.setBounds(408, 400, 170, 40);
 		this.add(btnRemoveProduct);
 		
 		JButton btnCheckout = new JButton("Checkout");
@@ -207,9 +206,8 @@ public class ProductSelectionWindow extends JPanel {
 				startNewPurchase();
 			}
 		});
-		btnCheckout.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCheckout.setFont(new Font("Arial", Font.BOLD, 16));
-		btnCheckout.setBounds(627, 542, 139, 27);
+		btnCheckout.setBounds(596, 524, 170, 40);
 		this.add(btnCheckout);
 		
 		updatedFieldValue(order);

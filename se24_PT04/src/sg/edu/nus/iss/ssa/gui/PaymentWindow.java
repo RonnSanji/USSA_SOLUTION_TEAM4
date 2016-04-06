@@ -3,6 +3,9 @@ package sg.edu.nus.iss.ssa.gui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -125,6 +128,13 @@ public class PaymentWindow extends JPanel {
 		pointsRedeemed = new JTextField();
 		pointsRedeemed.setColumns(10);
 		pointsRedeemed.setBounds(230, 279, 166, 26);
+		pointsRedeemed.setDocument(new PlainDocument() {
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (str.matches("\\d*"))
+					super.insertString(offs, str, a);
+			}
+		});
 		this.add(pointsRedeemed);
 		
 		JLabel lblCashRendered = new JLabel("Cash Rendered:");
@@ -134,14 +144,23 @@ public class PaymentWindow extends JPanel {
 		cashRendered = new JTextField();
 		cashRendered.setColumns(10);
 		cashRendered.setBounds(230, 322, 166, 26);
+		cashRendered.setDocument(new PlainDocument() {
+			private static final long serialVersionUID = 254862027426058887L;
+
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (str.matches("(?:\\d*\\.)?\\d+") || str.matches("\\."))
+					super.insertString(offs, str, a);
+			}
+		});
 		this.add(cashRendered);
 		
 		btnPay = new JButton("Pay");
 		btnPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Check Amount Rendered
-				String pointsRedeemedStr = pointsRedeemed.getText();
-				String renderedCashStr = cashRendered.getText();
+				String pointsRedeemedStr = pointsRedeemed.getText().trim();
+				String renderedCashStr = cashRendered.getText().trim();
 				Long redeemedPoints = new Long(0);
 				Double renderedCash = new Double(0);
 				if (pointsRedeemedStr.equals("") && renderedCashStr.equals("")) {
@@ -149,10 +168,24 @@ public class PaymentWindow extends JPanel {
 				} else {
 					try {
 						if (!pointsRedeemedStr.equals("")) {
-							redeemedPoints = Long.parseLong(pointsRedeemedStr);
+							try{
+								redeemedPoints = Long.parseLong(pointsRedeemedStr);
+							}
+							catch(Exception ex)
+							{
+								DisplayUtil.displayValidationError(payWin, StoreConstants.INVALID_MEMBER_POINT);
+								return;
+							}
 						}
 						if (!renderedCashStr.equals("")) {
+							try{
 							renderedCash = Double.parseDouble(renderedCashStr);
+							}
+							catch(Exception ex)
+							{
+								DisplayUtil.displayValidationError(payWin, StoreConstants.INVALID_CASH);
+								return;
+							}
 						}
 
 						//validate Points

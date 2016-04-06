@@ -28,6 +28,8 @@ public class StoreConstants {
 	public static final String BLANK_INPUT_FOR_PRODUCT_PURCHASE = "Please enter BarCode and Quantity to purchase the product.";
 	public static final String PRODUCT_QUANTITY_NON_NUMERIC = "Quantity must be numeric value.";
 	public static final String INVALID_PRODUCT_QUANTITY = "Entered Product Quantity is higher than available Stock.";
+	public static final String INVALID_MEMBER_POINT ="Please enter a valid member point";
+	public static final String INVALID_CASH ="Please enter a valid cash amount";
 
 	// Member Validation error message
 	public static final String BLANK_MEMBER_NUMBER = "Please enter Member Number.";
