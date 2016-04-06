@@ -115,7 +115,7 @@ public class PaymentWindow extends JPanel {
 		finalPrice.setEditable(false);
 		finalPrice.setColumns(10);
 		finalPrice.setBounds(230, 238, 166, 26);
-		finalPrice.setText(String.valueOf(FileDataWrapper.receipt.getFinalPrice()));
+		finalPrice.setText(String.valueOf(DisplayUtil.roundOffTwoDecimalPlaces(FileDataWrapper.receipt.getFinalPrice())));
 		this.add(finalPrice);
 		
 		JLabel lblRedeemPoints = new JLabel("Redeem Points:");
