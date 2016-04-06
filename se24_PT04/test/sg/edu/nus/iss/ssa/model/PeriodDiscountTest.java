@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by Adya on 4/6/2016.
+ * Created by Amarjeet B  Singh .
  */
 public class PeriodDiscountTest {
 
