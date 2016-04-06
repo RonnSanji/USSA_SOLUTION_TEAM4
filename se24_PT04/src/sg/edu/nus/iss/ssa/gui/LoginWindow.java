@@ -48,7 +48,7 @@ public class LoginWindow extends JFrame {
 	}
 	
 	private void initializeUIElements() {
-		
+		LoginWindow loginWin = this;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle(LoginWindowName);
@@ -60,7 +60,7 @@ public class LoginWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblLogo = new JLabel(AppName, SwingConstants.CENTER);
+		JLabel lblLogo = new JLabel("PT Team 4 Souvenir Store", SwingConstants.CENTER);
 		lblLogo.setFont(new Font("Zapfino", Font.BOLD, 21));
 		lblLogo.setBounds(LoginWindowElementLayoutGuideLeft, LoginWindowElementLayoutGuideTop, LoginWindowTextFieldWidth, LoginWindowTextFieldHeight);
 		contentPane.add(lblLogo);
@@ -87,12 +87,14 @@ public class LoginWindow extends JFrame {
 		contentPane.add(lblError);
 		
 		btnExit = new JButton("Exit");
-		btnExit.setBounds(LoginWindowElementLayoutGuideLeft + LoginWindowTextFieldWidth * 3/4, lblError.getBounds().y + lblError.getSize().height + LoginWindowElementVerticalMargin, LoginWindowTextFieldWidth/4, LoginWindowTextFieldHeight);
+		btnExit.setBounds(253, 231, 100, 50);
 		contentPane.add(btnExit);
 		
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(btnExit.getBounds().x - btnExit.getSize().width, btnExit.getBounds().y, LoginWindowTextFieldWidth/4, LoginWindowTextFieldHeight);
+		btnLogin.setBounds(91, 231, 100, 50);
 		contentPane.add(btnLogin);
+		
+		this.getRootPane().setDefaultButton(btnLogin);
 		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -104,11 +106,11 @@ public class LoginWindow extends JFrame {
 				}else {
 					lblError.setForeground(Color.GREEN);
 					lblError.setText("");
-					dispose();
-					
 					try {
 						DashBoard dashboardwindow = new DashBoard(userName);
+						//dashboardwindow.setLocation(loginWin.getLocationOnScreen());
 						dashboardwindow.setVisible(true);
+						dispose();
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}

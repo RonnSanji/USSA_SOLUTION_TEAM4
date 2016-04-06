@@ -328,8 +328,8 @@ public class ReportSummary extends JPanel {
 	private void filterRecordsByDate() {
 		String startDateString = fromText.getText();
 		String endDateString = toText.getText();
-		System.out.println(startDateString);
-		System.out.println(endDateString);
+		//System.out.println(startDateString);
+		//System.out.println(endDateString);
 
 		if (!(rv.isDateValid(startDateString) && rv.isDateValid(endDateString))) {
 			JOptionPane.showMessageDialog(filterBtn,

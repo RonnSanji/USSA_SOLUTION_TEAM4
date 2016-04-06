@@ -179,7 +179,7 @@ public class PaymentWindow extends JPanel {
 
 			}
 		});
-		btnPay.setBounds(422, 399, 115, 29);
+		btnPay.setBounds(422, 399, 100, 50);
 		this.add(btnPay);
 		
 		btnCancel = new JButton("Cancel");
@@ -189,7 +189,7 @@ public class PaymentWindow extends JPanel {
 				dashBoard.showProductSelectionWindow(dashBoard);
 			}
 		});
-		btnCancel.setBounds(259, 399, 115, 29);
+		btnCancel.setBounds(259, 399, 100, 50);
 		this.add(btnCancel);
 	}
 }

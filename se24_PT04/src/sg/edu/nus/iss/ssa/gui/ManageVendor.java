@@ -134,8 +134,8 @@ public class ManageVendor extends JDialog {
 		contentPane.add(btnAddVendor);
 
 		TbResult = new JTable(new model());
-		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TbResult.setFillsViewportHeight(true);
+		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TbResult.setRowSelectionAllowed(true);
 
 		scrollPane = new JScrollPane(TbResult);

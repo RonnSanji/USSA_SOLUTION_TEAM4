@@ -85,6 +85,7 @@ public class MemberManagerWindow extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				MemberAddingWindow memberAddWindow = new MemberAddingWindow(FileDataWrapper.memberMap,memberManagerWindow);
 				memberAddWindow.setModal(true);
+				memberAddWindow.setLocation(memberManagerWindow.getLocationOnScreen());
 				memberAddWindow.setVisible(true);
 				
 			}
@@ -106,13 +107,15 @@ public class MemberManagerWindow extends JPanel {
 				}
 				catch( Exception es)
 				{
-					JOptionPane.showMessageDialog(table, "Please select at least one row", "Error", JOptionPane.ERROR_MESSAGE);
+					DisplayUtil.displayValidationError(table, StoreConstants.SELECT_MEMBER);
+					//JOptionPane.showMessageDialog(table, "Please select at least one row", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				// check if any row is selected
 				if(selectedRow != -1){
-					System.out.print(selectedRow);
-					int option = JOptionPane.showConfirmDialog(null, "Confirm to remove this member?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
-					System.out.println(option);
+					//System.out.print(selectedRow);
+					int option = DisplayUtil.displayConfirmationMessage(table, StoreConstants.CONFIRM_REMOVE_MEMBER);
+							//JOptionPane.showConfirmDialog(null, "Confirm to remove this member?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+					//System.out.println(option);
 					if(option==0){
 						// Confirm Remove
 						model.removeRow(selectedRow);
@@ -138,12 +141,14 @@ public class MemberManagerWindow extends JPanel {
 				}
 				catch( Exception es)
 				{
-					JOptionPane.showMessageDialog(table, "Please select at least one row", "Error", JOptionPane.ERROR_MESSAGE);
+					DisplayUtil.displayValidationError(table, StoreConstants.SELECT_MEMBER);
+					//JOptionPane.showMessageDialog(table, StoreConstants.SELECT_MEMBER, "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				if(selectedRow != -1){
 			    membertoEdit = FileDataWrapper.memberMap.get(table.getValueAt(selectedRow, 1));
 				MemberEditWindow memberEditWindow = new MemberEditWindow(membertoEdit,memberManagerWindow);				
 				memberEditWindow.setModal(true);
+				memberEditWindow.setLocation(memberManagerWindow.getLocationOnScreen());
 				memberEditWindow.setVisible(true);
 				}
 			}
@@ -167,6 +172,7 @@ public class MemberManagerWindow extends JPanel {
 		};
 		model.isCellEditable(0, 0);
 		table =   new JTable(model);	
+		table.setFillsViewportHeight(true);
 		scrollPane.setViewportView(table);
 		
 		JLabel lblSearchBy = new JLabel("Search by:");
@@ -175,11 +181,11 @@ public class MemberManagerWindow extends JPanel {
 		
 	    comboBoxMemberSearch = new JComboBox();
 		comboBoxMemberSearch.setModel(new DefaultComboBoxModel(comboBoxSearchByItem));
-		comboBoxMemberSearch.setBounds(109, 29, 146, 27);
+		comboBoxMemberSearch.setBounds(95, 28, 117, 27);
 		add(comboBoxMemberSearch);
 		
 		txtMemberSearch = new JTextField();
-		txtMemberSearch.setBounds(290, 27, 228, 28);
+		txtMemberSearch.setBounds(235, 27, 200, 28);
 		add(txtMemberSearch);
 		txtMemberSearch.setColumns(10);
 		
@@ -189,7 +195,7 @@ public class MemberManagerWindow extends JPanel {
 				memberSearch();
 			}
 		});
-		btnMemberSearch.setBounds(543, 28, 117, 29);
+		btnMemberSearch.setBounds(472, 27, 150, 28);
 		add(btnMemberSearch);
 		
 		JButton btnClear = new JButton("Clear");
@@ -199,7 +205,7 @@ public class MemberManagerWindow extends JPanel {
 				table.setModel(model);
 			}
 		});
-		btnClear.setBounds(677, 28, 117, 29);
+		btnClear.setBounds(644, 27, 150, 28);
 		add(btnClear);
 
 	}

@@ -82,21 +82,21 @@ public class ManageInventory extends JPanel {
 		// contentPane.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Search by");
-		lblNewLabel.setBounds(20, 30, 80, 14);
+		lblNewLabel.setBounds(10, 34, 80, 14);
 		this.add(lblNewLabel);
 
 		comboBoxSearchBy = new JComboBox();
-		comboBoxSearchBy.setBounds(88, 27, 106, 20);
+		comboBoxSearchBy.setBounds(75, 27, 106, 28);
 		this.add(comboBoxSearchBy);
 		comboBoxSearchBy.setModel(new DefaultComboBoxModel(comboBoxSearchByItem));
 
 		txtSearchText = new JTextField();
-		txtSearchText.setBounds(204, 27, 168, 20);
+		txtSearchText.setBounds(191, 27, 200, 28);
 		this.add(txtSearchText);
 		txtSearchText.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(382, 26, 79, 23);
+		btnSearch.setBounds(397, 27, 79, 28);
 		this.add(btnSearch);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -134,7 +134,7 @@ public class ManageInventory extends JPanel {
 				showAllBelowThreshold();
 			}
 		});
-		btnShowBelowThreshold.setBounds(592, 26, 193, 23);
+		btnShowBelowThreshold.setBounds(597, 27, 193, 28);
 		this.add(btnShowBelowThreshold);
 
 		TbResult = new JTable(new model());
@@ -151,7 +151,7 @@ public class ManageInventory extends JPanel {
 				search();
 			}
 		});
-		btnClear.setBounds(471, 26, 89, 23);
+		btnClear.setBounds(485, 27, 89, 28);
 		this.add(btnClear);
 
 		JButton btnGeneratePurchaseOrder = new JButton("Generate Order");

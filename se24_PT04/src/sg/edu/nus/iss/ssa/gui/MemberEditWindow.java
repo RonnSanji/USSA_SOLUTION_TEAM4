@@ -11,7 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import javax.swing.JButton;
+
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.model.Member;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -26,29 +31,31 @@ public class MemberEditWindow extends JDialog {
 	private JButton btnEdit;
 	private JButton btnCencel;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					MemberEditWindow window = new MemberEditWindow();
-//					window.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
+/*
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Member m = new Member();
+					m.setMemberId("test id");
+					m.setMemberName("test name");
+					m.setLoyaltyPoints(-1);
+					MemberEditWindow window = new MemberEditWindow(m,null);
+					window.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+*/
 	/**
 	 * Create the application.
 	 */
 	public MemberEditWindow(Member memberTOEdit, MemberManagerWindow memberManagerWindow) {
 
 		getContentPane().setLayout(null);
-		setTitle("Adding New Member");
+		setTitle("Edit Member");
 		setResizable(false);
 		setSize(500, 300);
 		setLocationRelativeTo(null);
@@ -74,8 +81,20 @@ public class MemberEditWindow extends JDialog {
 		textMemberNo = new JTextField();
 		textMemberNo.setBounds(206, 100, 213, 28);
 		contentPanel.add(textMemberNo);
+		textMemberNo.setDocument(new PlainDocument() {
+
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				//if ((getLength() == StoreConstants.MEMBER_NUMBER_LENGTH  || getLength() + str.length() <= StoreConstants.MEMBER_NUMBER_LENGTH) && str.matches("[a-zA-Z0-9]{1,9}"))
+					if ( getLength() + str.length() <= StoreConstants.MEMBER_NUMBER_LENGTH && str.matches("[a-zA-Z0-9]{1,9}"))
+				{
+					super.insertString(offs, str, a);
+				}
+			}
+		});
 		textMemberNo.setText(memberTOEdit.getMemberId());
 		textMemberNo.setColumns(10);
+		
 
 		JLabel lblLPoints = new JLabel("Loylty Points:");
 		lblLPoints.setBounds(64, 164, 106, 16);
@@ -83,22 +102,30 @@ public class MemberEditWindow extends JDialog {
 
 		textLpoint = new JTextField();
 		textLpoint.setBounds(206, 158, 213, 28);
+		textLpoint.setDocument(new PlainDocument() {
+
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (str.matches("\\-*[0-9]*"))
+					super.insertString(offs, str, a);
+			}
+		});
 		contentPanel.add(textLpoint);
 		textLpoint.setText(String.valueOf(memberTOEdit.getLoyaltyPoints()));
 		textLpoint.setColumns(10);
 
-		btnEdit = new JButton("Edit");
+		btnEdit = new JButton("OK");
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String newMemeberName = textMemberName.getText();
-				String newMemeberNumber = textMemberNo.getText();
+				String newMemeberName = textMemberName.getText().trim();
+				String newMemeberNumber = textMemberNo.getText().trim();
 				long newLoyltyPoint = -1;
 				
 				try {
-					 newLoyltyPoint = Long.parseLong(textLpoint.getText());			        
+					 newLoyltyPoint = Long.parseLong(textLpoint.getText().trim());			        
 			      } catch (NumberFormatException nfe) {
-			         System.out.println("NumberFormatException: " + nfe.getMessage());
+			       //  System.out.println("NumberFormatException: " + nfe.getMessage());
 			      }
 
 				
@@ -107,14 +134,14 @@ public class MemberEditWindow extends JDialog {
 					memberTOEdit.setMemberId(newMemeberNumber);
 					memberTOEdit.setLoyaltyPoints(newLoyltyPoint);
 					memberManagerWindow.updateEditedMember();
-					System.out.println(memberTOEdit);
+					//System.out.println(memberTOEdit);
 		
 					dispose();
 				}
 				
 			}
 		});
-		btnEdit.setBounds(63, 220, 120, 45);
+		btnEdit.setBounds(109, 211, 100, 50);
 		contentPanel.add(btnEdit);
 
 		btnCencel = new JButton("Cencel");
@@ -123,7 +150,7 @@ public class MemberEditWindow extends JDialog {
 				dispose();
 			}
 		});
-		btnCencel.setBounds(301, 220, 120, 45);
+		btnCencel.setBounds(274, 211, 100, 50);
 		contentPanel.add(btnCencel);
 
 	}

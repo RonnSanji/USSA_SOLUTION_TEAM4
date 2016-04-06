@@ -33,7 +33,7 @@ public class LowStockAlert extends JFrame {
 				dispose();
 			}
 		});
-		btnClose.setBounds(298, 435, 150, 60);
+		btnClose.setBounds(320, 433, 150, 60);
 		contentPane.add(btnClose);
 	}
 

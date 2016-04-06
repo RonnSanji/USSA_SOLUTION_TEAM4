@@ -57,6 +57,7 @@ public class ProductSelectionWindow extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				PurchaseProduct dialog = new PurchaseProduct(productWin);
 				dialog.setModal(true);
+				dialog.setLocation(productWin.getLocationOnScreen());
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 				
@@ -143,6 +144,7 @@ public class ProductSelectionWindow extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				MemberNumberScreen member = new MemberNumberScreen(productWin);
 				member.setModal(true);
+				member.setLocation(productWin.getLocationOnScreen());
 				member.setVisible(true);
 			}
 		});
@@ -177,9 +179,9 @@ public class ProductSelectionWindow extends JPanel {
 				}
 				// check if any row is selected
 				if(selectedRow != -1){
-					System.out.print(selectedRow);
+					//System.out.print(selectedRow);
 					int option = JOptionPane.showConfirmDialog(null, "Confirm to remove this Product?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
-					System.out.println(option);
+					//System.out.println(option);
 					if(option==0){
 						// Confirm Remove
 						model.removeRow(selectedRow);
@@ -199,7 +201,7 @@ public class ProductSelectionWindow extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				//Checkout Item
 				if(order.getItems() == null || order.getItems().size() == 0 ){
-					JOptionPane.showMessageDialog(table, "Please add atleast one product to checkout. ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(table, "Please add at least one product to checkout. ", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				startNewPurchase();

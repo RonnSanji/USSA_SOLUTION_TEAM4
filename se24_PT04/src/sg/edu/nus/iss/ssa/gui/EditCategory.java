@@ -77,7 +77,7 @@ public class EditCategory extends JDialog {
 
 			}
 		});
-		btnAdd.setBounds(98, 240, 89, 23);
+		btnAdd.setBounds(98, 240, 100, 50);
 		contentPanel.add(btnAdd);
 
 		JButton btnClose = new JButton("Cancel");
@@ -86,12 +86,12 @@ public class EditCategory extends JDialog {
 				dispose();
 			}
 		});
-		btnClose.setBounds(249, 240, 89, 23);
+		btnClose.setBounds(249, 240, 100, 50);
 		contentPanel.add(btnClose);
 
 		txtCategoryCode = new JTextField();
 
-		txtCategoryCode.setBounds(206, 35, 177, 20);
+		txtCategoryCode.setBounds(206, 35, 177, 28);
 		contentPanel.add(txtCategoryCode);
 
 		txtCategoryName = new JTextArea();
@@ -143,8 +143,8 @@ public class EditCategory extends JDialog {
 	}
 
 	private boolean validateForm() {
-		categoryID = txtCategoryCode.getText().replace("\n", " ");
-		categoryName = txtCategoryName.getText().replace("\n", " ");
+		categoryID = txtCategoryCode.getText().trim().replace("\n", " ");
+		categoryName = txtCategoryName.getText().trim().replace("\n", " ");
 
 		String msg = FormValidator.addEditCategoryValidateForm(categoryID, categoryName);
 		if (msg != null) {

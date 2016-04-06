@@ -8,6 +8,7 @@ public class StoreConstants {
 	public static final int POINTS_FOR_CASH = 1; // every 1$ spent will earn 1
 													// point
 	public static final int CATEGORY_ID_MAX_LENGTH = 3;
+	public static final int MEMBER_NUMBER_LENGTH = 9;
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String PUBLIC_USER = "PUBLIC";
 	public static final String MEMBER_FIRST_DISCOUNT_CODE = "MEMBER_FIRST";
@@ -64,6 +65,11 @@ public class StoreConstants {
 	public static final String INVALID_NEWMEMBER_NUMBER = "Not a valid member, Please enter a number with 9 Charactor";
 	public static final String INVALID_NEWMEMBER_NAME = "Please enter a valid member name";
 	public static final String INVALID_LOYLTY_POINT = "Please enter a valid loylty point";
+	public static final String SELECT_MEMBER = "Please select a member";
+	public static final String CONFIRM_REMOVE_MEMBER = "Confirm to remove this member ?";
+	public static final String ENTER_MEMBER_NAME = "Please enter memeber name";
+	public static final String ENTER_MEMBER_NUMBER = "Please enter memeber number";
+	
 	// Manage stock message
 	public static final String SELECT_PRODUCT = "Please select a product";
 	public static final String STOCK_UPDATED_SUCCESSFULLY = "Stock has been updated successfully !";
@@ -79,18 +85,23 @@ public class StoreConstants {
 	public static final String INVALID_REORDER_QUANTITY = "Please enter a valid reorder quantity";
 	public static final String THRESHOLD_REORDER_QUANTITY_UPDATED_SUCCESSFULLY = "Threshold/Reorder quantity has been updated successfully !";
 
-	// Add Product Message
+	// manage Product Message
 	public static final String EMPTY_QUANTITY = "Please Enter the Quantity greater than 0";
 	public static final String EMPTY_PRICE = "Please Enter the Price greater than 0";
+	public static final String EMPTY_THRESHOLD = "Please Enter the Threshold greater than 0";
 	public static final String EMPTY_PRODUCT_NAME = "Please Enter the Product Name. Product Name cannot be Empty";
+	public static final String EMPTY_PRODUCT_DESCRIPTION = "Please Enter the Product Description";
 	public static final String INVALID_PRODUCT_NAME = "Please Enter a valid Product Name";
+	public static final String INVALID_PRODUCT_DESCRIPTION = "Please Enter a valid Product Description";
 	public static final String NUMBER_REGEX = "[+-]?\\d*(\\.\\d+)?";
 	public static final String STRING_REGEX = "[a-zA-Z]";
 	public static final String INVALID_CATERORY = "Invalid Category, Please select a valid one";
 	public static final String INVALID_QUANTITY = "Invalid Quantity Entered. Please Enter a valid one.";
 	public static final String INVALID_PRICE = "Invalid Product Price. Please Enter only number.";
 	public static final String INVALID_THRESHOLD = "Invalid Product Threshold Quantity. Please Enter Only Digits.";
-
+	public static final String CONFIRM_REMOVE_PRODUCT = "Confirm to remove this product ?";
+	
+	
 	// StoreKeeper validation message
 	public static final String STOREKEEPER_NOT_FOUND = "StoreKeeper not found.";
 	public static final String STOREKEEPER_INCORRECT_PASSWORD = "Incorrect password.";

@@ -76,7 +76,7 @@ public class EditDiscount extends JDialog {
 				}
 			}
 		});
-		okButton.setBounds(197, 368, 75, 23);
+		okButton.setBounds(186, 358, 100, 50);
 		contentPanel.add(okButton);
 		okButton.setActionCommand("OK");
 
@@ -86,7 +86,7 @@ public class EditDiscount extends JDialog {
 				dispose();
 			}
 		});
-		cancelButton.setBounds(371, 368, 75, 23);
+		cancelButton.setBounds(374, 358, 100, 50);
 		contentPanel.add(cancelButton);
 		cancelButton.setActionCommand("Cancel");
 
@@ -103,19 +103,19 @@ public class EditDiscount extends JDialog {
 		contentPanel.add(lblStartDate);
 
 		JLabel lblPeriod = new JLabel("Period:");
-		lblPeriod.setBounds(49, 213, 127, 14);
+		lblPeriod.setBounds(49, 220, 127, 14);
 		contentPanel.add(lblPeriod);
 
 		JLabel lblPercentage = new JLabel("Percentage: ");
-		lblPercentage.setBounds(49, 253, 125, 14);
+		lblPercentage.setBounds(49, 265, 125, 14);
 		contentPanel.add(lblPercentage);
 
 		JLabel lblApplicableTo = new JLabel("Applicable To: ");
-		lblApplicableTo.setBounds(49, 296, 127, 14);
+		lblApplicableTo.setBounds(49, 308, 127, 14);
 		contentPanel.add(lblApplicableTo);
 
 		txtDiscountCode = new JTextField();
-		txtDiscountCode.setBounds(186, 27, 200, 20);
+		txtDiscountCode.setBounds(186, 27, 200, 28);
 		contentPanel.add(txtDiscountCode);
 		txtDiscountCode.setDocument(new PlainDocument() {
 			private static final long serialVersionUID = 5790057198546248513L;
@@ -153,7 +153,7 @@ public class EditDiscount extends JDialog {
 		contentPanel.add(dateSelector);
 
 		txtPeriod = new JTextField();
-		txtPeriod.setBounds(186, 213, 100, 20);
+		txtPeriod.setBounds(186, 213, 100, 28);
 		txtPeriod.setColumns(10);
 		txtPeriod.setDocument(new PlainDocument() {
 			private static final long serialVersionUID = 254862027426058887L;
@@ -167,7 +167,7 @@ public class EditDiscount extends JDialog {
 		contentPanel.add(txtPeriod);
 
 		txtPercentage = new JTextField();
-		txtPercentage.setBounds(186, 253, 100, 20);
+		txtPercentage.setBounds(186, 258, 100, 28);
 
 		txtPercentage.setColumns(10);
 		txtPercentage.setDocument(new PlainDocument() {
@@ -184,7 +184,7 @@ public class EditDiscount extends JDialog {
 		comboApplicableTo = new JComboBox<String>();
 		comboApplicableTo.setModel(new DefaultComboBoxModel<String>(
 				new String[] { "-Select-", StoreConstants.MEMBER_DICSOUNT_NAME, StoreConstants.PUBLIC_DICSOUNT_NAME }));
-		comboApplicableTo.setBounds(186, 296, 80, 20);
+		comboApplicableTo.setBounds(186, 305, 100, 20);
 		contentPanel.add(comboApplicableTo);
 
 		comboPeriodType = new JComboBox<String>();

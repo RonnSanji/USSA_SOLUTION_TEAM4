@@ -10,6 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
@@ -32,13 +35,9 @@ public class MemberAddingWindow extends JDialog {
 	private JTextField addmemberNameField;
 	private JTextField addmemberNumberField;
 
-	
-	/**
-	 * Create the application.
-	 */
 	public MemberAddingWindow(Map memberMap, MemberManagerWindow memberManagerWindow) {
 		
-		setTitle("Adding New Member");
+		setTitle("Add New Member");
 		setResizable(false);
 		setSize(400,200);
 		setLocationRelativeTo(null);
@@ -61,25 +60,42 @@ public class MemberAddingWindow extends JDialog {
 		
 		addmemberNumberField = new JTextField();
 		addmemberNumberField.setBounds(170, 82, 210, 30);
+		addmemberNumberField.setDocument(new PlainDocument() {
+
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (getLength() + str.length() <= StoreConstants.MEMBER_NUMBER_LENGTH && str.matches("[a-zA-Z0-9]{1,9}"))
+					super.insertString(offs, str, a);
+			}
+		});
 		contentPanel.add(addmemberNumberField);
 		addmemberNumberField.setColumns(15);
 	
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-		JButton btnAddMember = new JButton("Add Member");
+		JButton btnAddMember = new JButton("OK");
+		btnAddMember.setSize(100, 50);
 		btnAddMember.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				
 			  String memberNameString , memberNumberString = new String();
 			  
-			  memberNameString = addmemberNameField.getText();
-			  memberNumberString = addmemberNumberField.getText();
+			  memberNameString = addmemberNameField.getText().trim();
+			  memberNumberString = addmemberNumberField.getText().trim();
 			  
-			  if(memberNameString.equals("") ||memberNumberString.equals("")){
-					JOptionPane.showMessageDialog(btnAddMember, "Please enter Member Name & Member Number", "Error", JOptionPane.ERROR_MESSAGE);
+			  if(memberNameString ==null || memberNameString.equals(""))
+			  {
+				  DisplayUtil.displayValidationError(btnAddMember, StoreConstants.ENTER_MEMBER_NAME);
+				  //JOptionPane.showMessageDialog(btnAddMember, "Please enter Member Name & Member Number", "Error", JOptionPane.ERROR_MESSAGE);
+					 return;
 			  }
-			  else if(!memberNameString.equals("") && !memberNumberString.equals("") ){
+			  if(memberNumberString == null || memberNumberString.equals(""))
+			  {
+				  DisplayUtil.displayValidationError(btnAddMember, StoreConstants.ENTER_MEMBER_NUMBER);
+				  return;
+			  }
+			  if(!memberNameString.equals("") && !memberNumberString.equals("") ){
 				  //Check the IC number 
 				  FormValidator validator = new FormValidator();
 				  String validateResult = validator.addMemberValidateForm(memberNameString, memberNumberString);
@@ -126,6 +142,7 @@ public class MemberAddingWindow extends JDialog {
 		buttonPanel.add(btnAddMember);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setSize(100, 50);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

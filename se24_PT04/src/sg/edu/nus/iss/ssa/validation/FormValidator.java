@@ -293,48 +293,59 @@ public class FormValidator {
 		return null;
 	}
 
-	public static String addProductValidateForm(String categoryName, String productName, String quantityAvailable,
+	public static String addProductValidateForm(String categoryName, String productName, String productDescription, String quantityAvailable,
 			String price, String thresholdQuantity) {
 		if (categoryName == null || categoryName.isEmpty()) {
 			return StoreConstants.BLANK_CATEGORYNAME;
 		}
 		if (categoryName.contains(",") || categoryName.contains("\n")) {
-			return StoreConstants.INVALID_CATEGORYNAME;
+			return StoreConstants.INVALID_CATERORY;
 		}
+		if (categoryName.length() != 3) {
+			return StoreConstants.INVALID_CATERORY;
+		} 
+		
+		if (productName == null || productName.isEmpty()) {
+			return StoreConstants.EMPTY_PRODUCT_NAME;
+		} 
+		if (productName.contains(",")|| productName.contains("\n")) {
+			return StoreConstants.INVALID_PRODUCT_NAME;
+		} 
+		
+		if (productDescription == null || productDescription.isEmpty()) {
+			return StoreConstants.EMPTY_PRODUCT_DESCRIPTION;
+		} 
+		if (productDescription.contains(",")|| productDescription.contains("\n")) {
+			return StoreConstants.INVALID_PRODUCT_DESCRIPTION;
+		} 
+		
 		if (quantityAvailable.isEmpty() || quantityAvailable == null) {
 			return StoreConstants.EMPTY_QUANTITY;
-		}
+		}	
 		if (quantityAvailable.contains(",") || quantityAvailable.contains("\n")) {
 			return StoreConstants.INVALID_QUANTITY;
 		}
+		if (!quantityAvailable.matches(StoreConstants.NUMBER_REGEX)) {
+			return StoreConstants.INVALID_QUANTITY;
+		}
+		
 		if (price.isEmpty() || price == null) {
 			return StoreConstants.EMPTY_PRICE;
 		}
 		if (price.contains(",") || price.contains("\n")) {
 			return StoreConstants.INVALID_PRICE;
 		}
-		if (productName == null || productName.isEmpty()) {
-			return StoreConstants.EMPTY_PRODUCT_NAME;
-		} else if (categoryName.length() != 3) {
-			return "Invalid Category, Please select a valid one";
-		} else if (quantityAvailable.contains("[0-9]+") && quantityAvailable.length()>2) {
-			return "Invalid Quantity Entered. Please Enter a valid one.";
-		} else if (!(price.matches(StoreConstants.NUMBER_REGEX))) {
-			return "Invalid Product Price. Please Enter only number.";
-		} else if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
-			return "Invalid Product Threshold Quantity. Please Enter Only Digits.";
-		}
-		if (productName.contains(",") || productName.contains("\n")) {
-			return StoreConstants.INVALID_PRODUCT_NAME;
-		}
-		if (categoryName.length() != 3) {
-			return StoreConstants.INVALID_CATERORY;
-		}
-		if (!quantityAvailable.matches(StoreConstants.NUMBER_REGEX)) {
-			return StoreConstants.INVALID_QUANTITY;
-		}
 		if (!(price.matches(StoreConstants.NUMBER_REGEX))) {
 			return StoreConstants.INVALID_PRICE;
+		}
+		
+		if(thresholdQuantity ==null ||thresholdQuantity.isEmpty())
+		{
+			return StoreConstants.EMPTY_THRESHOLD;
+		}
+		if(thresholdQuantity.contains(",") ||thresholdQuantity.contains("\n"))
+		{
+			return StoreConstants.INVALID_THRESHOLD;
 		}
 		if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
 			return StoreConstants.INVALID_THRESHOLD;

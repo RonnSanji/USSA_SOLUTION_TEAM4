@@ -68,7 +68,7 @@ public class EditVendor extends JDialog {
 				}
 			}
 		});
-		btnAdd.setBounds(98, 240, 89, 23);
+		btnAdd.setBounds(98, 240, 100, 50);
 		contentPanel.add(btnAdd);
 
 		JButton btnClose = new JButton("Cancel");
@@ -77,12 +77,12 @@ public class EditVendor extends JDialog {
 				dispose();
 			}
 		});
-		btnClose.setBounds(249, 240, 89, 23);
+		btnClose.setBounds(249, 240, 100, 50);
 		contentPanel.add(btnClose);
 
 		txtVendorCode = new JTextField();
 
-		txtVendorCode.setBounds(206, 35, 177, 20);
+		txtVendorCode.setBounds(206, 35, 177, 28);
 		contentPanel.add(txtVendorCode);
 
 		txtVendorName = new JTextArea();
@@ -133,8 +133,8 @@ public class EditVendor extends JDialog {
 	}
 
 	private boolean validateForm() {
-		vendorID = txtVendorCode.getText().replace("\n", " ");
-		vendorName = txtVendorName.getText().replace("\n", " ");
+		vendorID = txtVendorCode.getText().trim().replace("\n", " ");
+		vendorName = txtVendorName.getText().trim().replace("\n", " ");
 
 		String msg = FormValidator.addEditVendorValidateForm(vendorID, vendorName);
 		if (msg != null) {

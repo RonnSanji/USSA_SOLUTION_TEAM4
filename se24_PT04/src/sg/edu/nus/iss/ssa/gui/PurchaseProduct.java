@@ -12,6 +12,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.border.LineBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -89,12 +92,28 @@ public class PurchaseProduct extends JDialog {
 			
 			barCodetext = new JTextField();
 			barCodetext.setBounds(181, 82, 206, 26);
+			barCodetext.setDocument(new PlainDocument() {
+
+				@Override
+				public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+					if (str.matches("[0-9]*"))
+						super.insertString(offs, str, a);
+				}
+			});
 			panel.add(barCodetext);
 			barCodetext.setColumns(10);
 			
 			productQnty = new JTextField();
 			productQnty.setColumns(10);
 			productQnty.setBounds(181, 141, 206, 26);
+			productQnty.setDocument(new PlainDocument() {
+
+				@Override
+				public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+					if (str.matches("[0-9]*"))
+						super.insertString(offs, str, a);
+				}
+			});
 			panel.add(productQnty);
 		}
 		{

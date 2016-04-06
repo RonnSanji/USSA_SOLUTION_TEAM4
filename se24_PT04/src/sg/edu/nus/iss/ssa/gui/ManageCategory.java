@@ -71,21 +71,21 @@ public class ManageCategory extends JPanel {
 		setLayout(null);
 
 		lblSeachBy = new JLabel("Search by");
-		lblSeachBy.setBounds(50, 30, 80, 14);
+		lblSeachBy.setBounds(10, 34, 80, 14);
 		this.add(lblSeachBy);
 
 		comboBoxSearchBy = new JComboBox<String>();
-		comboBoxSearchBy.setBounds(129, 27, 106, 20);
+		comboBoxSearchBy.setBounds(88, 27, 120, 28);
 		this.add(comboBoxSearchBy);
 		comboBoxSearchBy.setModel(new DefaultComboBoxModel<String>(comboBoxSearchByItem));
 
 		txtSearchText = new JTextField();
-		txtSearchText.setBounds(257, 27, 184, 20);
+		txtSearchText.setBounds(245, 27, 200, 28);
 		this.add(txtSearchText);
 		txtSearchText.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(451, 26, 79, 23);
+		btnSearch.setBounds(469, 27, 150, 28);
 		this.add(btnSearch);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -123,7 +123,7 @@ public class ManageCategory extends JPanel {
 				search();
 			}
 		});
-		btnClear.setBounds(540, 26, 89, 23);
+		btnClear.setBounds(640, 27, 150, 28);
 		this.add(btnClear);
 
 		// JLabel lblNewLabel = new JLabel("Category List");

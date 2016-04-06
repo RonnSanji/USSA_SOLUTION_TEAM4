@@ -30,6 +30,18 @@ public class OrderValidator {
         if(productBarCode.equals("") || quantity.equals("") ){
             return StoreConstants.BLANK_INPUT_FOR_PRODUCT_PURCHASE;
         }
+        long tempQ = 0;
+        try{
+        	tempQ = Long.parseLong(quantity);
+        	if(tempQ <=0)
+        	{
+        		return StoreConstants.PRODUCT_QUANTITY_NON_NUMERIC;
+        	}
+        }
+        catch(Exception ex)
+        {
+        	return StoreConstants.PRODUCT_QUANTITY_NON_NUMERIC;
+        }
         return errorMessage;
     }
 

@@ -64,21 +64,21 @@ public class ManageDiscount extends JPanel {
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Search by");
-		lblNewLabel.setBounds(52, 30, 80, 14);
+		lblNewLabel.setBounds(10, 34, 80, 14);
 		this.add(lblNewLabel);
 
 		comboBoxSearchBy = new JComboBox();
-		comboBoxSearchBy.setBounds(142, 27, 106, 20);
+		comboBoxSearchBy.setBounds(100, 27, 106, 28);
 		this.add(comboBoxSearchBy);
 		comboBoxSearchBy.setModel(new DefaultComboBoxModel(comboBoxSearchByItem));
 
 		txtSearchText = new JTextField();
-		txtSearchText.setBounds(294, 27, 222, 20);
+		txtSearchText.setBounds(227, 27, 200, 28);
 		this.add(txtSearchText);
 		txtSearchText.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(560, 26, 79, 23);
+		btnSearch.setBounds(469, 27, 150, 28);
 		this.add(btnSearch);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -115,7 +115,7 @@ public class ManageDiscount extends JPanel {
 				search();
 			}
 		});
-		btnClear.setBounds(649, 26, 89, 23);
+		btnClear.setBounds(640, 27, 150, 28);
 		this.add(btnClear);
 
 		btnAddDiscount = new JButton("Add Discount");

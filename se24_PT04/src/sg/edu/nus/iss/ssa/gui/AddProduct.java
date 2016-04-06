@@ -11,6 +11,9 @@ import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
@@ -28,7 +31,6 @@ import sg.edu.nus.iss.ssa.validation.FormValidator;
 public class AddProduct extends JDialog {
 
   private final JPanel contentPanel = new JPanel();
-  private final JPanel buttonPanel = new JPanel();
   private JTextField txtProductName;
   private JTextField txtProductDescription;
   private JTextField txtQuantityAvailable;
@@ -50,16 +52,16 @@ public class AddProduct extends JDialog {
    * Create the application.
    */
   public AddProduct(Map productMap, ManageProductWindow productManagerWindow) {
-    setTitle("Adding New Member");
+    setTitle("Adding New Product");
     setResizable(false);
     setLocationRelativeTo(null);
     getContentPane().setLayout(new BorderLayout());
-    setSize(800, 600);
+    setSize(417, 454);
     contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
     getContentPane().add(contentPanel, BorderLayout.CENTER);
     contentPanel.setLayout(null);
-    JLabel lblProductCategory = new JLabel("Product Category");
-    lblProductCategory.setBounds(20, 32, 108, 60);
+    JLabel lblProductCategory = new JLabel("Product Category:");
+    lblProductCategory.setBounds(59, 48, 108, 16);
     contentPanel.add(lblProductCategory);
     try {
       ioService.readFromFile(FileDataWrapper.categoryMap, null, new Category());
@@ -74,132 +76,162 @@ public class AddProduct extends JDialog {
     for (String c : ctgs) {
       txtProductCategory.addItem(c);
     }
-    txtProductCategory.setBounds(164, 55, 120, 16);
+    txtProductCategory.setBounds(214, 43, 130, 26);
     contentPanel.add(txtProductCategory);
 
-    JLabel lblProductTitle = new JLabel("Product Name");
-    lblProductTitle.setBounds(20, 90, 98, 16);
+    JLabel lblProductTitle = new JLabel("Product Name:");
+    lblProductTitle.setBounds(59, 90, 98, 16);
     contentPanel.add(lblProductTitle);
 
     txtProductName = new JTextField();
-    txtProductName.setBounds(154, 85, 130, 26);
+    txtProductName.setBounds(214, 85, 130, 26);
     contentPanel.add(txtProductName);
     txtProductName.setColumns(10);
 
-    JLabel lblProductDescription = new JLabel("Product Description");
-    lblProductDescription.setBounds(20, 132, 130, 16);
+    JLabel lblProductDescription = new JLabel("Product Description:");
+    lblProductDescription.setBounds(59, 132, 130, 16);
     contentPanel.add(lblProductDescription);
 
     txtProductDescription = new JTextField();
-    txtProductDescription.setBounds(154, 127, 130, 26);
+    txtProductDescription.setBounds(214, 127, 130, 26);
     contentPanel.add(txtProductDescription);
     txtProductDescription.setColumns(10);
 
-    JLabel lblQuantityAvailable = new JLabel("Quantity Available");
-    lblQuantityAvailable.setBounds(20, 172, 130, 16);
+    JLabel lblQuantityAvailable = new JLabel("Quantity Available:");
+    lblQuantityAvailable.setBounds(59, 175, 130, 16);
     contentPanel.add(lblQuantityAvailable);
 
     txtQuantityAvailable = new JTextField();
-    txtQuantityAvailable.setBounds(154, 167, 130, 26);
+    txtQuantityAvailable.setBounds(214, 170, 130, 26);
+    txtQuantityAvailable.setDocument(new PlainDocument() {
+
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (str.matches("[0-9]*"))
+				super.insertString(offs, str, a);
+		}
+	});
     contentPanel.add(txtQuantityAvailable);
     txtQuantityAvailable.setColumns(10);
 
-    JLabel lblPrice = new JLabel("Price");
-    lblPrice.setBounds(20, 200, 61, 16);
+    JLabel lblPrice = new JLabel("Price:");
+    lblPrice.setBounds(59, 218, 61, 16);
     contentPanel.add(lblPrice);
 
     txtPrice = new JTextField();
-    txtPrice.setBounds(154, 195, 130, 26);
+    txtPrice.setBounds(214, 213, 130, 26);
+    txtPrice.setDocument(new PlainDocument() {
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (str.matches("(?:\\d*\\.)?\\d+") || str.matches("\\."))
+				super.insertString(offs, str, a);
+		}
+	});
     contentPanel.add(txtPrice);
     txtPrice.setColumns(10);
 
-    JLabel lblNewLabel = new JLabel("ReOrder Quantity");
-    lblNewLabel.setBounds(20, 283, 119, 16);
+    JLabel lblNewLabel = new JLabel("ReOrder Quantity:");
+    lblNewLabel.setBounds(59, 261, 119, 16);
     contentPanel.add(lblNewLabel);
 
     txtReorderQuantity = new JTextField();
-    txtReorderQuantity.setBounds(154, 277, 130, 26);
+    txtReorderQuantity.setBounds(214, 256, 130, 26);
+    txtReorderQuantity.setDocument(new PlainDocument() {
+
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (str.matches("[0-9]*"))
+				super.insertString(offs, str, a);
+		}
+	});
     contentPanel.add(txtReorderQuantity);
     txtReorderQuantity.setColumns(10);
 
-    JLabel lblOrderQuantity = new JLabel("Order Quantity");
-    lblOrderQuantity.setBounds(20, 332, 108, 16);
+    JLabel lblOrderQuantity = new JLabel("Order Quantity:");
+    lblOrderQuantity.setBounds(59, 303, 108, 16);
     contentPanel.add(lblOrderQuantity);
 
     txtOrderQuantity = new JTextField();
-    txtOrderQuantity.setBounds(154, 327, 130, 26);
+    txtOrderQuantity.setBounds(214, 298, 130, 26);
+    txtOrderQuantity.setDocument(new PlainDocument() {
+
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (str.matches("[0-9]*"))
+				super.insertString(offs, str, a);
+		}
+	});
     contentPanel.add(txtOrderQuantity);
     txtOrderQuantity.setColumns(10);
+    
+        JButton btnAddProduct = new JButton("OK");
+        btnAddProduct.setBounds(80, 365, 100, 50);
+        contentPanel.add(btnAddProduct);
+        
+            JButton btnCancel = new JButton("Cancel");
+            btnCancel.setBounds(234, 365, 100, 50);
+            contentPanel.add(btnCancel);
+            btnCancel.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                dispose();
+              }
+            });
+        btnAddProduct.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            fetchValuesFromTextFields();
+            String validatorMessage = FormValidator.addProductValidateForm(productCategory, productName, productDescription,
+                quantityAvailable, price, reorderQuantity);
+            if (validatorMessage != null) {
+              JOptionPane.showMessageDialog(btnAddProduct, validatorMessage, "Error",
+                  JOptionPane.ERROR_MESSAGE);
+            } else {
+              Collection<Product> products = productMap.values();
+              ProductIdGenerator productIdGenerator = new ProductIdGenerator();
+              BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
+              int barCode = barCodeGenerator.generateBarCode();
+              Product product = new Product(
+                  productIdGenerator.getProductId(products, productCategory),
+                  productName, productDescription,
+                  Long.valueOf(quantityAvailable), Double.valueOf(
+                      price),
+                  barCode, Long.valueOf(reorderQuantity),
+                  Long.valueOf(orderQuantity));
+              // add new member to memory
+              try {
+                productMap.put(barCode, product);
+              } catch (Exception ex) {
+                DisplayUtil.displayValidationError(contentPanel,
+                    StoreConstants.ERROR + " creating new product");
+              }
 
-    buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+              // write new memeber from memory to .dat file
+              IOService<?> ioManager = new IOService<Entity>();
+              try {
+                ioManager.writeToFile(productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
+                ioManager = null;
+              } catch (Exception ex)
 
-    JButton btnAddProduct = new JButton("Add Product");
-    btnAddProduct.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        fetchValuesFromTextFields();
-        String validatorMessage = FormValidator.addProductValidateForm(productCategory, productName,
-            quantityAvailable, price, reorderQuantity);
-        if (validatorMessage != null) {
-          JOptionPane.showMessageDialog(btnAddProduct, validatorMessage, "Error",
-              JOptionPane.ERROR_MESSAGE);
-        } else {
-          Collection<Product> products = productMap.values();
-          ProductIdGenerator productIdGenerator = new ProductIdGenerator();
-          BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
-          int barCode = barCodeGenerator.generateBarCode();
-          Product product = new Product(
-              productIdGenerator.getProductId(products, productCategory),
-              productName, productDescription,
-              Long.valueOf(quantityAvailable), Double.valueOf(
-                  price),
-              barCode, Long.valueOf(reorderQuantity),
-              Long.valueOf(orderQuantity));
-          // add new member to memory
-          try {
-            productMap.put(barCode, product);
-          } catch (Exception ex) {
-            DisplayUtil.displayValidationError(contentPanel,
-                StoreConstants.ERROR + " creating new product");
+              {
+                DisplayUtil.displayValidationError(contentPanel,
+                    StoreConstants.ERROR + " saving new product");
+                ioManager = null;
+              }
+
+              // update the table data in MemberManagerWindow
+              productManagerWindow.refreshTable(product.getProductArray());
+              dispose();
+            }
           }
-
-          // write new memeber from memory to .dat file
-          IOService<?> ioManager = new IOService<Entity>();
-          try {
-            ioManager.writeToFile(productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
-            ioManager = null;
-          } catch (Exception ex)
-
-          {
-            DisplayUtil.displayValidationError(contentPanel,
-                StoreConstants.ERROR + " saving new product");
-            ioManager = null;
-          }
-
-          // update the table data in MemberManagerWindow
-          productManagerWindow.refreshTable(product.getProductArray());
-          dispose();
-        }
-      }
-    });
-    buttonPanel.add(btnAddProduct);
-
-    JButton btnCancel = new JButton("Cancel");
-    btnCancel.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        dispose();
-      }
-    });
-    buttonPanel.add(btnCancel);
+        });
   }
 
   private void fetchValuesFromTextFields() {
     productCategory = (String) txtProductCategory.getSelectedItem();
-    productName = txtProductName.getText();
-    productDescription = txtProductDescription.getText();
-    quantityAvailable = txtQuantityAvailable.getText();
-    price = txtPrice.getText();
-    reorderQuantity = txtReorderQuantity.getText();
-    orderQuantity = txtOrderQuantity.getText();
+    productName = txtProductName.getText().trim();
+    productDescription = txtProductDescription.getText().trim();
+    quantityAvailable = txtQuantityAvailable.getText().trim();
+    price = txtPrice.getText().trim();
+    reorderQuantity = txtReorderQuantity.getText().trim();
+    orderQuantity = txtOrderQuantity.getText().trim();
   }
 }

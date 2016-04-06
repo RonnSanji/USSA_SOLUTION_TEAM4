@@ -60,6 +60,8 @@ public class ManageProductWindow extends JPanel {
       public void actionPerformed(ActionEvent e) {
         AddProduct addProductWindow = new AddProduct(FileDataWrapper.productMap,
             manageProductWindow);
+        addProductWindow.setModal(true);
+        addProductWindow.setLocation(manageProductWindow.getLocationOnScreen());
         addProductWindow.setVisible(true);
       }
     });
@@ -76,15 +78,17 @@ public class ManageProductWindow extends JPanel {
         try {
           selectedRowKey = table.getValueAt(selectedRow, 1).toString();
         } catch (Exception es) {
-          JOptionPane.showMessageDialog(table, "Please select at least one row", "Error",
-              JOptionPane.ERROR_MESSAGE);
+        	DisplayUtil.displayValidationError(table, StoreConstants.SELECT_PRODUCT);
+        //  JOptionPane.showMessageDialog(table, StoreConstants.SELECT_PRODUCT, "Error",
+             // JOptionPane.ERROR_MESSAGE);
         }
         // check if any row is selected
         if (selectedRow != -1) {
-          System.out.print(selectedRow);
-          int option = JOptionPane.showConfirmDialog(null, "Confirm to remove this Product?",
-              "Confirmation", JOptionPane.OK_CANCEL_OPTION);
-          System.out.println(option);
+         // System.out.print(selectedRow);
+          int option = DisplayUtil.displayConfirmationMessage(table, StoreConstants.CONFIRM_REMOVE_PRODUCT);
+        		  //JOptionPane.showConfirmDialog(table, "Confirm to remove this Product?",
+             // "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+         // System.out.println(option);
           if (option == 0) {
             // Confirm Remove
             model.removeRow(selectedRow);
@@ -140,6 +144,7 @@ public class ManageProductWindow extends JPanel {
     };
     model.isCellEditable(0, 0);
     table = new JTable(model);
+    table.setFillsViewportHeight(true);
     scrollPane.setViewportView(table);
 
     JLabel lblSearchBy = new JLabel("Search by:");
@@ -148,11 +153,11 @@ public class ManageProductWindow extends JPanel {
 
     comboBoxProductSearch = new JComboBox();
     comboBoxProductSearch.setModel(new DefaultComboBoxModel(comboBoxSearchByItem));
-    comboBoxProductSearch.setBounds(109, 29, 146, 27);
+    comboBoxProductSearch.setBounds(95, 27, 125, 28);
     add(comboBoxProductSearch);
 
     txtProductSearch = new JTextField();
-    txtProductSearch.setBounds(290, 27, 228, 28);
+    txtProductSearch.setBounds(240, 27, 200, 28);
     add(txtProductSearch);
     txtProductSearch.setColumns(10);
 
@@ -162,7 +167,7 @@ public class ManageProductWindow extends JPanel {
         productSearch();
       }
     });
-    btnProductSearch.setBounds(543, 28, 117, 29);
+    btnProductSearch.setBounds(467, 27, 150, 29);
     add(btnProductSearch);
 
     JButton btnClear = new JButton("Clear");
@@ -172,7 +177,7 @@ public class ManageProductWindow extends JPanel {
         table.setModel(model);
       }
     });
-    btnClear.setBounds(677, 28, 117, 29);
+    btnClear.setBounds(640, 27, 150, 29);
     add(btnClear);
 
   }
