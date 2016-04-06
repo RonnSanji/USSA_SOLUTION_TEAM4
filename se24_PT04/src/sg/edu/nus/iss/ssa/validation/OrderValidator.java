@@ -70,7 +70,7 @@ public class OrderValidator {
      */
     public String validateRedeemedPoints(long redeemedPoints, double renderedCash, Order receipt){
         long totalAvlPoints = receipt.getMemberInfo()!= null ? receipt.getMemberInfo().getLoyaltyPoints(): 0;
-        if(totalAvlPoints <= 0 ){
+        if(totalAvlPoints < 0 ){
             return null;
         }
         double finalCost = receipt.getFinalPrice();
