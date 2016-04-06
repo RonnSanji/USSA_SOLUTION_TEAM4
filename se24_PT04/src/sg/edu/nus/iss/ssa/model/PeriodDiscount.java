@@ -2,6 +2,7 @@ package sg.edu.nus.iss.ssa.model;
 
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,7 +27,8 @@ public class PeriodDiscount extends GeneralDiscount {
 				int discountPeriodInt = Integer.parseInt(discountPeriod);
 				Date startDt = sdf.parse(starDate);
 				Calendar cal = GregorianCalendar.getInstance();
-				Date  currentDate = cal.getTime();
+				DateFormat timeFormat = new SimpleDateFormat("yyyyMMdd");
+				Date currentDate = timeFormat.parse(timeFormat.format(cal.getTime()));
 				cal.setTime(startDt);
 				cal.add(Calendar.DATE,discountPeriodInt-1);
 				Date endDate = cal.getTime();

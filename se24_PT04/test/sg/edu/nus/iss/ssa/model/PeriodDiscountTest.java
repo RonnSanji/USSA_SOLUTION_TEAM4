@@ -35,5 +35,11 @@ public class PeriodDiscountTest {
         discount.setDiscountPerc(90);
         boolean isApplicable2 = discount.checkIfDiscountAvailable();
         assertTrue(isApplicable2);
+
+        discount.setStarDate("2016-04-06");
+        discount.setDiscountPeriod("1");
+        discount.setDiscountPerc(90);
+        boolean isApplicable3 = discount.checkIfDiscountAvailable();
+        assertTrue(isApplicable3);
     }
 }
