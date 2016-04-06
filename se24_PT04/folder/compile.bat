@@ -4,7 +4,10 @@ call setenv.bat
 for %%i in ("%~dp0..") do set "folder=%%~fi"
 echo %folder%
 
-"%PATH%\javac" -sourcepath %folder%\src\*.java -d %folder%\classes
+"%PATH%\javac" -verbose -sourcepath %folder%\src\ %folder%\src\sg\edu\nus\iss\ssa\main\*.java -d %folder%\classes
+
+
+Echo Compilation DONE !
 
 
 pause
