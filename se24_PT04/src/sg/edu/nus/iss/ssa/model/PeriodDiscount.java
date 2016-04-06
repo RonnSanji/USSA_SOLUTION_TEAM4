@@ -30,7 +30,7 @@ public class PeriodDiscount extends GeneralDiscount {
 				cal.setTime(startDt);
 				cal.add(Calendar.DATE,discountPeriodInt-1);
 				Date endDate = cal.getTime();
-				return endDate.compareTo(currentDate) >=1;
+				return (startDt.compareTo(currentDate)<=0 && endDate.compareTo(currentDate) >=0);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
