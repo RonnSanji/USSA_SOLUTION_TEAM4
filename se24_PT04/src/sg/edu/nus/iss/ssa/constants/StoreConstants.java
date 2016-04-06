@@ -131,4 +131,8 @@ public class StoreConstants {
 	public static final String VENDOR_NOT_EXIST = "does not exist";
 	public static final String CONFIRM_TO_REMOVE_VENDOR = "Confirm to remove vendor ?";
 	public static final String NO_VENDOR_CONFIGURED = "No vendor configured";
+
+	public static final String BLANK_PRODUCT_DESCRIPTIONANDNAME = "Please Enter production description and name";
+	public static final String  INVALID_NEWPRODUCT_NAME = "Invalid New Product Name";
+	public static final String INVALID_NEWPRODUCT_DESCRIPTION = "Invalid new product description ";
 }

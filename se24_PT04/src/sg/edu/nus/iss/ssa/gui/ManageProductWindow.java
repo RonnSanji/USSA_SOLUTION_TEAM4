@@ -28,10 +28,12 @@ public class ManageProductWindow extends JPanel {
   private Collection<Product> productList;
   private List<Product> productListResult;
   JComboBox comboBoxProductSearch;
-  private String[] comboBoxSearchByItem = new String[] { "Product Name", "Product Id" };
+  private String[] comboBoxSearchByItem = new String[] { "Product Name", "Product Description" };
   private String[] columns = new String[] { "Product Category", "Product Name",
       "Product Description", "Quantity Available", "Price", "Reorder Quantity", "Order Quantity" };
   private String searchBy;
+  private Product productToEdit;
+  private int selectedRow;
 
   /**
    * Create the application.
@@ -88,17 +90,7 @@ public class ManageProductWindow extends JPanel {
             model.removeRow(selectedRow);
             FileDataWrapper.productMap.remove(selectedRowKey);
             // update the .dat file
-            IOService<?> ioManager = new IOService<Entity>();
-            try {
-              ioManager.writeToFile(FileDataWrapper.productMap.values(), new Product());
-              ioManager = null;
-            } catch (Exception ex)
-
-            {
-              DisplayUtil.displayValidationError(buttonPanel,
-                  StoreConstants.ERROR + " saving new product");
-              ioManager = null;
-            }
+            updateDatFile();
           }
 
         }
@@ -110,8 +102,25 @@ public class ManageProductWindow extends JPanel {
     JButton btnEditProduct = new JButton("Edit Product");
     btnEditProduct.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-      }
-    });
+
+            selectedRow = table.getSelectedRow();
+            String selectedRowKey =null;
+            try
+            {
+              selectedRowKey = table.getValueAt(selectedRow, 1).toString();
+            }
+            catch( Exception es)
+            {
+              JOptionPane.showMessageDialog(table, "Please select at least one row", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            if(selectedRow != -1){
+              productToEdit = FileDataWrapper.productMap.get(table.getValueAt(selectedRow, 1));
+              ProductEditWindow productEditWindow = new ProductEditWindow(productToEdit,manageProductWindow);
+              productEditWindow.setModal(true);
+              productEditWindow.setVisible(true);
+            }
+          }
+        });
     btnEditProduct.setBounds(316, 5, 160, 55);
     buttonPanel.add(btnEditProduct);
 
@@ -172,6 +181,18 @@ public class ManageProductWindow extends JPanel {
     this.model.addRow(productProperty);
   }
 
+  public void updateEditedProduct(){
+    model.setValueAt(productToEdit.getProductName(), selectedRow, 1);
+    model.setValueAt(productToEdit.getProductDesc(), selectedRow, 2);
+    model.setValueAt(productToEdit.getQuantity(), selectedRow, 3);
+    model.setValueAt(productToEdit.getPrice(), selectedRow, 4);
+    model.setValueAt(productToEdit.getThresholdQuantity(), selectedRow, 5);
+    model.setValueAt(productToEdit.getOrderQuantity(), selectedRow, 6);
+    FileDataWrapper.productMap.put(productToEdit.getBarCode(), productToEdit);
+    table.setModel(model);
+    updateDatFile();
+  }
+
   private void productSearch() {
     productList = (Collection<Product>) FileDataWrapper.productMap.values();
     productListResult = new ArrayList<Product>();
@@ -210,6 +231,19 @@ public class ManageProductWindow extends JPanel {
 
     table.setModel(modelResult);
 
+  }
+
+  private void updateDatFile(){
+    // update the .dat file
+    IOService<?> ioManager = new IOService<Entity>();
+    try {
+      ioManager.writeToFile(FileDataWrapper.productMap.values(), new Product());
+      ioManager = null;
+    } catch (Exception ex)
+    {
+      DisplayUtil.displayValidationError(buttonPanel, StoreConstants.ERROR + " saving new product");
+      ioManager = null;
+    }
   }
 
 }
