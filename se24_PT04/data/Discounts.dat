@@ -1,9 +1,10 @@
-MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,20,M
-MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,10,M
-CENTENARY,Centenary Celebration in 2016,2016-01-01,365,15,A
-PRESIDENT_BDAY,University President¡¯s birthday,2016-04-10,15,50,A
-ORIENTATION_DAY,Orientation Day,2016-04-15,60,30,A
-STORE_MANAGER_BDAY,Store manager's birthday,2016-04-13,1,80,A
-CRAZY_MEMBER_DAY,Crazy member's day,2016-05-01,1,90,M
-NATIONALDAY,National Day,2016-08-09,1,90,A
-CHRISTMASDAY,Christmas day,2016-12-25,2,85,A
+MEMBER_FIRST,First purchase by member,ALWAYS,ALWAYS,20.0,M
+MEMBER_SUBSEQ,Subsequent purchase by member,ALWAYS,ALWAYS,10.0,M
+CENTENARY,Centenary Celebration in 2016,2016-01-01,365,15.0,A
+PRESIDENT_BDAY,University President¡¯s birthday,2016-04-10,15,50.0,A
+ORIENTATION_DAY,Orientation Day,2016-04-15,60,30.0,A
+STORE_MANAGER_BDAY,Store manager's birthday,2016-04-13,1,80.0,A
+CRAZY_MEMBER_DAY,Crazy member's day,2016-05-01,1,90.0,M
+NATIONALDAY,National Day,2016-08-09,1,90.0,A
+CHRISTMASDAY,Christmas day,2016-12-25,2,85.0,A
+TODAY_SPECIAL,special deal for today only,2016-04-06,1,65,A
