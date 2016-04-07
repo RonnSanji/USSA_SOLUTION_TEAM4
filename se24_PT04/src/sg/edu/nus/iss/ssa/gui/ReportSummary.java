@@ -33,7 +33,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.RowFilter;
 
 import java.awt.Dimension;
@@ -65,10 +64,10 @@ public class ReportSummary extends JPanel {
 	private ReportValidator rv = new ReportValidator();
 	private JTable table;
 	private JTable transTable;
-	private JTextField fromText;
-	private JTextField toText;
 	private JButton filterBtn;
 	private JPanel panelFilter;
+	private DateSelector dsFrom;
+	private DateSelector dsTo;
 
 	/**
 	 * Create the application.
@@ -168,29 +167,30 @@ public class ReportSummary extends JPanel {
 		add(btnNewButton);
 
 		panelFilter = new JPanel();
-		panelFilter.setBounds(273, 131, 339, 32);
+		panelFilter.setBounds(10, 131, 824, 32);
 		add(panelFilter);
 		panelFilter.setOpaque(false);
 		panelFilter.setVisible(false);
 		panelFilter.setLayout(null);
 
 		JLabel fromLbl = new JLabel("From:");
-		fromLbl.setBounds(6, 6, 36, 16);
+		fromLbl.setFont(new Font("AppleGothic", Font.BOLD, 12));
+		fromLbl.setBounds(0, 8, 36, 16);
 		panelFilter.add(fromLbl);
+		dsFrom=new DateSelector();
+		dsTo=new DateSelector();
+		dsTo.setBounds(400, 6, 330, 20);
+		dsFrom.setSize(330, 20);
+		dsFrom.setLocation(34, 6);
 
-		fromText = new JTextField();
-		fromText.setPreferredSize(new Dimension(80, 20));
-		fromText.setBounds(50, 6, 80, 20);
-		panelFilter.add(fromText);
+		panelFilter.add(dsFrom);
 
 		JLabel toLbl = new JLabel("To:");
-		toLbl.setBounds(142, 6, 20, 16);
+		toLbl.setFont(new Font("AppleGothic", Font.BOLD, 12));
+		toLbl.setBounds(374, 8, 20, 16);
 		panelFilter.add(toLbl);
 
-		toText = new JTextField();
-		toText.setPreferredSize(new Dimension(80, 20));
-		toText.setBounds(165, 6, 80, 20);
-		panelFilter.add(toText);
+		panelFilter.add(dsTo);
 
 		JButton filterBtn = new JButton("Filter");
 		filterBtn.addActionListener(new ActionListener() {
@@ -198,7 +198,7 @@ public class ReportSummary extends JPanel {
 				filterRecordsByDate();
 			}
 		});
-		filterBtn.setBounds(257, 1, 76, 29);
+		filterBtn.setBounds(733, 0, 76, 29);
 		panelFilter.add(filterBtn);
 	}
 
@@ -326,8 +326,8 @@ public class ReportSummary extends JPanel {
 	}
 
 	private void filterRecordsByDate() {
-		String startDateString = fromText.getText();
-		String endDateString = toText.getText();
+		String startDateString = dsFrom.getDateString();		
+		String endDateString = dsTo.getDateString();
 		//System.out.println(startDateString);
 		//System.out.println(endDateString);
 
