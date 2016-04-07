@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 
 public class EditInventory extends JDialog {
 	private static final long serialVersionUID = 4069437661115880594L;
-	//private final JPanel contentPanel = new JPanel();
+	// private final JPanel contentPanel = new JPanel();
 	public Product selectedProduct;
 	private JButton okButton;
 	private JButton cancelButton;
@@ -46,6 +46,7 @@ public class EditInventory extends JDialog {
 
 	// 0 for configure threshold
 	// 1 for replenish stock
+	// 2 for write off stock
 	private int mode = 0;
 
 	public EditInventory(Product selectedProduct, int mode) {
@@ -60,7 +61,7 @@ public class EditInventory extends JDialog {
 		setResizable(false);
 
 		setBounds(100, 100, 499, 422);
-		//contentPanel.setLayout(null);
+		// contentPanel.setLayout(null);
 		getContentPane().setLayout(null);
 
 		lblNewLabel = new JLabel("Product Name:");
@@ -155,7 +156,7 @@ public class EditInventory extends JDialog {
 				if (!validateForm()) {
 					return;
 				}
-				replenishStock();
+				saveInventory();
 
 				dispose();
 			}
@@ -193,7 +194,15 @@ public class EditInventory extends JDialog {
 			lblNewReorderQuantity.setVisible(false);
 			txtReorderQuantity.setVisible(false);
 		}
-
+		// 2 for write off stock
+		else if (mode == 2) {
+			setTitle("Write Off Stock");
+			lblAddQuantity_NewThreshold.setText("Minus quantity:");
+			lblThresholdLable.setText("Threshold:");
+			lblReorderQuantityLable.setText("Reorder Quantity:");
+			lblNewReorderQuantity.setVisible(false);
+			txtReorderQuantity.setVisible(false);
+		}
 		populateData();
 	}
 
@@ -223,12 +232,18 @@ public class EditInventory extends JDialog {
 		else if (mode == 1) {
 			newReorderQuantity = lblRerorderQuantity.getText().trim().replace("\n", " ");
 		}
+		// 2 for write off stock
+		else if (mode == 2) {
+			newReorderQuantity = lblRerorderQuantity.getText().trim().replace("\n", " ");
+		}
 		String msg = null;
 		if (mode == 0) {
 			msg = FormValidator.configureThresholdReorderQuantityValidateForm(addQuantity_NewThreshold,
 					newReorderQuantity);
 		} else if (mode == 1) {
 			msg = FormValidator.replenishStockValidateForm(addQuantity_NewThreshold);
+		} else if (mode == 2) {
+			msg = FormValidator.writeOffStockValidateForm(selectedProduct.getQuantity(),addQuantity_NewThreshold);
 		}
 
 		if (msg != null) {
@@ -239,7 +254,7 @@ public class EditInventory extends JDialog {
 		return true;
 	}
 
-	private void replenishStock() {
+	private void saveInventory() {
 		String msg = FormValidator.replenishStockConfigureThresholdValidateData(selectedProduct.getBarCode());
 		if (msg != null) {
 			DisplayUtil.displayValidationError(lblQuantityLabel, msg);
@@ -255,13 +270,19 @@ public class EditInventory extends JDialog {
 		else if (mode == 1) {
 			newReorderQuantity = Long.parseLong(lblRerorderQuantity.getText().trim().replace("\n", " "));
 		}
+		// 2 for write off stock
+		else if (mode == 2) {
+			newReorderQuantity = Long.parseLong(lblRerorderQuantity.getText().trim().replace("\n", " "));
+		}
+
 		if (mode == 0) {
 			msg = controller.updateThreshold_ReorderQuantity(selectedProduct, stockAdd_newThreshold,
 					newReorderQuantity);
 		} else if (mode == 1) {
 			msg = controller.addStock(selectedProduct, stockAdd_newThreshold);
+		} else if (mode == 2) {
+			msg = controller.writeOffStock(selectedProduct, stockAdd_newThreshold);
 		}
-
 		if (msg != null) {
 			DisplayUtil.displayValidationError(lblQuantityLabel, msg);
 			return;
@@ -269,7 +290,7 @@ public class EditInventory extends JDialog {
 		if (mode == 0) {
 			DisplayUtil.displayAcknowledgeMessage(lblQuantityLabel,
 					StoreConstants.THRESHOLD_REORDER_QUANTITY_UPDATED_SUCCESSFULLY);
-		} else if (mode == 1) {
+		} else if (mode == 1 || mode == 2) {
 			DisplayUtil.displayAcknowledgeMessage(lblQuantityLabel, StoreConstants.STOCK_UPDATED_SUCCESSFULLY);
 		}
 

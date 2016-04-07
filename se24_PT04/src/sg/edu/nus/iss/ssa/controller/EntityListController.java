@@ -224,7 +224,32 @@ public class EntityListController {
 		}
 		return null;
 	}
+	
+	// For write off stock
+	public String writeOffStock(Product selectedProduct, long stockMinus) {
+		selectedProduct.setQuantity(selectedProduct.getQuantity() - stockMinus);
 
+		for (Product p : FileDataWrapper.productMap.values()) {
+			int barcode = p.getBarCode();
+			if (barcode == selectedProduct.getBarCode()) {
+				p = selectedProduct;
+				break;
+			}
+		}
+		if (ioManager == null) {
+			ioManager = new IOService<>();
+		}
+		try {
+			ioManager.writeToFile(FileDataWrapper.productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
+		} catch (Exception ex) {
+			reloadProductData();
+			ex.printStackTrace();
+			return StoreConstants.ERROR + " writing off stock";
+		} finally {
+			ioManager = null;
+		}
+		return null;
+	}
 	// For configure threshold
 	public String updateThreshold_ReorderQuantity(Product selectedProduct, long newThreshold, long newReorderQuantity) {
 		selectedProduct.setThresholdQuantity(newThreshold);

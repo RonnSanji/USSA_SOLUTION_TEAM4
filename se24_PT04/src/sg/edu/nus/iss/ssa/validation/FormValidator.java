@@ -96,6 +96,26 @@ public class FormValidator {
 		return null;
 	}
 
+	public static String writeOffStockValidateForm(long curentQuantity, String stockTxt) {
+
+		if (stockTxt == null || stockTxt.isEmpty()) {
+			return StoreConstants.ENTER_WRITEOFF_QUANTITY;
+		}
+		try {
+			long l = Long.parseLong(stockTxt);
+			if (l <= 0) {
+				return StoreConstants.INVALID_WRITEOFF_QUANTITY;
+			}
+			if (l > curentQuantity) {
+				return StoreConstants.INVALID_WRITEOFF_QUANTITY;
+			}
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return StoreConstants.INVALID_WRITEOFF_QUANTITY;
+		}
+		return null;
+	}
+
 	public static String configureThresholdReorderQuantityValidateForm(String threshold, String reorderQuantity) {
 
 		if (threshold == null || threshold.isEmpty()) {
@@ -251,8 +271,8 @@ public class FormValidator {
 		}
 		return null;
 	}
-	
-	public static String editMemeberValidateForm(String memberName, String memberNumber, long LPoint){
+
+	public static String editMemeberValidateForm(String memberName, String memberNumber, long LPoint) {
 		if (memberName == null || memberName.isEmpty() || memberNumber == null || memberNumber.isEmpty()) {
 			return StoreConstants.BLANK_MEMBER_NUMBERANDNAME;
 		}
@@ -265,7 +285,7 @@ public class FormValidator {
 		if (memberNumber.contains(",")) {
 			return StoreConstants.INVALID_NEWMEMBER_NUMBER;
 		}
-		if(LPoint<0){
+		if (LPoint < 0) {
 			return StoreConstants.INVALID_LOYLTY_POINT;
 		}
 		return null;
@@ -278,7 +298,7 @@ public class FormValidator {
 		if (password == null || password.length == 0) {
 			return StoreConstants.STOREKEEPER_INCORRECT_PASSWORD;
 		}
-		//System.out.println(FileDataWrapper.storeKeeperMap.values());
+		// System.out.println(FileDataWrapper.storeKeeperMap.values());
 		StoreKeeper storeKeeper = (StoreKeeper) FileDataWrapper.storeKeeperMap.get(name.toLowerCase());
 		if (storeKeeper == null) {
 			// System.out.println("NONONONONO");
@@ -293,8 +313,8 @@ public class FormValidator {
 		return null;
 	}
 
-	public static String addProductValidateForm(String categoryName, String productName, String productDescription, String quantityAvailable,
-			String price, String thresholdQuantity) {
+	public static String addProductValidateForm(String categoryName, String productName, String productDescription,
+			String quantityAvailable, String price, String thresholdQuantity) {
 		if (categoryName == null || categoryName.isEmpty()) {
 			return StoreConstants.BLANK_CATEGORYNAME;
 		}
@@ -303,32 +323,32 @@ public class FormValidator {
 		}
 		if (categoryName.length() != 3) {
 			return StoreConstants.INVALID_CATERORY;
-		} 
-		
+		}
+
 		if (productName == null || productName.isEmpty()) {
 			return StoreConstants.EMPTY_PRODUCT_NAME;
-		} 
-		if (productName.contains(",")|| productName.contains("\n")) {
+		}
+		if (productName.contains(",") || productName.contains("\n")) {
 			return StoreConstants.INVALID_PRODUCT_NAME;
-		} 
-		
+		}
+
 		if (productDescription == null || productDescription.isEmpty()) {
 			return StoreConstants.EMPTY_PRODUCT_DESCRIPTION;
-		} 
-		if (productDescription.contains(",")|| productDescription.contains("\n")) {
+		}
+		if (productDescription.contains(",") || productDescription.contains("\n")) {
 			return StoreConstants.INVALID_PRODUCT_DESCRIPTION;
-		} 
-		
+		}
+
 		if (quantityAvailable.isEmpty() || quantityAvailable == null) {
 			return StoreConstants.EMPTY_QUANTITY;
-		}	
+		}
 		if (quantityAvailable.contains(",") || quantityAvailable.contains("\n")) {
 			return StoreConstants.INVALID_QUANTITY;
 		}
 		if (!quantityAvailable.matches(StoreConstants.NUMBER_REGEX)) {
 			return StoreConstants.INVALID_QUANTITY;
 		}
-		
+
 		if (price.isEmpty() || price == null) {
 			return StoreConstants.EMPTY_PRICE;
 		}
@@ -338,13 +358,11 @@ public class FormValidator {
 		if (!(price.matches(StoreConstants.NUMBER_REGEX))) {
 			return StoreConstants.INVALID_PRICE;
 		}
-		
-		if(thresholdQuantity ==null ||thresholdQuantity.isEmpty())
-		{
+
+		if (thresholdQuantity == null || thresholdQuantity.isEmpty()) {
 			return StoreConstants.EMPTY_THRESHOLD;
 		}
-		if(thresholdQuantity.contains(",") ||thresholdQuantity.contains("\n"))
-		{
+		if (thresholdQuantity.contains(",") || thresholdQuantity.contains("\n")) {
 			return StoreConstants.INVALID_THRESHOLD;
 		}
 		if (!(thresholdQuantity.matches(StoreConstants.NUMBER_REGEX))) {
@@ -403,8 +421,9 @@ public class FormValidator {
 		return null;
 	}
 
-	public static String editProductValidateForm(String productName, String productDescription, Double price){
-		if (productName == null || productName.isEmpty() || productDescription == null || productDescription.isEmpty()) {
+	public static String editProductValidateForm(String productName, String productDescription, Double price) {
+		if (productName == null || productName.isEmpty() || productDescription == null
+				|| productDescription.isEmpty()) {
 			return StoreConstants.BLANK_PRODUCT_DESCRIPTIONANDNAME;
 		}
 		if (productName.contains(",")) {
@@ -413,7 +432,7 @@ public class FormValidator {
 		if (productDescription.contains(",")) {
 			return StoreConstants.INVALID_NEWPRODUCT_DESCRIPTION;
 		}
-		if(price<0){
+		if (price < 0) {
 			return StoreConstants.INVALID_PRICE;
 		}
 		return null;

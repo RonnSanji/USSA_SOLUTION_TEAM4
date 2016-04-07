@@ -76,10 +76,12 @@ public class StoreConstants {
 	public static final String SELECT_PRODUCT = "Please select a product";
 	public static final String STOCK_UPDATED_SUCCESSFULLY = "Stock has been updated successfully !";
 	public static final String ENTER_REPLENISH_QUANTITY = "Please enter replenish quantity";
+	public static final String ENTER_WRITEOFF_QUANTITY = "Please enter write off quantity";
 	public static final String BLANK_REPLENISH_QUANTITY = "Replenish quantity is empty !";
 	public static final String BLANK_PRODUCT_BAR_CODE = "Bar code is blank !";
 	public static final String INVALID_PRODUCT_BAR_CODE = "is not a valid bar code !";
 	public static final String INVALID_REPLENISH_QUANTITY = "Please enter a valid replenish quantity";
+	public static final String INVALID_WRITEOFF_QUANTITY = "Please enter a valid write off quantity";
 	public static final String BAR_CODE_NOT_EXIST = "does not exist";
 	public static final String ENTER_NEW_THRESHOLD = "Please enter new threshold quantity";
 	public static final String ENTER_NEW_REORDER_QUANTITY = "Please enter new reorder quantity";
@@ -102,7 +104,8 @@ public class StoreConstants {
 	public static final String INVALID_PRICE = "Invalid Product Price. Please Enter only number.";
 	public static final String INVALID_THRESHOLD = "Invalid Product Threshold Quantity. Please Enter Only Digits.";
 	public static final String CONFIRM_REMOVE_PRODUCT = "Confirm to remove this product ?";
-	
+	public static final String ENTER_PRINT_COPY = "Please enter the number of copies to print";
+	public static final String INVALID_PRINT_COPY = "Please enter a valid number of copies to print";
 	
 	// StoreKeeper validation message
 	public static final String STOREKEEPER_NOT_FOUND = "StoreKeeper not found.";

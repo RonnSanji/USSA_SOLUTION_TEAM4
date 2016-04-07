@@ -40,6 +40,7 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 public class MemberManagerWindow extends JPanel {
 
@@ -173,6 +174,7 @@ public class MemberManagerWindow extends JPanel {
 		model.isCellEditable(0, 0);
 		table =   new JTable(model);	
 		table.setFillsViewportHeight(true);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 		
 		JLabel lblSearchBy = new JLabel("Search by:");

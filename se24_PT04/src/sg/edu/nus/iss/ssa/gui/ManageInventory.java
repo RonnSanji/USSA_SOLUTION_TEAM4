@@ -105,11 +105,11 @@ public class ManageInventory extends JPanel {
 		});
 
 		lblNoResult = new JLabel("");
-		lblNoResult.setBounds(75, 71, 150, 14);
+		lblNoResult.setBounds(75, 71, 288, 14);
 		this.add(lblNoResult);
 
 		btnReplenish = new JButton("Replenish");
-		btnReplenish.setBounds(326, 525, 150, 60);
+		btnReplenish.setBounds(229, 525, 150, 60);
 		btnReplenish.setEnabled(false);
 		btnReplenish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -165,7 +165,7 @@ public class ManageInventory extends JPanel {
 				}
 			}
 		});
-		btnGeneratePurchaseOrder.setBounds(561, 525, 150, 60);
+		btnGeneratePurchaseOrder.setBounds(640, 525, 150, 60);
 		add(btnGeneratePurchaseOrder);
 
 		btnConfigureThreshold = new JButton("<html>Configure Threshold/<br>&nbsp&nbsp Reorder Quantity</html>");
@@ -174,8 +174,17 @@ public class ManageInventory extends JPanel {
 				showEditInventoryWindow(0);
 			}
 		});
-		btnConfigureThreshold.setBounds(85, 525, 160, 60);
+		btnConfigureThreshold.setBounds(10, 525, 160, 60);
 		add(btnConfigureThreshold);
+		
+		JButton btnWriteOff = new JButton("Write Off");
+		btnWriteOff.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showEditInventoryWindow(2);
+			}
+		});
+		btnWriteOff.setBounds(435, 525, 150, 60);
+		add(btnWriteOff);
 		scrollPane.setVisible(true);
 		TbResult.setVisible(false);
 
@@ -202,6 +211,8 @@ public class ManageInventory extends JPanel {
 			return;
 		}
 		prepareTableData();
+		
+		
 		/*
 		 * data = new String[productListResult.size()][]; for (int i = 0; i <
 		 * productListResult.size(); i++) { String[] values = new
@@ -300,7 +311,17 @@ public class ManageInventory extends JPanel {
 
 		TbResult.setModel(model);
 		TbResult.setVisible(true);
-
+		
+		if(searchType == 1)
+		{
+			TbResult.setVisible(true);
+			lblNoResult.setText("Showing search results");
+		}
+		else if(searchType ==2)
+		{
+			TbResult.setVisible(true);
+			lblNoResult.setText("Showing all inventory below threshold");
+		}
 	}
 
 	public boolean hasBelowThreshold() {

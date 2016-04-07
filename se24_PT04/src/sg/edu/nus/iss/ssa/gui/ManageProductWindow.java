@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
@@ -15,6 +18,7 @@ import sg.edu.nus.iss.ssa.model.Entity;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.util.IOService;
+import sg.edu.nus.iss.ssa.util.Printer;
 
 public class ManageProductWindow extends JPanel {
 
@@ -34,6 +38,7 @@ public class ManageProductWindow extends JPanel {
   private String searchBy;
   private Product productToEdit;
   private int selectedRow;
+  private JTextField txtPrintCopy;
 
   /**
    * Create the application.
@@ -128,6 +133,8 @@ public class ManageProductWindow extends JPanel {
     btnEditProduct.setBounds(316, 5, 160, 55);
     buttonPanel.add(btnEditProduct);
 
+    
+    
     // jTable Data Display
 
     Object[] products = FileDataWrapper.productMap.values().toArray();
@@ -145,19 +152,20 @@ public class ManageProductWindow extends JPanel {
     model.isCellEditable(0, 0);
     table = new JTable(model);
     table.setFillsViewportHeight(true);
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     scrollPane.setViewportView(table);
-
+    
     JLabel lblSearchBy = new JLabel("Search by:");
     lblSearchBy.setBounds(12, 33, 73, 16);
     add(lblSearchBy);
 
     comboBoxProductSearch = new JComboBox();
     comboBoxProductSearch.setModel(new DefaultComboBoxModel(comboBoxSearchByItem));
-    comboBoxProductSearch.setBounds(95, 27, 125, 28);
+    comboBoxProductSearch.setBounds(75, 27, 125, 28);
     add(comboBoxProductSearch);
 
     txtProductSearch = new JTextField();
-    txtProductSearch.setBounds(240, 27, 200, 28);
+    txtProductSearch.setBounds(210, 27, 174, 28);
     add(txtProductSearch);
     txtProductSearch.setColumns(10);
 
@@ -167,7 +175,7 @@ public class ManageProductWindow extends JPanel {
         productSearch();
       }
     });
-    btnProductSearch.setBounds(467, 27, 150, 29);
+    btnProductSearch.setBounds(394, 27, 111, 28);
     add(btnProductSearch);
 
     JButton btnClear = new JButton("Clear");
@@ -177,12 +185,75 @@ public class ManageProductWindow extends JPanel {
         table.setModel(model);
       }
     });
-    btnClear.setBounds(640, 27, 150, 29);
+    btnClear.setBounds(515, 27, 111, 28);
     add(btnClear);
+    
+    JPanel panel = new JPanel();
+    panel.setBounds(636, 20, 158, 40);
+    add(panel);
+    panel.setLayout(null);
+    
+    JButton btnPrintLabel = new JButton("Print Label");
+    btnPrintLabel.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent arg0) {
+    		printLabel();
+    	}
+    });
+    btnPrintLabel.setBounds(5, 7, 96, 28);
+    panel.add(btnPrintLabel);
+    
+    JLabel lblNewLabel = new JLabel("X");
+    lblNewLabel.setBounds(105, 12, 17, 14);
+    panel.add(lblNewLabel);
+    
+    txtPrintCopy = new JTextField();
+    txtPrintCopy.setBounds(115, 8, 35, 25);
+    panel.add(txtPrintCopy);
+    txtPrintCopy.setColumns(10);
+    txtPrintCopy.setDocument(new PlainDocument() {
 
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (str.matches("[1-9]*") && getLength() + str.length() <= 2)
+				super.insertString(offs, str, a);
+		}
+	});
+    
+    // frist load set resultlist
+    productList = (Collection<Product>) FileDataWrapper.productMap.values();
+    productListResult = new ArrayList<Product>();
+    for (Product product : productList) {
+    	productListResult.add(product);
+    }
+    
   }
 
-  public void refreshTable(String[] productProperty) {
+  protected void printLabel() {
+	if(txtPrintCopy.getText() == "")
+	{
+		DisplayUtil.displayValidationError(table, StoreConstants.ENTER_PRINT_COPY);
+		return;
+	}
+	int copy = 0;
+	try
+	{
+		copy = Integer.parseInt(txtPrintCopy.getText().trim());
+	}
+	catch(Exception ex)
+	{
+		DisplayUtil.displayValidationError(table, StoreConstants.INVALID_PRINT_COPY);
+		return;
+	}
+	AutoCloseMessageWindow win = new AutoCloseMessageWindow("Message", "Printing labels...", 2);
+	win.setLocation(table.getLocationOnScreen());
+	win.setVisible(true);
+	
+	Printer printer = new Printer();
+	printer.printLabel((ArrayList<Product>) productListResult, copy);
+	
+}
+
+public void refreshTable(String[] productProperty) {
     this.model.addRow(productProperty);
   }
 
@@ -250,5 +321,4 @@ public class ManageProductWindow extends JPanel {
       ioManager = null;
     }
   }
-
 }

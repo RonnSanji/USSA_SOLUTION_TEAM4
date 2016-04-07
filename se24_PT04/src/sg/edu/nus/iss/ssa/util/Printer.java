@@ -27,6 +27,7 @@ public class Printer {
 
 	private Order receiptOrder;
 	private StringBuilder sb;
+	private String linebreak = "\n";
 
 	public void printReceipt(Order Order, Point location) {
 		this.receiptOrder = Order;
@@ -40,12 +41,11 @@ public class Printer {
 
 			sb = new StringBuilder();
 
-			String header_product_code = "Product Code     ";
+			String header_product_code = "Product ID       ";
 			String header_product_name = "Product Name               ";
 			String header_price = "Price      ";
 			String header_quantity = "Quantity    ";
 			String header_total = "Total  ";
-			String linebreak = "\n";
 
 			sb.append(linebreak).append(linebreak).append(linebreak).append(linebreak).append(linebreak);
 
@@ -105,7 +105,34 @@ public class Printer {
 	}
 
 	public void printLabel(ArrayList<Product> productList, int copyCount) {
+		if (productList == null) {
+			return;
+		}
+		sb = new StringBuilder();
+		sb.append(linebreak).append(linebreak).append(linebreak).append(linebreak).append(linebreak);
+		sb.append("=======  PT Team 4 Souvenir Store  =======\n\n\n");
+		//		  "Product Name                     Bar Code     \n"
+		
+		String header_product_name = "Product Name                     ";
+		String header_bar_code ="Bar Code     ";
+		
+		sb.append(header_product_name);
+		sb.append(header_bar_code);
+		sb.append(linebreak);
+		
+		
+		for (Product product : productList) {
+			for (int i = 0; i < copyCount; i++) {
+				sb.append(fillString(header_product_name, product.getProductName()));
+				sb.append(fillString(header_bar_code, String.valueOf(product.getBarCode())));
+				sb.append(linebreak);
+			}
+		}
 
+		sb.append(linebreak).append(linebreak).append(linebreak).append(linebreak).append(linebreak);
+		
+		System.out.println(sb.toString());
+		
 	}
 
 	private String fillString(String header, String value) {

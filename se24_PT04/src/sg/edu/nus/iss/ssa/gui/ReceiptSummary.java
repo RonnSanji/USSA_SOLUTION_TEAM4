@@ -210,7 +210,7 @@ public class ReceiptSummary extends JPanel {
 	
 	private void showPrintReceiptMessage()
 	{
-		AutoCloseMessageWindow win = new AutoCloseMessageWindow("Message", "Printing receipt...", 3);
+		AutoCloseMessageWindow win = new AutoCloseMessageWindow("Message", "Printing receipt...", 2);
 		win.setLocation(dashBoard.getMainActivityPanel().getLocationOnScreen());
 		win.setVisible(true);
 	}
