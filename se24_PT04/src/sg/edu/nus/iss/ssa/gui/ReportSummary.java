@@ -352,7 +352,7 @@ public class ReportSummary extends JPanel {
 				// F42563743156
 				String dateString = (String) entry.getValue(3);
 				Date date = getDate(dateString);
-				if (date.after(startDate)
+				if ((date.after(startDate)||date.equals(startDate))
 						&& (date.before(endDate) || date.equals(endDate))) {
 					return true;
 				}
