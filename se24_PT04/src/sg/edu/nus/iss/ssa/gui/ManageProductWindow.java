@@ -183,6 +183,13 @@ public class ManageProductWindow extends JPanel {
       public void actionPerformed(ActionEvent e) {
     	txtProductSearch.setText("");
         table.setModel(model);
+        
+        // set resultlist
+        productList = (Collection<Product>) FileDataWrapper.productMap.values();
+        productListResult = new ArrayList<Product>();
+        for (Product product : productList) {
+        	productListResult.add(product);
+        }
       }
     });
     btnClear.setBounds(515, 27, 111, 28);
@@ -214,7 +221,7 @@ public class ManageProductWindow extends JPanel {
 
 		@Override
 		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			if (str.matches("[1-9]*") && getLength() + str.length() <= 2)
+			if (str.matches("[0-9]*") && getLength() + str.length() <= 2)
 				super.insertString(offs, str, a);
 		}
 	});
