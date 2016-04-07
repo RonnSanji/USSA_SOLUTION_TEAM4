@@ -30,6 +30,7 @@ public class DashBoard extends JFrame
 
 	public DashBoard(String loginuser)
 	{
+		setTitle("PT Team 4 Souvenir Store");
 
 		initialize(loginuser);
 		updater.start();
@@ -309,4 +310,7 @@ public class DashBoard extends JFrame
 		activateMainPanel(productSelectionWindow);
 	}
 
+	public JPanel getMainActivityPanel(){
+		return mainActivityPanel;
+	}
 }

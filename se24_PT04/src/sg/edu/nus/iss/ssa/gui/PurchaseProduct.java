@@ -33,6 +33,7 @@ import sg.edu.nus.iss.ssa.validation.OrderValidator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Map;
+import javax.swing.SwingConstants;
 
 /**
  * Create the dialog where user can enter product BarCode and Quantity.
@@ -57,15 +58,17 @@ public class PurchaseProduct extends JDialog {
 		productMap = FileDataWrapper.productMap;
 		order = FileDataWrapper.receipt;
 		setTitle("Purchase Product");
-		setSize(500,350);
+		setSize(500,339);
 		setLocationRelativeTo(null);
-		getContentPane().setLayout(new BorderLayout());
+		getContentPane().setLayout(null);
+		contentPanel.setBounds(0, 0, 484, 301);
 		contentPanel.setBackground(Color.LIGHT_GRAY);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		getContentPane().add(contentPanel);
+		contentPanel.setLayout(null);
 		{
 			JPanel panel = new JPanel();
+			panel.setBounds(5, 5, 474, 221);
 			panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 			contentPanel.add(panel);
 			panel.setLayout(null);
@@ -118,10 +121,11 @@ public class PurchaseProduct extends JDialog {
 		}
 		{
 			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			buttonPane.setBounds(5, 227, 474, 74);
+			contentPanel.add(buttonPane);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.setBounds(68, 11, 150, 50);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						/*Code to collect product bar code and Quantity*/
@@ -157,12 +161,14 @@ public class PurchaseProduct extends JDialog {
 						}
 					}
 				});
+				buttonPane.setLayout(null);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.setBounds(261, 11, 150, 50);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();

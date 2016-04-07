@@ -60,7 +60,7 @@ public class TotalReceiptCalculator {
             }
 
             //update Transaction
-            System.out.println(transactionList);
+            //System.out.println(transactionList);
             try {
                 ioManager.writeToFile(productMap.values(),new Product());
                 ioManager.writeToFile(transactionList,new Transaction());

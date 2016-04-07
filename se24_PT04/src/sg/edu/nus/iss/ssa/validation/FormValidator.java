@@ -278,7 +278,7 @@ public class FormValidator {
 		if (password == null || password.length == 0) {
 			return StoreConstants.STOREKEEPER_INCORRECT_PASSWORD;
 		}
-		System.out.println(FileDataWrapper.storeKeeperMap.values());
+		//System.out.println(FileDataWrapper.storeKeeperMap.values());
 		StoreKeeper storeKeeper = (StoreKeeper) FileDataWrapper.storeKeeperMap.get(name.toLowerCase());
 		if (storeKeeper == null) {
 			// System.out.println("NONONONONO");

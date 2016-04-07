@@ -38,11 +38,12 @@ public class ProductSelectionWindow extends JPanel {
 	private JTextField loyaltyPoints;
 	private Order order;
 	private DashBoard dashBoard;
-
+	
 	/**
 	 * Create the frame.
 	 */
 	public ProductSelectionWindow(DashBoard dashBoard) {
+		
 		order = FileDataWrapper.receipt;
 		ProductSelectionWindow productWin = this;
 		this.dashBoard = dashBoard;
@@ -179,7 +180,7 @@ public class ProductSelectionWindow extends JPanel {
 				// check if any row is selected
 				if(selectedRow != -1){
 					//System.out.print(selectedRow);
-					int option = JOptionPane.showConfirmDialog(null, "Confirm to remove this Product?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+					int option = JOptionPane.showConfirmDialog(table, "Confirm to remove this Product?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
 					//System.out.println(option);
 					if(option==0){
 						// Confirm Remove

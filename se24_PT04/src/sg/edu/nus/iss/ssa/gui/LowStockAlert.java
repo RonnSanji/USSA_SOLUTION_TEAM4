@@ -21,7 +21,7 @@ public class LowStockAlert extends JFrame {
 	public LowStockAlert() {
 		setResizable(false);
 		setTitle("Low Stock Alert !");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 544);
 		contentPane = new JPanel();
 		setContentPane(contentPane);

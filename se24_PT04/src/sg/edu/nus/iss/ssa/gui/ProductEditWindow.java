@@ -97,7 +97,7 @@ public class ProductEditWindow extends JDialog {
           productToEdit.setProductDesc(newProductDescription);
           productToEdit.setPrice(newPrice);
           productManagerWindow.updateEditedProduct();
-          System.out.println(productToEdit);
+          //System.out.println(productToEdit);
 
           dispose();
         }

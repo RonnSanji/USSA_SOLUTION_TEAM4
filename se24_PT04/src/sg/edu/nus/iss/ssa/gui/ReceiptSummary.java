@@ -22,6 +22,7 @@ import sg.edu.nus.iss.ssa.bo.TotalReceiptCalculator;
 import sg.edu.nus.iss.ssa.model.LineItem;
 import sg.edu.nus.iss.ssa.model.Order;
 import sg.edu.nus.iss.ssa.util.DisplayUtil;
+import sg.edu.nus.iss.ssa.util.Printer;
 
 /**
  * Creates screen to show Order Summary.
@@ -45,7 +46,10 @@ public class ReceiptSummary extends JPanel {
 	private JTextField remainingPoints;
 	private JButton btnOk;
 	private JSeparator separator;
-
+	private Printer printer;
+	private LowStockAlert lowStockAlert;
+	private DashBoard dashBoard;
+	
 	Order order = null;
 	TotalReceiptCalculator reciptCalculator;
 
@@ -53,6 +57,7 @@ public class ReceiptSummary extends JPanel {
 	 * Create the frame.
 	 */
 	public ReceiptSummary(DashBoard dashBoard) {
+		this.dashBoard = dashBoard;
 		order = FileDataWrapper.receipt;
 		reciptCalculator = new TotalReceiptCalculator(order);
 		reciptCalculator.processPayment();
@@ -97,7 +102,7 @@ public class ReceiptSummary extends JPanel {
 		totalPrice.setColumns(10);
 		totalPrice.setText(String.valueOf(FileDataWrapper.receipt.getTotalPrice()));
 
-		JLabel lblApplicablePoints = new JLabel("Applicable Discount");
+		JLabel lblApplicablePoints = new JLabel("Applicable Discount:");
 		lblApplicablePoints.setBounds(72, 284, 166, 20);
 		this.add(lblApplicablePoints);
 
@@ -119,7 +124,7 @@ public class ReceiptSummary extends JPanel {
 		finalPrice.setText(String.valueOf(order.getFinalPrice()));
 		this.add(finalPrice);
 
-		JLabel lblRedeemPoints = new JLabel("Points Redeemed");
+		JLabel lblRedeemPoints = new JLabel("Points Redeemed:");
 		lblRedeemPoints.setBounds(72, 358, 159, 20);
 		this.add(lblRedeemPoints);
 
@@ -130,7 +135,7 @@ public class ReceiptSummary extends JPanel {
 		pointsRedeemed.setText(reciptCalculator.getCashEquivalentPointstext(order));
 		this.add(pointsRedeemed);
 
-		JLabel lblCashRendered = new JLabel("Cash Rendered:");
+		JLabel lblCashRendered = new JLabel("Cash Tendered:");
 		lblCashRendered.setBounds(72, 395, 159, 20);
 		this.add(lblCashRendered);
 
@@ -168,27 +173,58 @@ public class ReceiptSummary extends JPanel {
 				.setText(String.valueOf(order.getMemberInfo() != null ? order.getMemberInfo().getLoyaltyPoints() : 0));
 		this.add(remainingPoints);
 
-		btnOk = new JButton("OK");
+		btnOk = new JButton("Print Receipt");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FileDataWrapper.receipt = new Order();
-
-				// ManageInventory manageStock = new ManageInventory();
-				// dashBoard.activateMainPanel(manageStock);
-				// show alert only when there is low stock
-				LowStockAlert lowStockAlert = new LowStockAlert();
-				if (lowStockAlert.hasBelowThreshold()) {
-					lowStockAlert.setVisible(true);
-					lowStockAlert.setLocation(getLocationOnScreen());
+	
+				if(printer ==null)
+				{
+					printer = new Printer();
 				}
+				
+				showPrintReceiptMessage();
+				
+				printer.printReceipt(FileDataWrapper.receipt, dashBoard.getMainActivityPanel().getLocationOnScreen());
+				
+				FileDataWrapper.receipt = new Order();
+				
 			}
 		});
-		btnOk.setBounds(498, 512, 100, 50);
+		btnOk.setBounds(351, 522, 150, 50);
 		this.add(btnOk);
-
+		
 		separator = new JSeparator();
 		separator.setBounds(31, 503, 627, 2);
 		this.add(separator);
-
+		
+		if(printer ==null)
+		{
+			printer = new Printer();
+		}
+		showPrintReceiptMessage();
+		
+		printer.printReceipt(FileDataWrapper.receipt, dashBoard.getMainActivityPanel().getLocationOnScreen());
+		
+		showLowStockAlert();
+	}
+	
+	private void showPrintReceiptMessage()
+	{
+		AutoCloseMessageWindow win = new AutoCloseMessageWindow("Message", "Printing receipt...", 3);
+		win.setLocation(dashBoard.getMainActivityPanel().getLocationOnScreen());
+		win.setVisible(true);
+	}
+	
+	private void showLowStockAlert()
+	{
+		if(lowStockAlert == null)
+		{
+			lowStockAlert = new LowStockAlert();
+			
+			if (lowStockAlert.hasBelowThreshold()) {
+				lowStockAlert.setVisible(true);
+				lowStockAlert.setLocation(dashBoard.getMainActivityPanel().getLocationOnScreen());
+		 	}
+		}
 	}
 }

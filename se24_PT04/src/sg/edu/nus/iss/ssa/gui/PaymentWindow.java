@@ -61,7 +61,7 @@ public class PaymentWindow extends JPanel {
 		
 		
 		JLabel lblNewLabel = new JLabel("Total price:");
-		lblNewLabel.setBounds(39, 165, 103, 20);
+		lblNewLabel.setBounds(39, 154, 103, 20);
 		this.add(lblNewLabel);
 		
 		JLabel lblMemberNumber = new JLabel("Member Number:");
@@ -137,7 +137,7 @@ public class PaymentWindow extends JPanel {
 		});
 		this.add(pointsRedeemed);
 		
-		JLabel lblCashRendered = new JLabel("Cash Rendered:");
+		JLabel lblCashRendered = new JLabel("Cash Tendered:");
 		lblCashRendered.setBounds(38, 325, 159, 20);
 		this.add(lblCashRendered);
 		
@@ -212,7 +212,7 @@ public class PaymentWindow extends JPanel {
 
 			}
 		});
-		btnPay.setBounds(422, 399, 100, 50);
+		btnPay.setBounds(402, 399, 150, 50);
 		this.add(btnPay);
 		
 		btnCancel = new JButton("Cancel");
@@ -222,7 +222,7 @@ public class PaymentWindow extends JPanel {
 				dashBoard.showProductSelectionWindow(dashBoard);
 			}
 		});
-		btnCancel.setBounds(259, 399, 100, 50);
+		btnCancel.setBounds(230, 399, 150, 50);
 		this.add(btnCancel);
 	}
 }
