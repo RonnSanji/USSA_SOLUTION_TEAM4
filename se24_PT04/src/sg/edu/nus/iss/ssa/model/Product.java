@@ -161,10 +161,8 @@ public class Product extends Entity{
 		product[3] = String.valueOf(quantity);
 		product[4] = String.valueOf(price);
 		product[5] = String.valueOf(barCode);
-		product[6] = String.valueOf(barCode);
+		product[6] = String.valueOf(thresholdQuantity);
 		product[7] = String.valueOf(orderQuantity);
 		return product;
 	}
-	
-	
 }

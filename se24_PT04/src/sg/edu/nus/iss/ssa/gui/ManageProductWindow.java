@@ -28,9 +28,9 @@ public class ManageProductWindow extends JPanel {
   private Collection<Product> productList;
   private List<Product> productListResult;
   JComboBox comboBoxProductSearch;
-  private String[] comboBoxSearchByItem = new String[] { "Product Name", "Product Description" };
-  private String[] columns = new String[] { "Product Category", "Product Name",
-      "Product Description", "Quantity Available", "Price", "Reorder Quantity", "Order Quantity" };
+  private String[] comboBoxSearchByItem = new String[] { "Product Name", "Bar Code" };
+  private String[] columns = new String[] { "Product Id","Product Name",
+      "Product Description", "Quantity Available", "Price","Bar Code","Reorder Quantity", "Order Quantity" };
   private String searchBy;
   private Product productToEdit;
   private int selectedRow;
@@ -76,7 +76,7 @@ public class ManageProductWindow extends JPanel {
         int selectedRow = table.getSelectedRow();
         String selectedRowKey = null;
         try {
-          selectedRowKey = table.getValueAt(selectedRow, 1).toString();
+          selectedRowKey = table.getValueAt(selectedRow, 5).toString();
         } catch (Exception es) {
         	DisplayUtil.displayValidationError(table, StoreConstants.SELECT_PRODUCT);
         //  JOptionPane.showMessageDialog(table, StoreConstants.SELECT_PRODUCT, "Error",
@@ -111,14 +111,14 @@ public class ManageProductWindow extends JPanel {
             String selectedRowKey =null;
             try
             {
-              selectedRowKey = table.getValueAt(selectedRow, 1).toString();
+              selectedRowKey = table.getValueAt(selectedRow, 5).toString();
             }
             catch( Exception es)
             {
               JOptionPane.showMessageDialog(table, "Please select at least one row", "Error", JOptionPane.ERROR_MESSAGE);
             }
             if(selectedRow != -1){
-              productToEdit = FileDataWrapper.productMap.get(table.getValueAt(selectedRow, 1));
+              productToEdit = FileDataWrapper.productMap.get(table.getValueAt(selectedRow, 5));
               ProductEditWindow productEditWindow = new ProductEditWindow(productToEdit,manageProductWindow);
               productEditWindow.setModal(true);
               productEditWindow.setVisible(true);
@@ -134,7 +134,7 @@ public class ManageProductWindow extends JPanel {
     Object[][] data = new Object[products.length][];
 
     // actual data for the table in a 2d array
-    for (int i = 0; i < products.length; i++) {
+    for (int i = 0; i <products.length; i++) {
       data[i] = ((Product) products[i]).getProductArray();
     }
     model = new DefaultTableModel(data, columns) {
