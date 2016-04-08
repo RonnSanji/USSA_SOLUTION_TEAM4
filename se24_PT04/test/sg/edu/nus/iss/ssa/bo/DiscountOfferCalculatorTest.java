@@ -4,9 +4,7 @@ package sg.edu.nus.iss.ssa.bo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import sg.edu.nus.iss.ssa.model.Order;
-import sg.edu.nus.iss.ssa.model.PeriodDiscount;
-import sg.edu.nus.iss.ssa.model.Transaction;
+import sg.edu.nus.iss.ssa.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,14 +107,27 @@ public class DiscountOfferCalculatorTest {
         transactions.clear();
         boolean isFirstTxn = offerCalculator.isFirstTransactionForMember("S1234");
         assertTrue(isFirstTxn);
-        transactions.add(createTransaction("STA/1", "S1234",100 ));
+        transactions.add(createTransaction("STA/1", "S1234", 100));
         boolean isFirstTxn1 = offerCalculator.isFirstTransactionForMember("S1234");
         assertFalse(isFirstTxn1);
     }
 
     @Test
     public void testApplyDiscount() throws Exception {
+        Order order  = createOrder();
+        offerCalculator.applyDiscount(order);
+        assertEquals(100.0, order.getTotalPrice(), 0);
+        assertEquals(0.0, order.getApplicableDiscountPerc(), 0);
+        assertEquals(0, order.getApplicableDiscountAmount(), 0);
+        assertEquals(100.0, order.getFinalPrice(), 0);
 
+        order.setUser(createMember());
+        discounts.add(createDiscount("MEMBER_FIRST", "ALWAYS", "ALWAYS", 10f, "M"));
+        offerCalculator.applyDiscount(order);
+        assertEquals(100.0, order.getTotalPrice(), 0);
+        assertEquals(10.0, order.getApplicableDiscountPerc(), 0);
+        assertEquals(10, order.getApplicableDiscountAmount(), 0);
+        assertEquals(90.0, order.getFinalPrice(), 0);
     }
 
     private PeriodDiscount createDiscount(String code, String startDate, String period, float discountPerc, String applicableTo){
@@ -135,6 +146,28 @@ public class DiscountOfferCalculatorTest {
         txn.setMemberId(memberId);
         txn.setQuantity(quantity);
         return  txn;
+    }
+
+    private Order createOrder(){
+        Order order = new Order();
+        LineItem item = createLineItem(10);
+        order.addLineItem(item);
+        return order;
+    }
+
+    private Product createProduct(){
+        Product product =  new Product("CLO/1","test product", "test product desc ", 100, 10.0, 111, 10,10);
+        return product;
+    }
+    private LineItem createLineItem(long buyQty){
+        Product product = createProduct();
+        LineItem item = new LineItem(product,10);
+        return item;
+    }
+
+    private Member createMember(){
+        Member member = new Member("Amarjeet", "S123",100);
+        return member;
     }
 
 }
