@@ -71,7 +71,9 @@ public class StoreConstants {
 	public static final String SELECT_MEMBER = "Please select a member";
 	public static final String CONFIRM_REMOVE_MEMBER = "Confirm to remove this member ?";
 	public static final String ENTER_MEMBER_NAME = "Please enter memeber name";
-
+	public static final String MEMBER_UPDATED_SUCCESSFULLY = "Member has been updated successfully !";
+	public static final String MEMBER_REMOVED_SUCCESSFULLY = "Member has been removed successfully !";
+	
 	
 	// Manage stock message
 	public static final String SELECT_PRODUCT = "Please select a product";
@@ -108,6 +110,9 @@ public class StoreConstants {
 	public static final String CONFIRM_REMOVE_PRODUCT = "Confirm to remove this product ?";
 	public static final String ENTER_PRINT_COPY = "Please enter the number of copies to print";
 	public static final String INVALID_PRINT_COPY = "Please enter a valid number of copies to print";
+	public static final String PRODUCT_UPDATED_SUCCESSFULLY = "Product has been updated successfully !";
+	public static final String PRODUCT_REMOVED_SUCCESSFULLY = "Product has been removed successfully !";
+	public static final String PRODUCT_ADDED_SUCCESSFULLY_ = "Product has been added successfully !";
 	
 	// StoreKeeper validation message
 	public static final String STOREKEEPER_NOT_FOUND = "StoreKeeper not found.";

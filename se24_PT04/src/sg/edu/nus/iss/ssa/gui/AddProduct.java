@@ -52,7 +52,7 @@ public class AddProduct extends JDialog {
    * Create the application.
    */
   public AddProduct(Map<String, Product> productMap, ManageProductWindow productManagerWindow) {
-    setTitle("Adding New Product");
+    setTitle("Add Product");
     setResizable(false);
     setLocationRelativeTo(null);
     getContentPane().setLayout(new BorderLayout());
@@ -214,20 +214,21 @@ public class AddProduct extends JDialog {
                     StoreConstants.ERROR + " creating new product");
                 ex.printStackTrace();
               }
-
-              JButton btnCancel = new JButton("Cancel");
-              btnCancel.setBounds(234, 365, 100, 50);
-              contentPanel.add(btnCancel);
-              btnCancel.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  dispose();
-                }
-              });
-
+   
               // update the table data in MemberManagerWindow
               productManagerWindow.refreshTable(product.getProductArray());
+              DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.PRODUCT_ADDED_SUCCESSFULLY_);
               dispose();
             }
+          }
+        });
+        
+        JButton btnCancel = new JButton("Cancel");
+        btnCancel.setBounds(234, 365, 100, 50);
+        contentPanel.add(btnCancel);
+        btnCancel.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            dispose();
           }
         });
   }

@@ -447,19 +447,23 @@ public class FormValidator {
 	}
 
 	public static String editProductValidateForm(String productName, String productDescription, Double price) {
-		if (productName == null || productName.isEmpty() || productDescription == null
-				|| productDescription.isEmpty()) {
-			return StoreConstants.BLANK_PRODUCT_DESCRIPTIONANDNAME;
+		if (productName == null || productName.isEmpty()) {
+			return StoreConstants.EMPTY_PRODUCT_NAME;
 		}
-		if (productName.contains(",")) {
-			return StoreConstants.INVALID_NEWPRODUCT_NAME;
+		if (productName.contains(",") || productName.contains("\n")) {
+			return StoreConstants.INVALID_PRODUCT_NAME;
 		}
-		if (productDescription.contains(",")) {
-			return StoreConstants.INVALID_NEWPRODUCT_DESCRIPTION;
+
+		if (productDescription == null || productDescription.isEmpty()) {
+			return StoreConstants.EMPTY_PRODUCT_DESCRIPTION;
 		}
-		if (price < 0) {
+		if (productDescription.contains(",") || productDescription.contains("\n")) {
+			return StoreConstants.INVALID_PRODUCT_DESCRIPTION;
+		}
+		if (price <= 0) {
 			return StoreConstants.INVALID_PRICE;
 		}
+		
 		return null;
 	}
 }

@@ -38,6 +38,9 @@ import sg.edu.nus.iss.ssa.util.TestUtil;
  */
 public class EntityListControllerTest extends TestCase {
 
+	EntityListController controller;
+	IOService<?> ioManager;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -57,6 +60,8 @@ public class EntityListControllerTest extends TestCase {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		controller = new EntityListController();
+		ioManager = new IOService<>();
 	}
 
 	/**
@@ -64,15 +69,15 @@ public class EntityListControllerTest extends TestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
-
+		controller = null;
+		ioManager = null;
 	}
 
 	@Test
 	public void testSaveCategory() {
-		EntityListController controller = new EntityListController();
+
 		controller.reloadCategoryData();
 		// add
-
 		Set<String> keySet = FileDataWrapper.categoryMap.keySet();
 		ArrayList<String> tempKeyList = new ArrayList<>();
 
@@ -129,16 +134,12 @@ public class EntityListControllerTest extends TestCase {
 			controller.reloadCategoryData();
 			assertEquals(FileDataWrapper.categoryMap.get(cat.getCategoryId()), null);
 		}
-		if (controller != null) {
-			controller = null;
-		}
 	}
 
 	@Test
 	public void testReloadCategoryData() {
 		Random ran = new Random();
 
-		IOService<?> ioManager = new IOService<>();
 		FileDataWrapper.categoryMap.clear();
 		if (ioManager == null) {
 			ioManager = new IOService<>();
@@ -439,7 +440,7 @@ public class EntityListControllerTest extends TestCase {
 			}
 
 		}
-	controller = null;
+		controller = null;
 	}
 
 	@Test

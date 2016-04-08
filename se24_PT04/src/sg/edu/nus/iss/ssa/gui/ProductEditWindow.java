@@ -6,8 +6,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.model.Product;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
 
 public class ProductEditWindow extends JDialog {
@@ -41,7 +46,7 @@ public class ProductEditWindow extends JDialog {
   public ProductEditWindow(Product productToEdit, ManageProductWindow productManagerWindow) {
 
     getContentPane().setLayout(null);
-    setTitle("Editing New Product");
+    setTitle("Edit Product");
     setResizable(false);
     setSize(500, 300);
     setLocationRelativeTo(null);
@@ -59,7 +64,7 @@ public class ProductEditWindow extends JDialog {
     contentPanel.add(textProductName);
     textProductName.setText(productToEdit.getProductName());
     textProductName.setColumns(10);
-
+   
     JLabel lblProductDescription = new JLabel("Product Description:");
     lblProductDescription.setBounds(63, 106, 120, 16);
     contentPanel.add(lblProductDescription);
@@ -69,8 +74,8 @@ public class ProductEditWindow extends JDialog {
     contentPanel.add(textProductDescription);
     textProductDescription.setText(productToEdit.getProductDesc());
     textProductDescription.setColumns(10);
-
-    JLabel lblPrice = new JLabel("Price:");
+  
+   JLabel lblPrice = new JLabel("Price:");
     lblPrice.setBounds(64, 164, 106, 16);
     contentPanel.add(lblPrice);
 
@@ -79,6 +84,7 @@ public class ProductEditWindow extends JDialog {
     contentPanel.add(textPrice);
     textPrice.setText(String.valueOf(productToEdit.getPrice()));
     textPrice.setColumns(10);
+    
 
     btnEdit = new JButton("Ok");
     btnEdit.addActionListener(new ActionListener() {
@@ -90,7 +96,9 @@ public class ProductEditWindow extends JDialog {
         try {
           newPrice = Double.parseDouble(textPrice.getText());
         } catch(NumberFormatException exception){
-          exception.printStackTrace();
+          //exception.printStackTrace();
+        	DisplayUtil.displayValidationError(contentPanel, StoreConstants.INVALID_PRICE);
+        	return;
         }
         if (EditValidation(newProductName,newProductDescription,newPrice)) {
           productToEdit.setProductName(newProductName);
@@ -99,6 +107,7 @@ public class ProductEditWindow extends JDialog {
           productManagerWindow.updateEditedProduct();
           //System.out.println(productToEdit);
 
+          DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.PRODUCT_UPDATED_SUCCESSFULLY);
           dispose();
         }
 
@@ -115,6 +124,7 @@ public class ProductEditWindow extends JDialog {
     });
     btnCancel.setBounds(301, 220, 120, 45);
     contentPanel.add(btnCancel);
+       
   }
 
   // public MemberEditWindow(){}

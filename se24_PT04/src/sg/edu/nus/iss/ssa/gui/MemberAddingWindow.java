@@ -37,7 +37,7 @@ public class MemberAddingWindow extends JDialog {
 
 	public MemberAddingWindow(Map memberMap, MemberManagerWindow memberManagerWindow) {
 		
-		setTitle("Add New Member");
+		setTitle("Add Member");
 		setResizable(false);
 		setSize(400,200);
 		setLocationRelativeTo(null);
@@ -130,6 +130,7 @@ public class MemberAddingWindow extends JDialog {
 				      	
 						//update the table data in MemberManagerWindow
 						memberManagerWindow.refreshTable(newMember.getMemeberArray());
+						DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.MEMBER_ADDED_SUCCESSFULLY);
 					dispose();
 				  }
 				

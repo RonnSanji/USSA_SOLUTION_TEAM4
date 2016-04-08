@@ -122,6 +122,7 @@ public class MemberManagerWindow extends JPanel {
 						model.removeRow(selectedRow);
 						FileDataWrapper.memberMap.remove(selectedRowKey);
 						updateDatFile();
+						DisplayUtil.displayAcknowledgeMessage(table, StoreConstants.MEMBER_REMOVED_SUCCESSFULLY);
 					}
 
 				}

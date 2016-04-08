@@ -18,6 +18,8 @@ import javax.swing.JButton;
 
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.model.Member;
+import sg.edu.nus.iss.ssa.util.DisplayUtil;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import sg.edu.nus.iss.ssa.validation.FormValidator;
@@ -135,7 +137,7 @@ public class MemberEditWindow extends JDialog {
 					memberTOEdit.setLoyaltyPoints(newLoyltyPoint);
 					memberManagerWindow.updateEditedMember();
 					//System.out.println(memberTOEdit);
-		
+					DisplayUtil.displayAcknowledgeMessage(contentPanel, StoreConstants.MEMBER_UPDATED_SUCCESSFULLY);
 					dispose();
 				}
 				
