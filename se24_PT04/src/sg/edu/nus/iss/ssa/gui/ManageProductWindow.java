@@ -97,7 +97,8 @@ public class ManageProductWindow extends JPanel {
           if (option == 0) {
             // Confirm Remove
             model.removeRow(selectedRow);
-            FileDataWrapper.productMap.remove(String.valueOf(table.getValueAt(selectedRow, 5).toString()));
+            Product product = FileDataWrapper.productMap.get(table.getValueAt(selectedRow, 5));
+            FileDataWrapper.productMap.remove(table.getValueAt(selectedRow, 5));
             // update the .dat file
             updateDatFile();
           }
