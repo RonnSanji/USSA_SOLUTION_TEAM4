@@ -78,7 +78,7 @@ public class ManageProductWindow extends JPanel {
     btnRemoveProduct.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
-        int selectedRow = table.getSelectedRow();
+        selectedRow = table.getSelectedRow();
         String selectedRowKey = null;
         try {
           selectedRowKey = table.getValueAt(selectedRow, 5).toString();
@@ -113,7 +113,7 @@ public class ManageProductWindow extends JPanel {
       public void actionPerformed(ActionEvent e) {
 
             selectedRow = table.getSelectedRow();
-            String selectedRowKey =null;
+            String selectedRowKey = null;
             try
             {
               selectedRowKey = table.getValueAt(selectedRow, 5).toString();
@@ -126,6 +126,7 @@ public class ManageProductWindow extends JPanel {
               productToEdit = FileDataWrapper.productMap.get(table.getValueAt(selectedRow, 5));
               ProductEditWindow productEditWindow = new ProductEditWindow(productToEdit,manageProductWindow);
               productEditWindow.setModal(true);
+              productEditWindow.setLocation(manageProductWindow.getLocationOnScreen());
               productEditWindow.setVisible(true);
             }
           }
@@ -267,11 +268,9 @@ public void refreshTable(String[] productProperty) {
   public void updateEditedProduct(){
     model.setValueAt(productToEdit.getProductName(), selectedRow, 1);
     model.setValueAt(productToEdit.getProductDesc(), selectedRow, 2);
-    model.setValueAt(productToEdit.getQuantity(), selectedRow, 3);
     model.setValueAt(productToEdit.getPrice(), selectedRow, 4);
-    model.setValueAt(productToEdit.getThresholdQuantity(), selectedRow, 5);
-    model.setValueAt(productToEdit.getOrderQuantity(), selectedRow, 6);
-    FileDataWrapper.productMap.put(productToEdit.getBarCode(), productToEdit);
+    FileDataWrapper.productMap.remove(productToEdit.getBarCode());
+    //FileDataWrapper.productMap.put(productToEdit.getBarCode(), productToEdit);
     table.setModel(model);
     updateDatFile();
   }

@@ -80,7 +80,7 @@ public class ProductEditWindow extends JDialog {
     textPrice.setText(String.valueOf(productToEdit.getPrice()));
     textPrice.setColumns(10);
 
-    btnEdit = new JButton("Edit");
+    btnEdit = new JButton("Ok");
     btnEdit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
 
