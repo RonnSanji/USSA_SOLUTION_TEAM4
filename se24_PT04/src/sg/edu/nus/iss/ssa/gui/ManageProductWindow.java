@@ -2,9 +2,11 @@ package sg.edu.nus.iss.ssa.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -39,11 +41,13 @@ public class ManageProductWindow extends JPanel {
   private Product productToEdit;
   private int selectedRow;
   private JTextField txtPrintCopy;
+  Map<Integer,Product> productMap = null;
 
   /**
    * Create the application.
    */
   public ManageProductWindow() {
+    this.productMap= FileDataWrapper.productMap;
 
     ManageProductWindow manageProductWindow = this;
 
@@ -96,9 +100,9 @@ public class ManageProductWindow extends JPanel {
          // System.out.println(option);
           if (option == 0) {
             // Confirm Remove
+            Product product = productMap.get(String.valueOf(table.getValueAt(selectedRow, 5)));
+            productMap.remove(String.valueOf(table.getValueAt(selectedRow, 5)));
             model.removeRow(selectedRow);
-            Product product = FileDataWrapper.productMap.get(table.getValueAt(selectedRow, 5));
-            FileDataWrapper.productMap.remove(table.getValueAt(selectedRow, 5));
             // update the .dat file
             updateDatFile();
           }
@@ -270,10 +274,9 @@ public void refreshTable(String[] productProperty) {
     model.setValueAt(productToEdit.getProductName(), selectedRow, 1);
     model.setValueAt(productToEdit.getProductDesc(), selectedRow, 2);
     model.setValueAt(productToEdit.getPrice(), selectedRow, 4);
-    FileDataWrapper.productMap.remove(productToEdit.getBarCode());
     FileDataWrapper.productMap.put(productToEdit.getBarCode(), productToEdit);
     table.setModel(model);
-    //updateDatFile();
+    updateDatFile();
   }
 
   private void productSearch() {
