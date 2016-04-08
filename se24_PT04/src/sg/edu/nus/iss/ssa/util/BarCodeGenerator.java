@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.ssa.util;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -10,10 +11,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Time: 3:21 PM <br/>
  */
 public class BarCodeGenerator {
+  int min = 100;
+  int max = 1000000000;
 public int generateBarCode(){
-  AtomicInteger sequence = new AtomicInteger();
-  int nextVal = sequence.incrementAndGet();
-   return nextVal;
+  Random r = new Random();
+  return r.ints(min,(max+1)).findFirst().getAsInt();
 }
 
 }
