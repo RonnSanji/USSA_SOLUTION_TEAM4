@@ -35,23 +35,23 @@ public class AddProduct extends JDialog {
   private JTextField txtProductDescription;
   private JTextField txtQuantityAvailable;
   private JTextField txtPrice;
-  private JTextField txtReorderQuantity;
-  private JTextField txtOrderQuantity;
-  private JComboBox txtProductCategory;
+  private JTextField txtThreshold;
+  private JTextField txtReOrderQuantity;
+  private JComboBox<String> txtProductCategory;
   private String productName;
   private String productDescription;
   private String quantityAvailable;
   private String price;
+  private String threshold;
   private String reorderQuantity;
-  private String orderQuantity;
   private String productCategory;
-  private IOService ioService = new IOService();
+  private IOService<?> ioService = new IOService<Object>();
   private EntityListController entityListController = new EntityListController();
 
   /**
    * Create the application.
    */
-  public AddProduct(Map productMap, ManageProductWindow productManagerWindow) {
+  public AddProduct(Map<String, Product> productMap, ManageProductWindow productManagerWindow) {
     setTitle("Adding New Product");
     setResizable(false);
     setLocationRelativeTo(null);
@@ -72,7 +72,7 @@ public class AddProduct extends JDialog {
     }
     Map<String, Category> categories = FileDataWrapper.categoryMap;
     Set<String> ctgs = categories.keySet();
-    txtProductCategory = new JComboBox();
+    txtProductCategory = new JComboBox<String>();
     for (String c : ctgs) {
       txtProductCategory.addItem(c);
     }
@@ -87,6 +87,14 @@ public class AddProduct extends JDialog {
     txtProductName.setBounds(214, 85, 130, 26);
     contentPanel.add(txtProductName);
     txtProductName.setColumns(10);
+    txtProductName.setDocument(new PlainDocument() {
+
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (!str.contains(","))
+				super.insertString(offs, str, a);
+		}
+	});
 
     JLabel lblProductDescription = new JLabel("Product Description:");
     lblProductDescription.setBounds(59, 132, 130, 16);
@@ -96,6 +104,14 @@ public class AddProduct extends JDialog {
     txtProductDescription.setBounds(214, 127, 130, 26);
     contentPanel.add(txtProductDescription);
     txtProductDescription.setColumns(10);
+    txtProductDescription.setDocument(new PlainDocument() {
+
+		@Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+			if (!str.contains(","))
+				super.insertString(offs, str, a);
+		}
+	});
 
     JLabel lblQuantityAvailable = new JLabel("Quantity Available:");
     lblQuantityAvailable.setBounds(59, 175, 130, 16);
@@ -130,13 +146,13 @@ public class AddProduct extends JDialog {
     contentPanel.add(txtPrice);
     txtPrice.setColumns(10);
 
-    JLabel lblNewLabel = new JLabel("ReOrder Quantity:");
+    JLabel lblNewLabel = new JLabel("Threshold:");
     lblNewLabel.setBounds(59, 261, 119, 16);
     contentPanel.add(lblNewLabel);
 
-    txtReorderQuantity = new JTextField();
-    txtReorderQuantity.setBounds(214, 256, 130, 26);
-    txtReorderQuantity.setDocument(new PlainDocument() {
+    txtThreshold = new JTextField();
+    txtThreshold.setBounds(214, 256, 130, 26);
+    txtThreshold.setDocument(new PlainDocument() {
 
       @Override
       public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -144,16 +160,16 @@ public class AddProduct extends JDialog {
           super.insertString(offs, str, a);
       }
     });
-    contentPanel.add(txtReorderQuantity);
-    txtReorderQuantity.setColumns(10);
+    contentPanel.add(txtThreshold);
+    txtThreshold.setColumns(10);
 
-    JLabel lblOrderQuantity = new JLabel("Order Quantity:");
+    JLabel lblOrderQuantity = new JLabel("Reorder Quantity:");
     lblOrderQuantity.setBounds(59, 303, 108, 16);
     contentPanel.add(lblOrderQuantity);
 
-    txtOrderQuantity = new JTextField();
-    txtOrderQuantity.setBounds(214, 298, 130, 26);
-    txtOrderQuantity.setDocument(new PlainDocument() {
+    txtReOrderQuantity = new JTextField();
+    txtReOrderQuantity.setBounds(214, 298, 130, 26);
+    txtReOrderQuantity.setDocument(new PlainDocument() {
 
       @Override
       public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -161,8 +177,8 @@ public class AddProduct extends JDialog {
           super.insertString(offs, str, a);
       }
     });
-    contentPanel.add(txtOrderQuantity);
-    txtOrderQuantity.setColumns(10);
+    contentPanel.add(txtReOrderQuantity);
+    txtReOrderQuantity.setColumns(10);
     
         JButton btnAddProduct = new JButton("OK");
         btnAddProduct.setBounds(80, 365, 100, 50);
@@ -172,7 +188,7 @@ public class AddProduct extends JDialog {
           public void actionPerformed(ActionEvent e) {
             fetchValuesFromTextFields();
             String validatorMessage = FormValidator.addProductValidateForm(productCategory, productName, productDescription,
-                quantityAvailable, price, reorderQuantity);
+                quantityAvailable, price, threshold, reorderQuantity);
             if (validatorMessage != null) {
               JOptionPane.showMessageDialog(btnAddProduct, validatorMessage, "Error",
                   JOptionPane.ERROR_MESSAGE);
@@ -186,8 +202,8 @@ public class AddProduct extends JDialog {
                   productName, productDescription,
                   Long.valueOf(quantityAvailable), Double.valueOf(
                       price),
-                  barCode, Long.valueOf(reorderQuantity),
-                  Long.valueOf(orderQuantity));
+                  barCode, Long.valueOf(threshold),
+                  Long.valueOf(reorderQuantity));
               // add new member to memory
               try {
                 productMap.put(String.valueOf(barCode), product);
@@ -222,7 +238,7 @@ public class AddProduct extends JDialog {
     productDescription = txtProductDescription.getText().trim();
     quantityAvailable = txtQuantityAvailable.getText().trim();
     price = txtPrice.getText().trim();
-    reorderQuantity = txtReorderQuantity.getText().trim();
-    orderQuantity = txtOrderQuantity.getText().trim();
+    threshold = txtThreshold.getText().trim();
+    reorderQuantity = txtReOrderQuantity.getText().trim();
   }
 }

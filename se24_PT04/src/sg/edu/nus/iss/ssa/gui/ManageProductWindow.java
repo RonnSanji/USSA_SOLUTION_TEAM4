@@ -190,12 +190,7 @@ public class ManageProductWindow extends JPanel {
     	txtProductSearch.setText("");
         table.setModel(model);
         
-        // set resultlist
-        productList = (Collection<Product>) FileDataWrapper.productMap.values();
-        productListResult = new ArrayList<Product>();
-        for (Product product : productList) {
-        	productListResult.add(product);
-        }
+        loadLabelPrintData();
       }
     });
     btnClear.setBounds(515, 27, 111, 28);
@@ -232,15 +227,20 @@ public class ManageProductWindow extends JPanel {
 		}
 	});
     
-    // frist load set resultlist
-    productList = (Collection<Product>) FileDataWrapper.productMap.values();
-    productListResult = new ArrayList<Product>();
-    for (Product product : productList) {
-    	productListResult.add(product);
-    }
     
+    loadLabelPrintData();
   }
 
+  
+  private void loadLabelPrintData()
+  {
+	    productList = (Collection<Product>) FileDataWrapper.productMap.values();
+	    productListResult = new ArrayList<Product>();
+	    for (Product product : productList) {
+	    	productListResult.add(product);
+	    }
+  }
+  
   protected void printLabel() {
 	if(txtPrintCopy.getText() == "")
 	{

@@ -20,7 +20,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
@@ -57,7 +56,6 @@ public class ManageCategory extends JPanel {
 
 	private String[] columns = new String[] { "Category Code", "Category Name", "Preferred Vendor" };
 	private String[][] data;
-	private model tableModel;
 	private TableModel model;
 
 	private int selectedRow;
@@ -107,8 +105,7 @@ public class ManageCategory extends JPanel {
 		});
 		this.add(btnAddCategory);
 
-		tableModel= new model();
-		TbResult = new JTable(tableModel);
+		TbResult = new JTable(new MyTableModel());
 		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TbResult.setFillsViewportHeight(true);
 		
@@ -279,7 +276,7 @@ public class ManageCategory extends JPanel {
 
 	private void showResultTable() {
 		lblNoResult.setText("");
-		model = new model();
+		model = new MyTableModel();
 
 		TbResult.setModel(model);
 		TbResult.setVisible(true);
@@ -404,7 +401,7 @@ public class ManageCategory extends JPanel {
 		});
 	}
 
-	class model extends DefaultTableModel {
+	class MyTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1817809661748404816L;
 

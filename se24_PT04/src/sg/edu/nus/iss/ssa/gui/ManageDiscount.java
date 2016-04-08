@@ -100,7 +100,7 @@ public class ManageDiscount extends JPanel {
 		});
 		this.add(btnEditDiscount);
 
-		TbResult = new JTable(new model());
+		TbResult = new JTable(new MyTableModel());
 		TbResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		TbResult.setFillsViewportHeight(true);
 
@@ -252,7 +252,7 @@ public class ManageDiscount extends JPanel {
 		btnRemoveDiscount.setEnabled(true);
 		btnEditDiscount.setEnabled(true);
 		
-		model = new model();
+		model = new MyTableModel();
 
 		TbResult.setModel(model);
 		TbResult.setVisible(true);
@@ -314,7 +314,7 @@ public class ManageDiscount extends JPanel {
 		});
 	}
 
-	class model extends AbstractTableModel {
+	class MyTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 8539059160246223660L;
 

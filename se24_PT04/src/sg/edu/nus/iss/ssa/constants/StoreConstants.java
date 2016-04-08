@@ -45,7 +45,7 @@ public class StoreConstants {
 	// Manage category message
 	public static final String CATEGORY_ADDED_SUCCESSFULLY = "Category has been added successfully. Would like to add another one ?";
 	public static final String PRODUCT_ADDED_SUCCESSFULLY = "Product has been added successfully. Would like to add another one ?";
-	public static final String CATEGORY_EXISTS = "already exists. Would you like to add another one ?";
+	public static final String CATEGORY_EXISTS = "already exists";
 	public static final String ENTER_CATEGORYID = "Please enter category ID";
 	public static final String INVALID_CATEGORYID = "Please enter a valid category ID";
 	public static final String ENTER_CATEGORYNAME = "Please enter category name";
@@ -63,14 +63,15 @@ public class StoreConstants {
 
 	// Manage Member message
 	public static final String MEMBER_ADDED_SUCCESSFULLY = "Member has been added succesfully";
-	public static final String BLANK_MEMBER_NUMBERANDNAME = "Please enter Member Name and Member Number";
+	public static final String BLANK_MEMBER_NAME = "Please enter Member Name";
+	public static final String ENTER_MEMBER_NUMBER = "Please enter memeber number";
 	public static final String INVALID_NEWMEMBER_NUMBER = "Not a valid member, Please enter a number with 9 Charactor";
 	public static final String INVALID_NEWMEMBER_NAME = "Please enter a valid member name";
 	public static final String INVALID_LOYLTY_POINT = "Please enter a valid loylty point";
 	public static final String SELECT_MEMBER = "Please select a member";
 	public static final String CONFIRM_REMOVE_MEMBER = "Confirm to remove this member ?";
 	public static final String ENTER_MEMBER_NAME = "Please enter memeber name";
-	public static final String ENTER_MEMBER_NUMBER = "Please enter memeber number";
+
 	
 	// Manage stock message
 	public static final String SELECT_PRODUCT = "Please select a product";
@@ -93,6 +94,7 @@ public class StoreConstants {
 	public static final String EMPTY_QUANTITY = "Please Enter the Quantity greater than 0";
 	public static final String EMPTY_PRICE = "Please Enter the Price greater than 0";
 	public static final String EMPTY_THRESHOLD = "Please Enter the Threshold greater than 0";
+	public static final String EMPTY_REORDER_QUANTITY = "Please Enter the reorder quantity greater than 0";
 	public static final String EMPTY_PRODUCT_NAME = "Please Enter the Product Name. Product Name cannot be Empty";
 	public static final String EMPTY_PRODUCT_DESCRIPTION = "Please Enter the Product Description";
 	public static final String INVALID_PRODUCT_NAME = "Please Enter a valid Product Name";
