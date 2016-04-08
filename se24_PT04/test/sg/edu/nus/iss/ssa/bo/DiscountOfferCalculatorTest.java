@@ -45,7 +45,7 @@ public class DiscountOfferCalculatorTest {
         final double totalCash1 = 31.54;
         final long points1 = 100; // 100 points will evaluate to  1 $
         double total1 = offerCalculator.getTotalCashIncludingPoints(totalCash1,points1);
-        assertEquals(32.54,total1,0);
+        assertEquals(32.54, total1, 0);
 
         final double totalCash2 = 23.454;
         final long points2 = 0; // 100 points will evaluate to  1 $
@@ -62,40 +62,40 @@ public class DiscountOfferCalculatorTest {
     public void testGetCashValueForPoints() throws Exception {
         final long points = -1; // 100 points will evaluate to  1 $
         double cash = offerCalculator.getCashValueForPoints(points);
-        assertEquals(0,cash,0);
+        assertEquals(0, cash, 0);
 
         final long points1 = 100; // 100 points will evaluate to  1 $
         double cash1 = offerCalculator.getCashValueForPoints(points1);
-        assertEquals(1,cash1,0);
+        assertEquals(1, cash1, 0);
 
         final long points2 = 240; // 100 points will evaluate to  1 $
         double cash2 = offerCalculator.getCashValueForPoints(points2);
-        assertEquals(2,cash2,0);
+        assertEquals(2, cash2, 0);
     }
 
     @Test
     public void testCalculatePointsEqCash() throws Exception {
         order.setFinalPrice(100d);
         long points = offerCalculator.calculatePointsEqCash(order);
-        assertEquals(100,points);
+        assertEquals(100, points);
 
         order.setFinalPrice(0d);
         long points1 = offerCalculator.calculatePointsEqCash(order);
-        assertEquals(0,points1);
+        assertEquals(0, points1);
     }
 
     @Test
     public void testGetDiscountForFirstTransaction() throws Exception {
-        discounts.add(createDiscount("MEMBER_FIRST", "ALWAYS", "ALWAYS", 10f, "M"));
+        discounts.add(TestHelper.createDiscount("MEMBER_FIRST", "ALWAYS", "ALWAYS", 10f, "M"));
         float discount = offerCalculator.getDiscountForFirstTransaction();
-        assertEquals(10,discount,0);
+        assertEquals(10, discount, 0);
 
     }
 
     @Test
     public void testGetDiscountForSubSequentTransaction() throws Exception {
-        discounts.add(createDiscount("MEMBER_FIRST", "ALWAYS", "ALWAYS", 10f, "M"));
-        discounts.add(createDiscount("MEMBER_SUBSEQ", "ALWAYS", "ALWAYS", 20f, "M"));
+        discounts.add(TestHelper.createDiscount("MEMBER_FIRST", "ALWAYS", "ALWAYS", 10f, "M"));
+        discounts.add(TestHelper.createDiscount("MEMBER_SUBSEQ", "ALWAYS", "ALWAYS", 20f, "M"));
         float discount = offerCalculator.getDiscountForFirstTransaction();
         assertEquals(10, discount, 0);
 
@@ -107,67 +107,27 @@ public class DiscountOfferCalculatorTest {
         transactions.clear();
         boolean isFirstTxn = offerCalculator.isFirstTransactionForMember("S1234");
         assertTrue(isFirstTxn);
-        transactions.add(createTransaction("STA/1", "S1234", 100));
+        transactions.add(TestHelper.createTransaction("STA/1", "S1234", 100));
         boolean isFirstTxn1 = offerCalculator.isFirstTransactionForMember("S1234");
         assertFalse(isFirstTxn1);
     }
 
     @Test
     public void testApplyDiscount() throws Exception {
-        Order order  = createOrder();
+        Order order  = TestHelper.createOrder();
         offerCalculator.applyDiscount(order);
         assertEquals(100.0, order.getTotalPrice(), 0);
         assertEquals(0.0, order.getApplicableDiscountPerc(), 0);
         assertEquals(0, order.getApplicableDiscountAmount(), 0);
         assertEquals(100.0, order.getFinalPrice(), 0);
 
-        order.setUser(createMember());
-        discounts.add(createDiscount("MEMBER_FIRST", "ALWAYS", "ALWAYS", 10f, "M"));
+        order.setUser(TestHelper.createMember());
+        discounts.add(TestHelper.createDiscount("MEMBER_FIRST", "ALWAYS", "ALWAYS", 10f, "M"));
         offerCalculator.applyDiscount(order);
         assertEquals(100.0, order.getTotalPrice(), 0);
         assertEquals(10.0, order.getApplicableDiscountPerc(), 0);
         assertEquals(10, order.getApplicableDiscountAmount(), 0);
         assertEquals(90.0, order.getFinalPrice(), 0);
-    }
-
-    private PeriodDiscount createDiscount(String code, String startDate, String period, float discountPerc, String applicableTo){
-        PeriodDiscount discount = new PeriodDiscount();
-        discount.setDiscountCode(code);
-        discount.setStarDate(startDate);
-        discount.setDiscountPeriod(period);
-        discount.setDiscountPerc(discountPerc);
-        discount.setApplicableTo(applicableTo);
-        return discount;
-    }
-
-    private Transaction createTransaction(String productId, String memberId, long quantity ){
-        Transaction txn = new Transaction();
-        txn.setProductId(productId);
-        txn.setMemberId(memberId);
-        txn.setQuantity(quantity);
-        return  txn;
-    }
-
-    private Order createOrder(){
-        Order order = new Order();
-        LineItem item = createLineItem(10);
-        order.addLineItem(item);
-        return order;
-    }
-
-    private Product createProduct(){
-        Product product =  new Product("CLO/1","test product", "test product desc ", 100, 10.0, 111, 10,10);
-        return product;
-    }
-    private LineItem createLineItem(long buyQty){
-        Product product = createProduct();
-        LineItem item = new LineItem(product,10);
-        return item;
-    }
-
-    private Member createMember(){
-        Member member = new Member("Amarjeet", "S123",100);
-        return member;
     }
 
 }

@@ -26,7 +26,6 @@ public class TotalReceiptCalculatorTest {
 
     @Before
     public void setUp() throws Exception {
-        order = new Order();
         transactions = new ArrayList<Transaction>();
         FileDataWrapper.transactionList.addAll(transactions);
         receiptCalculator = new TotalReceiptCalculator(order);
@@ -34,11 +33,23 @@ public class TotalReceiptCalculatorTest {
 
     @Test
     public void testGetCashEquivalentPointstext() throws Exception {
-        order.setPointsRedeemed(500l);
+        order = TestHelper.createOrder(500);
         String text = receiptCalculator.getCashEquivalentPointstext(order);
         assertEquals("500 (5.0$)",text);
+    }
+
+    @Test
+    public void testProcessPayment()  {
+        order = TestHelper.createOrder(100);
+        order.setUser(TestHelper.createMember(500));
+        receiptCalculator = new TotalReceiptCalculator(order);
+        receiptCalculator.processPayment();
+
+        assertEquals(400,order.getMemberInfo().getLoyaltyPoints(),0);
 
     }
+
+
 
     private PeriodDiscount createDiscount(String code, String startDate, String period, float discountPerc, String applicableTo){
         PeriodDiscount discount = new PeriodDiscount();
