@@ -17,7 +17,7 @@ public class TotalReceiptCalculator {
 
     Order order = null;
     DiscountOfferCalculator offerCalculator = null;
-    Map<Integer, Product> productMap;
+    Map<String, Product> productMap;
     List<Transaction> transactionList;
     IOService<?> ioManager = new IOService<Entity>();
 

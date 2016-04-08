@@ -1,9 +1,6 @@
 package sg.edu.nus.iss.ssa.bo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import sg.edu.nus.iss.ssa.model.*;
 
@@ -14,7 +11,7 @@ import sg.edu.nus.iss.ssa.model.*;
  */
 public class FileDataWrapper {
 
-	public static final Map<Integer, Product> productMap = new HashMap<Integer, Product>();
+	public static final Map<String, Product> productMap = new TreeMap<String, Product>();
 	public static final Map<String, Category> categoryMap = new HashMap<String, Category>();
 	public static final Map<String, Member> memberMap = new HashMap<String, Member>();
 	public static final List<Transaction> transactionList = new ArrayList<Transaction>();

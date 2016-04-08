@@ -105,12 +105,12 @@ public class AddProduct extends JDialog {
     txtQuantityAvailable.setBounds(214, 170, 130, 26);
     txtQuantityAvailable.setDocument(new PlainDocument() {
 
-		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			if (str.matches("[0-9]*"))
-				super.insertString(offs, str, a);
-		}
-	});
+      @Override
+      public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+        if (str.matches("[0-9]*"))
+          super.insertString(offs, str, a);
+      }
+    });
     contentPanel.add(txtQuantityAvailable);
     txtQuantityAvailable.setColumns(10);
 
@@ -121,12 +121,12 @@ public class AddProduct extends JDialog {
     txtPrice = new JTextField();
     txtPrice.setBounds(214, 213, 130, 26);
     txtPrice.setDocument(new PlainDocument() {
-		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			if (str.matches("(?:\\d*\\.)?\\d+") || str.matches("\\."))
-				super.insertString(offs, str, a);
-		}
-	});
+      @Override
+      public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+        if (str.matches("(?:\\d*\\.)?\\d+") || str.matches("\\."))
+          super.insertString(offs, str, a);
+      }
+    });
     contentPanel.add(txtPrice);
     txtPrice.setColumns(10);
 
@@ -138,12 +138,12 @@ public class AddProduct extends JDialog {
     txtReorderQuantity.setBounds(214, 256, 130, 26);
     txtReorderQuantity.setDocument(new PlainDocument() {
 
-		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			if (str.matches("[0-9]*"))
-				super.insertString(offs, str, a);
-		}
-	});
+      @Override
+      public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+        if (str.matches("[0-9]*"))
+          super.insertString(offs, str, a);
+      }
+    });
     contentPanel.add(txtReorderQuantity);
     txtReorderQuantity.setColumns(10);
 
@@ -155,27 +155,19 @@ public class AddProduct extends JDialog {
     txtOrderQuantity.setBounds(214, 298, 130, 26);
     txtOrderQuantity.setDocument(new PlainDocument() {
 
-		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			if (str.matches("[0-9]*"))
-				super.insertString(offs, str, a);
-		}
-	});
+      @Override
+      public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+        if (str.matches("[0-9]*"))
+          super.insertString(offs, str, a);
+      }
+    });
     contentPanel.add(txtOrderQuantity);
     txtOrderQuantity.setColumns(10);
     
         JButton btnAddProduct = new JButton("OK");
         btnAddProduct.setBounds(80, 365, 100, 50);
         contentPanel.add(btnAddProduct);
-        
-            JButton btnCancel = new JButton("Cancel");
-            btnCancel.setBounds(234, 365, 100, 50);
-            contentPanel.add(btnCancel);
-            btnCancel.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-                dispose();
-              }
-            });
+
         btnAddProduct.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             fetchValuesFromTextFields();
@@ -198,24 +190,23 @@ public class AddProduct extends JDialog {
                   Long.valueOf(orderQuantity));
               // add new member to memory
               try {
-                productMap.put(barCode, product);
+                productMap.put(String.valueOf(barCode), product);
+                IOService<?> ioManager = new IOService<Entity>();
+                ioManager.writeToFile(productMap.values(), new Product());
               } catch (Exception ex) {
                 DisplayUtil.displayValidationError(contentPanel,
                     StoreConstants.ERROR + " creating new product");
+                ex.printStackTrace();
               }
 
-              // write new memeber from memory to .dat file
-              IOService<?> ioManager = new IOService<Entity>();
-              try {
-                ioManager.writeToFile(productMap.values(), new sg.edu.nus.iss.ssa.model.Product());
-                ioManager = null;
-              } catch (Exception ex)
-
-              {
-                DisplayUtil.displayValidationError(contentPanel,
-                    StoreConstants.ERROR + " saving new product");
-                ioManager = null;
-              }
+              JButton btnCancel = new JButton("Cancel");
+              btnCancel.setBounds(234, 365, 100, 50);
+              contentPanel.add(btnCancel);
+              btnCancel.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                  dispose();
+                }
+              });
 
               // update the table data in MemberManagerWindow
               productManagerWindow.refreshTable(product.getProductArray());

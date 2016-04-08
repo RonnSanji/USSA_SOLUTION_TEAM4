@@ -359,7 +359,7 @@ public class EntityListController {
 	// For add product
 	public String addProduct(Product product) {
 		try {
-			FileDataWrapper.productMap.put(product.getBarCode(), product);
+			FileDataWrapper.productMap.put(String.valueOf(product.getBarCode()), product);
 		} catch (Exception ex) {
 			return StoreConstants.ERROR + " creating new product";
 		}

@@ -46,7 +46,7 @@ public class PurchaseProduct extends JDialog {
 	private JTextField barCodetext;
 	private JTextField productQnty;
 
-	Map<Integer,Product> productMap = null;
+	Map<String,Product> productMap = null;
 	Order order = null;
 
 	private OrderValidator orderValidator = new OrderValidator();
@@ -58,7 +58,7 @@ public class PurchaseProduct extends JDialog {
 		productMap = FileDataWrapper.productMap;
 		order = FileDataWrapper.receipt;
 		setTitle("Purchase Product");
-		setSize(500,339);
+		setSize(500, 339);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		contentPanel.setBounds(0, 0, 484, 301);

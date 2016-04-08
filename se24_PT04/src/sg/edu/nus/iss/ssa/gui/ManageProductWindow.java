@@ -41,7 +41,7 @@ public class ManageProductWindow extends JPanel {
   private Product productToEdit;
   private int selectedRow;
   private JTextField txtPrintCopy;
-  Map<Integer,Product> productMap = null;
+  Map<String,Product> productMap = null;
 
   /**
    * Create the application.
@@ -274,7 +274,7 @@ public void refreshTable(String[] productProperty) {
     model.setValueAt(productToEdit.getProductName(), selectedRow, 1);
     model.setValueAt(productToEdit.getProductDesc(), selectedRow, 2);
     model.setValueAt(productToEdit.getPrice(), selectedRow, 4);
-    FileDataWrapper.productMap.put(productToEdit.getBarCode(), productToEdit);
+    FileDataWrapper.productMap.put(String.valueOf(productToEdit.getBarCode()), productToEdit);
     table.setModel(model);
     updateDatFile();
   }
