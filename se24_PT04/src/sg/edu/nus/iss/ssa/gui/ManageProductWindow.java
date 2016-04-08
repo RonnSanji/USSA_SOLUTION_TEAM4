@@ -97,7 +97,7 @@ public class ManageProductWindow extends JPanel {
           if (option == 0) {
             // Confirm Remove
             model.removeRow(selectedRow);
-            FileDataWrapper.productMap.remove(selectedRowKey);
+            FileDataWrapper.productMap.remove(String.valueOf(table.getValueAt(selectedRow, 5).toString()));
             // update the .dat file
             updateDatFile();
           }
@@ -270,9 +270,9 @@ public void refreshTable(String[] productProperty) {
     model.setValueAt(productToEdit.getProductDesc(), selectedRow, 2);
     model.setValueAt(productToEdit.getPrice(), selectedRow, 4);
     FileDataWrapper.productMap.remove(productToEdit.getBarCode());
-    //FileDataWrapper.productMap.put(productToEdit.getBarCode(), productToEdit);
+    FileDataWrapper.productMap.put(productToEdit.getBarCode(), productToEdit);
     table.setModel(model);
-    updateDatFile();
+    //updateDatFile();
   }
 
   private void productSearch() {
