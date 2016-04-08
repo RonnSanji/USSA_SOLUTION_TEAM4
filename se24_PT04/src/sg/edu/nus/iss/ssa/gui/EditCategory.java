@@ -62,19 +62,6 @@ public class EditCategory extends JDialog {
 				if (validateForm() && validateData()) {
 					saveCategory();
 				}
-				/*
-				 * int dialogResult = -1; if (validateForm()) { String msg =
-				 * validateData(); if (msg == null) { if (addCategory()) {
-				 * dialogResult =
-				 * DisplayUtil.displayConfirmationMessage(contentPane,
-				 * StoreConstants.CATEGORY_ADDED_SUCCESSFULLY); if (dialogResult
-				 * == 0) { clearFields(); } else if (dialogResult == 1) {
-				 * dispose(); } } } else { dialogResult =
-				 * DisplayUtil.displayConfirmationMessage(contentPane, msg); if
-				 * (dialogResult == 0) { clearFields(); } else if (dialogResult
-				 * == 1) { dispose(); } } }
-				 */
-
 			}
 		});
 		btnAdd.setBounds(98, 240, 100, 50);
