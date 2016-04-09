@@ -31,6 +31,7 @@ import sg.edu.nus.iss.ssa.model.PeriodDiscount;
 import sg.edu.nus.iss.ssa.model.Product;
 import sg.edu.nus.iss.ssa.util.IOService;
 import sg.edu.nus.iss.ssa.util.TestUtil;
+import sg.edu.nus.iss.ssa.util.BarCodeGenerator;
 
 /**
  * @author LOL
@@ -507,7 +508,7 @@ public class EntityListControllerTest extends TestCase {
 	}
 
 	@Test
-	pubic void testAddProduct(){
+	public void testAddProduct(){
 		EntityListController entityListController = new EntityListController();
 		BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
 		String productId = "DRK/3";
