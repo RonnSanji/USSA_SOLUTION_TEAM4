@@ -37,7 +37,6 @@ public class IOService<E> {
         String[] fields = entityToCreate.getProperties();
         String className = entityToCreate.getClassName();
         String mapKey = entityToCreate.getMapKey();
-//System.out.println(dataFilePathPrefix);
         File inputFile = new File(dataFilePathPrefix + fileName);
         if (inputFile == null || !inputFile.exists()) {
             throw new FileNotFoundException(fileName + " file is not available. Please make sure file is present " +

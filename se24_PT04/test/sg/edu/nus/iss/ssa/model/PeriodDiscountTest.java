@@ -2,6 +2,10 @@ package sg.edu.nus.iss.ssa.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import sg.edu.nus.iss.ssa.constants.StoreConstants;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import static org.junit.Assert.*;
 
@@ -36,7 +40,10 @@ public class PeriodDiscountTest {
         boolean isApplicable2 = discount.checkIfDiscountAvailable();
         assertTrue(isApplicable2);
 
-        discount.setStarDate("2016-04-06");
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(StoreConstants.DATE_FORMAT);
+        String currentDate = dateFormat.format(cal.getTime());
+        discount.setStarDate(currentDate);
         discount.setDiscountPeriod("1");
         discount.setDiscountPerc(90);
         boolean isApplicable3 = discount.checkIfDiscountAvailable();
