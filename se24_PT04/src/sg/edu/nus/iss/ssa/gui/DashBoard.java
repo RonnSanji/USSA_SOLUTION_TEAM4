@@ -123,8 +123,13 @@ public class DashBoard extends JFrame
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updater.stop();
-				dispose();
-				System.exit(0);
+
+				int option = JOptionPane.showConfirmDialog(dashBoard, "Please click ok to continue with logout or click on cancel to stay on the page.", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+				//System.out.println(option);
+				if(option==0){
+					dispose();
+					System.exit(0);
+				}
 			}
 		});
 		btnLogout.setBounds(1040, 73, 49, 55);
