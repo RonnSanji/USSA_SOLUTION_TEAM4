@@ -5,7 +5,12 @@ import java.util.*;
 import sg.edu.nus.iss.ssa.model.*;
 
 /**
- * 
+ * This class will act as central repository for all the entities.
+ * Different feature of adding/editing/removing entities will keep
+ * these collections updated.
+ *
+ * Responsibility to update file lies with use of each feature where add/edit/remove happens.
+ *
  * @author Amarjeet B Singh
  *
  */

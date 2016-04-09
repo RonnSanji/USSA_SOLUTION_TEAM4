@@ -41,14 +41,6 @@ public class SouvenirStoreApp {
 			ioManager.readFromFile( FileDataWrapper.storeKeeperMap,null, new StoreKeeper());
 			ioManager.readFromFile( null, FileDataWrapper.discounts, new PeriodDiscount());
 			controller.loadAllVendorMap();
-			
-			//System.out.println("products :" + FileDataWrapper.productMap.keySet());
-			//System.out.println("categories : " + FileDataWrapper.categoryMap.keySet());
-			//System.out.println("members : " + FileDataWrapper.memberMap.keySet());
-			//System.out.println("transactions : " + FileDataWrapper.transactionList);
-			//System.out.println("SoreKeeper : " + FileDataWrapper.storeKeeperMap.keySet());
-			//System.out.println("discounts : " + FileDataWrapper.discounts);
-			//System.out.println(((PeriodDiscount)FileDataWrapper.discounts.get(4)).checkIfDiscountAvailable());
 
 			LoginWindow login = new LoginWindow();	
 			login.setVisible(true);
@@ -59,5 +51,4 @@ public class SouvenirStoreApp {
 			e.printStackTrace();
 		}
 	}
-
 }
