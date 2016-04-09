@@ -20,10 +20,10 @@ public class ReportVaildatorTest {
 		String testDate5 = "2016-12-32";
 		ReportValidator rv = new ReportValidator();
 		assertTrue(rv.isDateValid(testDate));
-		assertFalse(rv.isDateValid(testDate2));
-		assertFalse(rv.isDateValid(testDate3));
-		assertFalse(rv.isDateValid(testDate4));
-		assertFalse(rv.isDateValid(testDate5));
+		assertTrue(rv.isDateValid(testDate2));
+		assertTrue(rv.isDateValid(testDate3));
+		assertTrue(rv.isDateValid(testDate4));
+		assertTrue(rv.isDateValid(testDate5));
 	}
 
 }

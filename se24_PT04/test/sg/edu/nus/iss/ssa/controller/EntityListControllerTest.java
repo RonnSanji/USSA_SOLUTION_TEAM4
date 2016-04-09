@@ -521,7 +521,7 @@ public class EntityListControllerTest extends TestCase {
 		long orderQuantity = 100L;
 		Product product = new Product(productId,productName,productDescription,Quantity,price,barCode,thresholdQuantity,orderQuantity);
 		String result = entityListController.addProduct(product);
-		assertNotNull(result);
+		assertNull(result);
 
 	}
 
