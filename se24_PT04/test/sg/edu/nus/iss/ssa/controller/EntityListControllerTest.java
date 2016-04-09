@@ -506,4 +506,22 @@ public class EntityListControllerTest extends TestCase {
 		}
 	}
 
+	@Test
+	pubic void testAddProduct(){
+		EntityListController entityListController = new EntitysListController();
+		BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
+		String productId = "DRK/3";
+		String productName = "Mazaa";
+		String productDescription = "Mazaa 1 L";
+	  Long Quantity = 10L;
+		Double price = 1.2;
+		int barCode = barCodeGenerator.generateBarCode();
+		long thresholdQuantity = 10L;
+		long orderQuantity = 100L;
+		Product product = new Product(productId,productName,productDescription,Quantity,price,barCode,thresholdQuantity,orderQuantity);
+		String result = entityListController.addProduct(product);
+		assertNotNull(result);
+
+	}
+
 }

@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Time: 3:21 PM <br/>
  */
 public class BarCodeGenerator {
-  int min = 100;
-  int max = 1000000000;
+  int min = 1000;
+  int max = 100000;
 public int generateBarCode(){
   Random r = new Random();
   return r.ints(min,(max+1)).findFirst().getAsInt();

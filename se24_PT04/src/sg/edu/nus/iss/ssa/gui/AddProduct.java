@@ -206,9 +206,7 @@ public class AddProduct extends JDialog {
                   Long.valueOf(reorderQuantity));
               // add new member to memory
               try {
-                productMap.put(String.valueOf(barCode), product);
-                IOService<?> ioManager = new IOService<Entity>();
-                ioManager.writeToFile(productMap.values(), new Product());
+                entityListController.addProduct(product);
               } catch (Exception ex) {
                 DisplayUtil.displayValidationError(contentPanel,
                     StoreConstants.ERROR + " creating new product");
