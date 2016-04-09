@@ -97,6 +97,10 @@ public class Printer {
 
 			sb.append(linebreak).append(linebreak).append(linebreak).append(linebreak).append(linebreak);
 
+			sb.append("Thank you for shopping with us !");
+			sb.append(linebreak).append(linebreak);
+			sb.append(linebreak).append(linebreak);
+			
 			sb.append("Have a nice day !");
 			sb.append(linebreak).append(linebreak).append(linebreak).append(linebreak).append(linebreak);
 

@@ -186,6 +186,8 @@ public class ReceiptSummary extends JPanel {
 				
 				printer.printReceipt(FileDataWrapper.receipt, dashBoard.getMainActivityPanel().getLocationOnScreen());
 				
+				showLowStockAlert();
+				
 				FileDataWrapper.receipt = new Order();
 				
 			}
@@ -196,16 +198,7 @@ public class ReceiptSummary extends JPanel {
 		separator = new JSeparator();
 		separator.setBounds(31, 503, 627, 2);
 		this.add(separator);
-		
-		if(printer ==null)
-		{
-			printer = new Printer();
-		}
-		showPrintReceiptMessage();
-		
-		printer.printReceipt(FileDataWrapper.receipt, dashBoard.getMainActivityPanel().getLocationOnScreen());
-		
-		showLowStockAlert();
+			
 	}
 	
 	private void showPrintReceiptMessage()
