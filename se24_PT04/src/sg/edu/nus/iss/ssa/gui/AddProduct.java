@@ -5,9 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,6 +17,7 @@ import javax.swing.text.PlainDocument;
 import sg.edu.nus.iss.ssa.bo.FileDataWrapper;
 import sg.edu.nus.iss.ssa.constants.StoreConstants;
 import sg.edu.nus.iss.ssa.controller.EntityListController;
+import sg.edu.nus.iss.ssa.exception.BarCodeException;
 import sg.edu.nus.iss.ssa.exception.FieldMismatchExcepion;
 import sg.edu.nus.iss.ssa.model.Category;
 import sg.edu.nus.iss.ssa.model.Entity;
@@ -197,6 +197,19 @@ public class AddProduct extends JDialog {
               ProductIdGenerator productIdGenerator = new ProductIdGenerator();
               BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
               int barCode = barCodeGenerator.generateBarCode();
+              List<Integer> allBarCodes = new ArrayList<>();
+              Collection<Product> allProducts = FileDataWrapper.productMap.values();
+              for(Product product:allProducts){
+               allBarCodes.add(product.getBarCode());
+              }
+              try{
+                if(allBarCodes.contains(barCode)){
+                  throw new Exception("Bar Code Already Exists");
+                }
+              } catch(Exception e2){
+                e2.printStackTrace();
+              }
+
               Product product = new Product(
                   productIdGenerator.getProductId(products, productCategory),
                   productName, productDescription,
