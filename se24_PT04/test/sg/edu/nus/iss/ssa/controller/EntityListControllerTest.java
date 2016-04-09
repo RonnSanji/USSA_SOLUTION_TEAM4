@@ -508,7 +508,7 @@ public class EntityListControllerTest extends TestCase {
 
 	@Test
 	pubic void testAddProduct(){
-		EntityListController entityListController = new EntitysListController();
+		EntityListController entityListController = new EntityListController();
 		BarCodeGenerator barCodeGenerator = new BarCodeGenerator();
 		String productId = "DRK/3";
 		String productName = "Mazaa";
